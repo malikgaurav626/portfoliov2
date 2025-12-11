@@ -1,0 +1,118 @@
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2d1f1;
+  z-index: 9999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-dial-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dial styles matching LargeBody */
+.loading-dial {
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dial-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #0030ff;
+  border: none;
+  box-shadow: 0px 0px 15px 5px rgba(0, 48, 255, 0.6);
+}
+
+.dial-expanded {
+  width: 80px;
+  height: 80px;
+  background-color: transparent;
+  border: 1.5px solid #aca5f5;
+  box-shadow: none;
+}
+
+.dial-rotating {
+  animation: dialSpin 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes dialSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(540deg);
+  }
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+.loading-dialer {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+  width: 17px;
+  height: 2.5px;
+  border-radius: 0.2px;
+  background-color: #0030ff;
+  box-shadow: 0px 0px 10px 0px #8d92f7;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.4s;
+}
+
+.dial-expanded .loading-dialer {
+  opacity: 1;
+}
+
+/* Dash rays around the dial */
+.loading-dash {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.dash-line {
+  width: 2px;
+  height: 0;
+  background-color: #0030ff;
+  border-radius: 1px;
+  margin-top: 0;
+  transition: height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              margin-top 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dash-visible .dash-line {
+  height: 20px;
+  margin-top: -25px;
+}

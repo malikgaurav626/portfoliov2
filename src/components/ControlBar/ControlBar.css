@@ -1,0 +1,127 @@
+/* Control Bar Component Styles */
+
+.channel-table {
+  width: 100%;
+}
+
+.control-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000;
+}
+
+.control-tr {
+  border: 1px solid #000;
+}
+
+.control-td {
+  border: 1px solid #0030ff;
+  padding: 15px 10px;
+  text-align: center;
+  font-family: 'maison';
+  cursor: pointer;
+  position: relative;
+  background: transparent;
+}
+
+.control-td::before {
+  width: 100%;
+  height: 0%;
+  background-color: #002fff2d;
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  user-select: none;
+  transition: 0.3s all;
+  z-index: -1;
+}
+
+.control-td:hover::before {
+  height: 100%;
+  transition: 0.2s all;
+}
+
+/* Medium Variant */
+.control-table-medium {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000;
+}
+
+.control-tr-medium {
+  border: 1px solid #000;
+}
+
+.control-td-medium {
+  border: 1px solid #0030ff;
+  padding: 15px 10px;
+  text-align: center;
+  font-family: 'maison';
+  cursor: pointer;
+  position: relative;
+  background: transparent;
+}
+
+.control-td-medium::before {
+  width: 100%;
+  height: 0%;
+  background-color: #002fff2d;
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  user-select: none;
+  transition: 0.3s all;
+  z-index: -1;
+}
+
+.control-td-medium:hover::before {
+  height: 100%;
+  transition: 0.2s all;
+}
+
+/* Large Variant */
+.control-table-large {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000;
+}
+
+.control-tr-large {
+  border: 1px solid #000;
+}
+
+.control-td-large {
+  border: 1px solid #0030ff;
+  padding: 15px 10px;
+  text-align: center;
+  font-family: 'maison';
+  cursor: pointer;
+  position: relative;
+  background: transparent;
+}
+
+.control-td-large::before {
+  width: 100%;
+  height: 0%;
+  background-color: #002fff2d;
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  user-select: none;
+  transition: 0.3s all;
+  z-index: -1;
+}
+
+.control-td-large:hover::before {
+  height: 100%;
+  transition: 0.2s all;
+}
+.medium-row-top-middle-container.control-td-large{
+    padding: 10px 10px;
+}

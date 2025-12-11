@@ -1,0 +1,547 @@
+/* Webfont: BREKGU-Regular */
+@font-face {
+    font-family: "BREKGU";
+    src: url("/fonts/BREKGU.eot"); /* IE9 Compat Modes */
+    src: url("/fonts/BREKGU.eot?#iefix") format("embedded-opentype"),
+      /* IE6-IE8 */ url("/fonts/BREKGU.woff") format("woff"),
+      /* Modern Browsers */ url("/fonts/BREKGU.woff2") format("woff2"),
+      /* Modern Browsers */ url("/fonts/BREKGU.ttf") format("truetype"); /* Safari, Android, iOS */
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+  }
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-ThinOblique.otf") format("opentype");
+    font-weight: 100;
+    font-style: oblique;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-SemiBoldOblique.otf") format("opentype");
+    font-weight: 600;
+    font-style: oblique;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-RegularOblique.otf") format("opentype");
+    font-weight: 400;
+    font-style: oblique;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-MediumOblique.otf") format("opentype");
+    font-weight: 500;
+    font-style: oblique;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-LightOblique.otf") format("opentype");
+    font-weight: 300;
+    font-style: oblique;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-ExtraLightOblique.otf") format("opentype");
+    font-weight: 200;
+    font-style: oblique;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-ExtraBoldOblique.otf") format("opentype");
+    font-weight: 800;
+    font-style: oblique;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-BlackOblique.otf") format("opentype");
+    font-weight: 900;
+    font-style: oblique;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-Black.otf") format("opentype");
+    font-weight: 900;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-BoldOblique.otf") format("opentype");
+    font-weight: 700;
+    font-style: oblique;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-Thin.otf") format("opentype");
+    font-weight: 100;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-SemiBold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-ExtraLight.otf") format("opentype");
+    font-weight: 200;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "CaustenRound";
+    src: url("public/fonts/CaustenRound-ExtraBold.otf") format("opentype");
+    font-weight: 800;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "maison";
+    src: url("/fonts/maison.ttf");
+  }
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial Bold Italic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial ExtraBold Italic.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial ExtraLight Italic.ttf') format('truetype');
+    font-weight: 200;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial Heavy Italic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial Heavy.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial Light Italic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial Medium Italic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Montreal Serial';
+    src: url('/fonts/Montreal Serial.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  #canvas-id {
+    height: 100svh !important;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    padding: 15px;
+    overflow: hidden;
+  }
+  .body-container {
+    color: red;
+  }
+  .left-section {
+    width: 410px;
+    height: 95svh;
+  }
+  .heading-container {
+    background: linear-gradient(to bottom, #e0c7f4 1px, transparent 1px) 0 0,
+      linear-gradient(to right, #e0c7f4 1px, transparent 1px) 0 0,
+      linear-gradient(to bottom, #e0c7f4 1px, transparent 1px) 50% 0,
+      linear-gradient(to right, #e0c7f4 1px, transparent 1px) 0 50%;
+  
+    background-size: 5% 13%;
+    background-repeat: repeat;
+    border: 1px solid #e0c7f4;
+  }
+  .heading {
+    text-align: center;
+    font-family: "BREKGU";
+    font-size: 120px;
+    line-height: 100px;
+  }
+  .rgb-split {
+    text-shadow: 1px 1px 0 rgba(255, 0, 0, 0.643),
+      -1px -1px 0 rgba(0, 128, 0, 0.69), 1px -1px 0 rgba(0, 0, 255, 0.752);
+  }
+  .heading-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "CaustenRound";
+    font-weight: 500;
+    font-size: xx-small;
+    letter-spacing: 0.2px;
+  }
+  .heading-nav-item {
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .fading-stripes {
+    margin: 0 auto;
+    padding-top: 0;
+    text-align: center;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(
+          to top,
+          rgba(0, 48, 255, 1) 1.5px,
+          transparent 1.5px
+        )
+        0 0,
+      linear-gradient(to top, rgba(0, 48, 255, 0.8) 1.5px, transparent 1.5px) 0
+        10%,
+      linear-gradient(to top, rgba(0, 48, 255, 0.6) 1.5px, transparent 1.5px) 0
+        19%,
+      linear-gradient(to top, rgba(0, 48, 255, 0.4) 1.5px, transparent 1.5px) 0
+        29%,
+      linear-gradient(to top, rgba(0, 48, 255, 0.2) 1.5px, transparent 1.5px) 0
+        38%,
+      linear-gradient(to top, rgba(0, 48, 255, 0.1) 1.5px, transparent 1.5px) 0
+        48%;
+  
+    background-size: 100% 15%;
+    background-repeat: no-repeat;
+  }
+  
+  #project-img-id {
+    width: 40px;
+    height: auto;
+    border-radius: 50%;
+  }
+  .project-image {
+    margin-top: 5px;
+    width: 80%;
+  }
+  .project-title {
+    margin-top: 12px;
+    font-family: "maison";
+    font-weight: 900;
+    letter-spacing: -0.2px;
+    font-size: 14px;
+    width: 80%;
+  }
+  .project-subtitle {
+    width: 80%;
+    margin-top: 5px;
+    margin-bottom: 12px;
+    font-family: "maison";
+    font-weight: 500;
+    font-size: 13px;
+    color: #8d92f7;
+  }
+  .duration-image-container {
+    
+    padding: 15px;
+    padding-left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    position: relative;
+  }
+  #play-pause-id {
+    width: 13px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-bottom: 2px;
+  }
+  .project-vid-duration {
+    width: 77.5%;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    font-family: "maison";
+    font-size: 13px;
+  }
+  .duration {
+    margin: 5px;
+    color: #8d92f7;
+  }
+  .github-btn {
+    margin-left: auto;
+    font-family: "maison";
+    padding: 3px 10px;
+    padding-bottom: 1px;
+    border: 1px solid #aca5f5;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 3px;
+    transition: 0.2s;
+  }
+  .github-btn:hover {
+    background-color: #0030ff;
+    color: #f2d1f1;
+    transition: 0.2s;
+  }
+  .horizontal-row {
+    width: 79%;
+    height: 1px;
+    background-color: #bfb2f3;
+    margin: 5px 4px;
+  }
+  .home-btn{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'maison';
+    font-weight: bold;
+    font-size: 13px;
+    border: 1px solid #aca5f5;
+    padding: 5px 0px;
+    margin: 20px 0px;
+    border-radius: 5px;
+    height: 30px;
+    user-select: none;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+  }
+  .home-btn::before{
+    background-color: #002fff2d;
+    width: 100%;
+    height: 0%;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+    transition: 0.2s;
+  }
+  .home-btn:hover::before{
+    height: 100%;
+    transition: 0.2s;
+  }
+  #home-title-id{
+    margin: 0 auto;
+  }
+  #power-img-id{
+    width: 20px;
+    margin-right: 15px;
+  }
+  .circular-dial-container{
+    font-family: 'maison';
+    font-weight: bold;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+  }
+  .signal{
+    color: #8d92f7;
+  }
+  .dial{
+    margin: 15px 0px;
+    width: 80px;
+    height: 80px;
+    border: 1.5px solid #aca5f5;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+  }
+  .dialer{
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    width: 17px;
+    height: 2.5px;
+    border-radius: 0.2px;
+    background-color: #0030ff;
+    box-shadow: 0px 0px 10px 0px #8d92f7;
+  
+  }
+  .brightness-title{
+    font-family: 'maison';
+    font-size: 12px;
+    font-weight: bold;
+    color: #8d92f7;
+    margin-top: 20px;
+  }
+  .mode-toggle-container{
+    display: flex;
+    margin-top: 10px;
+  }
+  .toggle-btn{
+    border: 1px solid #0030ff;
+    width: 40%;
+    height: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    user-select: none;
+  }
+  .active-btn{
+    background-color: #0030ff;
+    box-shadow: 0px 0px 10px 0px #8d92f7;
+    transition: 0.2s;
+  }
+  .btn-container{
+    display: flex;
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .psuedo-btn{
+    width: 40%;
+    text-align: center;
+    font-family: 'maison';
+    color: #8d92f7;
+    cursor: pointer;
+    user-select: none;
+  }
+  .active-psuedo-btn{
+    color: #0030ff;
+    text-decoration: underline;
+  }
+
+/* Right section toggle styles */
+@keyframes arrowBounceLeft {
+  0% { transform: translateX(0px); }
+  30% { transform: translateX(-15px); }
+  50% { transform: translateX(5px); }
+  70% { transform: translateX(-5px); }
+  100% { transform: translateX(0px); }
+}
+
+@keyframes arrowBounceRight {
+  0% { transform: translateX(0px); }
+  30% { transform: translateX(15px); }
+  50% { transform: translateX(-5px); }
+  70% { transform: translateX(5px); }
+  100% { transform: translateX(0px); }
+}
+
+.right-section-toggle:hover .toggle-arrow {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.right-section-toggle:hover .toggle-line {
+  width: 3px !important;
+  height: 100% !important;
+}
+
+.right-section {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 400px;
+  z-index: 999;
+  background-color: #1a1a2e;
+  border-left: 1px solid #dec0f7;
+}
