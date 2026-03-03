@@ -29,6 +29,7 @@ import {
   CloseCommentsSVG,
 } from "../Social/ControlIcons";
 import { ControlBar } from "../ControlBar/ControlBar";
+import { ThreeEnv } from "../ThreeEnv/ThreeEnv";
 import QRCode from "qrcode";
 
 export function MediumBody({
@@ -81,11 +82,19 @@ export function MediumBody({
   }
 
   useEffect(() => {
-    generateQrCode("https://www.linkedin.com/in/malikgaurav626/", "#0030ff");
-  }, []);
+    const qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
+    generateQrCode("https://www.linkedin.com/in/malikgaurav626/", qrColor);
+  }, [currentMode]);
 
   return (
     <>
+      <div
+        className={`three_env_container ${
+          view3d ? "three_env_visible" : "three_env_hidden"
+        }`}
+      >
+        {view3d && <ThreeEnv channel={currentChannel} />}
+      </div>
       <div className="medium-body-container">
         <div className="medium-extra-btn-container">
           <div
@@ -251,6 +260,7 @@ export function MediumBody({
             onMute={() => setIsMuted(!isMuted)}
             isMuted={isMuted}
             currentMode={currentMode}
+            setCurrentMode={setCurrentMode}
             variant="medium"
             projects={projects}
             currentProject={currentProject}
@@ -454,3 +464,4 @@ function generateQrCode(url, color) {
       console.error(err);
     });
 }
+

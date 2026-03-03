@@ -1,547 +1,349 @@
-/* Webfont: BREKGU-Regular */
-@font-face {
-    font-family: "BREKGU";
-    src: url("/fonts/BREKGU.eot"); /* IE9 Compat Modes */
-    src: url("/fonts/BREKGU.eot?#iefix") format("embedded-opentype"),
-      /* IE6-IE8 */ url("/fonts/BREKGU.woff") format("woff"),
-      /* Modern Browsers */ url("/fonts/BREKGU.woff2") format("woff2"),
-      /* Modern Browsers */ url("/fonts/BREKGU.ttf") format("truetype"); /* Safari, Android, iOS */
-    font-style: normal;
-    font-weight: normal;
-    text-rendering: optimizeLegibility;
-  }
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-ThinOblique.otf") format("opentype");
-    font-weight: 100;
-    font-style: oblique;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-SemiBoldOblique.otf") format("opentype");
-    font-weight: 600;
-    font-style: oblique;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-RegularOblique.otf") format("opentype");
-    font-weight: 400;
-    font-style: oblique;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-MediumOblique.otf") format("opentype");
-    font-weight: 500;
-    font-style: oblique;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-LightOblique.otf") format("opentype");
-    font-weight: 300;
-    font-style: oblique;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-ExtraLightOblique.otf") format("opentype");
-    font-weight: 200;
-    font-style: oblique;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-ExtraBoldOblique.otf") format("opentype");
-    font-weight: 800;
-    font-style: oblique;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-BlackOblique.otf") format("opentype");
-    font-weight: 900;
-    font-style: oblique;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-Black.otf") format("opentype");
-    font-weight: 900;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-BoldOblique.otf") format("opentype");
-    font-weight: 700;
-    font-style: oblique;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-Bold.otf") format("opentype");
-    font-weight: 700;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-Thin.otf") format("opentype");
-    font-weight: 100;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-SemiBold.otf") format("opentype");
-    font-weight: 600;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-Regular.otf") format("opentype");
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-Medium.otf") format("opentype");
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-Light.otf") format("opentype");
-    font-weight: 300;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-ExtraLight.otf") format("opentype");
-    font-weight: 200;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: "CaustenRound";
-    src: url("public/fonts/CaustenRound-ExtraBold.otf") format("opentype");
-    font-weight: 800;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: "maison";
-    src: url("/fonts/maison.ttf");
-  }
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial Bold Italic.ttf') format('truetype');
-    font-weight: 700;
-    font-style: italic;
-  }
+@import "./App.css";
 
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial ExtraBold Italic.ttf') format('truetype');
-    font-weight: 800;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial ExtraBold.ttf') format('truetype');
-    font-weight: 800;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial ExtraLight Italic.ttf') format('truetype');
-    font-weight: 200;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial ExtraLight.ttf') format('truetype');
-    font-weight: 200;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial Heavy Italic.ttf') format('truetype');
-    font-weight: 900;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial Heavy.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial Italic.ttf') format('truetype');
-    font-weight: 400;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial Light Italic.ttf') format('truetype');
-    font-weight: 300;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial Light.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial Medium Italic.ttf') format('truetype');
-    font-weight: 500;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Montreal Serial';
-    src: url('/fonts/Montreal Serial.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  #canvas-id {
-    height: 100svh !important;
-  }
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: #000000;
-    padding: 15px;
-    overflow: hidden;
-  }
-  .body-container {
-    color: red;
-  }
-  .left-section {
-    width: 410px;
-    height: 95svh;
-  }
-  .heading-container {
-    background: linear-gradient(to bottom, #e0c7f4 1px, transparent 1px) 0 0,
-      linear-gradient(to right, #e0c7f4 1px, transparent 1px) 0 0,
-      linear-gradient(to bottom, #e0c7f4 1px, transparent 1px) 50% 0,
-      linear-gradient(to right, #e0c7f4 1px, transparent 1px) 0 50%;
-  
-    background-size: 5% 13%;
-    background-repeat: repeat;
-    border: 1px solid #e0c7f4;
-  }
-  .heading {
-    text-align: center;
-    font-family: "BREKGU";
-    font-size: 120px;
-    line-height: 100px;
-  }
-  .rgb-split {
-    text-shadow: 1px 1px 0 rgba(255, 0, 0, 0.643),
-      -1px -1px 0 rgba(0, 128, 0, 0.69), 1px -1px 0 rgba(0, 0, 255, 0.752);
-  }
-  .heading-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: "CaustenRound";
-    font-weight: 500;
-    font-size: xx-small;
-    letter-spacing: 0.2px;
-  }
-  .heading-nav-item {
-    padding: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  .fading-stripes {
-    margin: 0 auto;
-    padding-top: 0;
-    text-align: center;
-    width: 100%;
-    height: 50px;
-    background: linear-gradient(
-          to top,
-          rgba(0, 48, 255, 1) 1.5px,
-          transparent 1.5px
-        )
-        0 0,
-      linear-gradient(to top, rgba(0, 48, 255, 0.8) 1.5px, transparent 1.5px) 0
-        10%,
-      linear-gradient(to top, rgba(0, 48, 255, 0.6) 1.5px, transparent 1.5px) 0
-        19%,
-      linear-gradient(to top, rgba(0, 48, 255, 0.4) 1.5px, transparent 1.5px) 0
-        29%,
-      linear-gradient(to top, rgba(0, 48, 255, 0.2) 1.5px, transparent 1.5px) 0
-        38%,
-      linear-gradient(to top, rgba(0, 48, 255, 0.1) 1.5px, transparent 1.5px) 0
-        48%;
-  
-    background-size: 100% 15%;
-    background-repeat: no-repeat;
-  }
-  
-  #project-img-id {
-    width: 40px;
-    height: auto;
-    border-radius: 50%;
-  }
-  .project-image {
-    margin-top: 5px;
-    width: 80%;
-  }
-  .project-title {
-    margin-top: 12px;
-    font-family: "maison";
-    font-weight: 900;
-    letter-spacing: -0.2px;
-    font-size: 14px;
-    width: 80%;
-  }
-  .project-subtitle {
-    width: 80%;
-    margin-top: 5px;
-    margin-bottom: 12px;
-    font-family: "maison";
-    font-weight: 500;
-    font-size: 13px;
-    color: #8d92f7;
-  }
-  .duration-image-container {
-    
-    padding: 15px;
-    padding-left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    position: relative;
-  }
-  #play-pause-id {
-    width: 13px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin-bottom: 2px;
-  }
-  .project-vid-duration {
-    width: 77.5%;
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    font-family: "maison";
-    font-size: 13px;
-  }
-  .duration {
-    margin: 5px;
-    color: #8d92f7;
-  }
-  .github-btn {
-    margin-left: auto;
-    font-family: "maison";
-    padding: 3px 10px;
-    padding-bottom: 1px;
-    border: 1px solid #aca5f5;
-    cursor: pointer;
-    user-select: none;
-    border-radius: 3px;
-    transition: 0.2s;
-  }
-  .github-btn:hover {
-    background-color: #0030ff;
-    color: #f2d1f1;
-    transition: 0.2s;
-  }
-  .horizontal-row {
-    width: 79%;
-    height: 1px;
-    background-color: #bfb2f3;
-    margin: 5px 4px;
-  }
-  .home-btn{
-    width: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'maison';
-    font-weight: bold;
-    font-size: 13px;
-    border: 1px solid #aca5f5;
-    padding: 5px 0px;
-    margin: 20px 0px;
-    border-radius: 5px;
-    height: 30px;
-    user-select: none;
-    cursor: pointer;
-    transition: 0.2s;
-    position: relative;
-  }
-  .home-btn::before{
-    background-color: #002fff2d;
-    width: 100%;
-    height: 0%;
-    content: '';
-    position: absolute;
-    bottom: 0;
-    z-index: -1;
-    transition: 0.2s;
-  }
-  .home-btn:hover::before{
-    height: 100%;
-    transition: 0.2s;
-  }
-  #home-title-id{
-    margin: 0 auto;
-  }
-  #power-img-id{
-    width: 20px;
-    margin-right: 15px;
-  }
-  .circular-dial-container{
-    font-family: 'maison';
-    font-weight: bold;
-    font-size: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 80%;
-  }
-  .signal{
-    color: #8d92f7;
-  }
-  .dial{
-    margin: 15px 0px;
-    width: 80px;
-    height: 80px;
-    border: 1.5px solid #aca5f5;
-    border-radius: 50%;
-    position: relative;
-    cursor: pointer;
-  }
-  .dialer{
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(90deg);
-    width: 17px;
-    height: 2.5px;
-    border-radius: 0.2px;
-    background-color: #0030ff;
-    box-shadow: 0px 0px 10px 0px #8d92f7;
-  
-  }
-  .brightness-title{
-    font-family: 'maison';
-    font-size: 12px;
-    font-weight: bold;
-    color: #8d92f7;
-    margin-top: 20px;
-  }
-  .mode-toggle-container{
-    display: flex;
-    margin-top: 10px;
-  }
-  .toggle-btn{
-    border: 1px solid #0030ff;
-    width: 40%;
-    height: 8px;
-    cursor: pointer;
-    transition: 0.2s;
-    user-select: none;
-  }
-  .active-btn{
-    background-color: #0030ff;
-    box-shadow: 0px 0px 10px 0px #8d92f7;
-    transition: 0.2s;
-  }
-  .btn-container{
-    display: flex;
-    margin-top: 5px;
-    font-size: 12px;
-    font-weight: bold;
-  }
-  .psuedo-btn{
-    width: 40%;
-    text-align: center;
-    font-family: 'maison';
-    color: #8d92f7;
-    cursor: pointer;
-    user-select: none;
-  }
-  .active-psuedo-btn{
-    color: #0030ff;
-    text-decoration: underline;
-  }
-
-/* Right section toggle styles */
-@keyframes arrowBounceLeft {
-  0% { transform: translateX(0px); }
-  30% { transform: translateX(-15px); }
-  50% { transform: translateX(5px); }
-  70% { transform: translateX(-5px); }
-  100% { transform: translateX(0px); }
+:root {
+  --dark-bg: #0b0b12;
+  --dark-bg-soft: #121021;
+  --dark-bg-panel: #17142a;
+  --dark-grid: #2b2440;
+  --dark-border: #3a3157;
+  --dark-border-strong: #4a3c6d;
+  --dark-text: #dec0f7;
+  --dark-text-strong: #f2d1f1;
+  --dark-muted: #8d92f7;
+  --dark-accent: #7b6bff;
+  --dark-accent-strong: #b9a7ff;
+  --dark-hover: rgba(222, 192, 247, 0.18);
+  --dark-shadow: rgba(173, 150, 255, 0.35);
+  --dark-scrollbar: #dec0f7;
+  --dark-alert: #fd5245;
 }
 
-@keyframes arrowBounceRight {
-  0% { transform: translateX(0px); }
-  30% { transform: translateX(15px); }
-  50% { transform: translateX(-5px); }
-  70% { transform: translateX(5px); }
-  100% { transform: translateX(0px); }
+body {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
 }
 
-.right-section-toggle:hover .toggle-arrow {
-  opacity: 0;
-  transition: opacity 0.2s ease;
+.body-container {
+  color: var(--dark-text);
 }
 
-.right-section-toggle:hover .toggle-line {
-  width: 3px !important;
-  height: 100% !important;
+.heading-container,
+.left-footer-wrapper,
+.left-footer,
+.medium-heading-container {
+  background: linear-gradient(to bottom, var(--dark-grid) 1px, transparent 1px) 0 0,
+    linear-gradient(to right, var(--dark-grid) 1px, transparent 1px) 0 0,
+    linear-gradient(to bottom, var(--dark-grid) 1px, transparent 1px) 50% 0,
+    linear-gradient(to right, var(--dark-grid) 1px, transparent 1px) 0 50%;
+  border-color: var(--dark-border);
+}
+
+.heading {
+  color: var(--dark-text-strong);
+}
+
+.fading-stripes {
+  background: linear-gradient(
+        to top,
+        rgba(123, 107, 255, 1) 1.5px,
+        transparent 1.5px
+      )
+      0 0,
+    linear-gradient(
+        to top,
+        rgba(123, 107, 255, 0.8) 1.5px,
+        transparent 1.5px
+      )
+      0 10%,
+    linear-gradient(
+        to top,
+        rgba(123, 107, 255, 0.6) 1.5px,
+        transparent 1.5px
+      )
+      0 19%,
+    linear-gradient(
+        to top,
+        rgba(123, 107, 255, 0.4) 1.5px,
+        transparent 1.5px
+      )
+      0 29%,
+    linear-gradient(
+        to top,
+        rgba(123, 107, 255, 0.2) 1.5px,
+        transparent 1.5px
+      )
+      0 38%,
+    linear-gradient(
+        to top,
+        rgba(123, 107, 255, 0.1) 1.5px,
+        transparent 1.5px
+      )
+      0 48%;
+}
+
+.project-subtitle,
+.medium-project-subtitle,
+.duration,
+.signal,
+.brightness-title,
+.medium-brightness-title,
+.psuedo-btn,
+.medium-psuedo-btn,
+.comment-time {
+  color: var(--dark-muted);
+}
+
+.github-btn,
+.home-btn,
+.extra-btn {
+  border-color: var(--dark-border-strong);
+  color: var(--dark-text);
+}
+
+.github-btn:hover,
+.extra-btn:hover {
+  background-color: var(--dark-accent);
+  color: var(--dark-bg);
+}
+
+.home-btn::before,
+.medium-td::before,
+.immerse-btn::before {
+  background-color: var(--dark-hover);
+}
+
+.immerse-btn {
+  color: var(--dark-text);
+  border-color: var(--dark-text);
+}
+
+.horizontal-row,
+.right-horizontal-row {
+  background-color: var(--dark-border);
+}
+
+.dial {
+  border-color: var(--dark-border-strong);
+}
+
+.dialer,
+.loading-dialer {
+  background-color: var(--dark-accent);
+  box-shadow: 0px 0px 10px 0px var(--dark-shadow);
+}
+
+.medium-dialer {
+  background-color: var(--dark-text);
+  box-shadow: 0px 0px 10px 0px var(--dark-shadow);
+}
+
+.toggle-btn,
+.control-td,
+.control-td-medium,
+.control-td-large,
+.medium-td {
+  border-color: var(--dark-accent);
+}
+
+.active-btn,
+.medium-active-btn {
+  background-color: var(--dark-accent);
+  box-shadow: 0px 0px 10px 0px var(--dark-shadow);
+}
+
+.active-psuedo-btn {
+  color: var(--dark-text);
+}
+
+.medium-active-psuedo-btn {
+  color: var(--dark-text);
+}
+
+.time-title {
+  -webkit-text-stroke: 1px var(--dark-accent);
+  text-stroke: 1px var(--dark-accent);
+}
+
+.time-title-title,
+.made-for {
+  color: var(--dark-text);
 }
 
 .right-section {
-  position: fixed;
-  right: 0;
-  top: 0;
-  height: 100vh;
-  width: 400px;
-  z-index: 999;
-  background-color: #1a1a2e;
-  border-left: 1px solid #dec0f7;
+  background-color: transparent;
+}
+
+.comments-heading,
+.comments-body,
+.right-footer {
+  color: var(--dark-text);
+}
+
+#comment-input-id {
+  background-color: transparent;
+  border-color: var(--dark-border-strong);
+  color: var(--dark-text);
+}
+
+#comment-input-id::placeholder {
+  color: var(--dark-muted);
+}
+
+.comments-content::-webkit-scrollbar-thumb,
+.medium-comments-body::-webkit-scrollbar-thumb,
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: var(--dark-scrollbar);
+}
+
+.comment-user {
+  color: var(--dark-alert);
+}
+
+.extra-btn {
+  border-color: var(--dark-accent);
+}
+
+.extra-btn:hover {
+  box-shadow: 0px 0px 6px var(--dark-accent);
+}
+
+.medium-heading-container {
+  border-color: var(--dark-border);
+}
+
+.medium-td {
+  color: var(--dark-text);
+}
+
+.medium-comments-container,
+.medium-menu-container,
+.medium-share-container {
+  background-color: var(--dark-bg-panel);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+.dropdown-menu {
+  background-color: var(--dark-bg-panel);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+.dropdown-item {
+  border-color: var(--dark-border);
+}
+
+.medium-comments-heading,
+.medium-comments-logo,
+.medium-comments-title,
+.medium-comments-close-btn,
+.medium-menu-logo,
+.medium-menu-title,
+.medium-menu-close-btn,
+.medium-share-logo,
+.medium-share-title,
+.medium-share-close-btn,
+.social-icon,
+.social-icon-active {
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+.social-icon:hover {
+  border-right-color: var(--dark-text);
+}
+
+.current-social-container,
+.medium-share-title,
+.medium-menu-title,
+.medium-comments-title {
+  color: var(--dark-text);
+}
+
+.medium-tweet,
+.medium-tweet-input {
+  background-color: var(--dark-bg-soft);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+.medium-tweet-btn {
+  border-color: var(--dark-border);
+  outline-color: var(--dark-accent);
+  background-color: var(--dark-accent);
+  color: var(--dark-bg);
+  box-shadow: -5px 0px 60px 5px var(--dark-shadow);
+}
+
+.medium-tweet-btn::before {
+  background-color: var(--dark-accent);
+}
+
+.current-social-logo {
+  filter: brightness(1.1);
+}
+
+.loading-container {
+  background: var(--dark-bg);
+}
+
+.dial-dot {
+  background-color: var(--dark-accent);
+  box-shadow: 0px 0px 15px 5px var(--dark-shadow);
+}
+
+.dial-expanded {
+  border-color: var(--dark-border-strong);
+}
+
+.dash-line {
+  background-color: var(--dark-accent);
+}
+
+/* ControlBar overrides with higher specificity */
+body .control-table,
+body .control-table-medium,
+body .control-table-large,
+body .control-tr,
+body .control-tr-medium,
+body .control-tr-large {
+  border-color: var(--dark-border);
+}
+
+body .control-td,
+body .control-td-medium,
+body .control-td-large {
+  color: var(--dark-text);
+  border-color: var(--dark-accent);
+}
+
+body .control-td::before,
+body .control-td-medium::before,
+body .control-td-large::before {
+  background-color: var(--dark-hover);
+}
+
+/* Right/left section toggle lines */
+.right-section-toggle .toggle-line.mode-dark,
+.left-section-toggle .toggle-line.mode-dark {
+  background: var(--dark-text);
+}
+
+/* Icon color treatment in dark mode */
+.control-td svg path,
+.control-td svg g,
+.control-td-medium svg path,
+.control-td-medium svg g,
+.control-td-large svg path,
+.control-td-large svg g,
+.medium-td svg path,
+.medium-td svg g,
+.comments-heading svg path,
+.comments-heading svg g {
+  fill: var(--dark-text) !important;
+}
+
+#power-img-id,
+#play-pause-id {
+  filter: hue-rotate(145deg) saturate(0.75) brightness(1.18);
 }

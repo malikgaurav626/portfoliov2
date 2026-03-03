@@ -39,6 +39,7 @@ export function ControlBar({
   onMute,
   isMuted,
   currentMode,
+  setCurrentMode = null,
   variant = "medium",
   // Medium body specific props
   projects = null,
@@ -494,14 +495,14 @@ export function ControlBar({
                               "medium-toggle-btn " +
                               (currentMode == 1 && "medium-active-btn")
                             }
-                            onClick={() => {}}
+                            onClick={() => setCurrentMode && setCurrentMode(1)}
                           ></div>
                           <div
                             className={
                               "medium-toggle-btn " +
                               (currentMode == 0 && "medium-active-btn")
                             }
-                            onClick={() => {}}
+                            onClick={() => setCurrentMode && setCurrentMode(0)}
                           ></div>
                         </div>
                         <div className="btn-container">
@@ -510,7 +511,7 @@ export function ControlBar({
                               "medium-psuedo-btn " +
                               (currentMode == 1 && "medium-active-psuedo-btn")
                             }
-                            onClick={() => {}}
+                            onClick={() => setCurrentMode && setCurrentMode(1)}
                           >
                             ON
                           </div>
@@ -519,7 +520,7 @@ export function ControlBar({
                               "medium-psuedo-btn " +
                               (currentMode == 0 && "medium-active-psuedo-btn")
                             }
-                            onClick={() => {}}
+                            onClick={() => setCurrentMode && setCurrentMode(0)}
                           >
                             OFF
                           </div>

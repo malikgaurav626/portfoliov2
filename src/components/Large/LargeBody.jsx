@@ -5,6 +5,7 @@ import { CommentList } from "../Comments/CommentList";
 import { CommentInput } from "../Comments/CommentInput";
 import { Footer } from "../Footer/Footer";
 import { ControlBar } from "../ControlBar/ControlBar";
+import { ThreeEnv } from "../ThreeEnv/ThreeEnv";
 
 export function LargeBody({
   projects,
@@ -81,8 +82,9 @@ export function LargeBody({
   }
 
   useEffect(() => {
-    generateQrCode("https://www.linkedin.com/in/malikgaurav626/", "#0030ff");
-  }, []);
+    const qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
+    generateQrCode("https://www.linkedin.com/in/malikgaurav626/", qrColor);
+  }, [currentMode]);
 
   return (
     <>
@@ -290,7 +292,13 @@ export function LargeBody({
         >
           IMMERSE
         </div>
-        <div className="three_env_container">{/* <ThreeEnv /> */}</div>
+        <div
+          className={`three_env_container ${
+            view3d ? "three_env_visible" : "three_env_hidden"
+          }`}
+        >
+          {view3d && <ThreeEnv channel={currentChannel} />}
+        </div>
       </div>
     </>
   );
@@ -389,3 +397,4 @@ function RightArrowSVG({ currentMode }) {
     </svg>
   );
 }
+
