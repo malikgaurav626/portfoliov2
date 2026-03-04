@@ -40,6 +40,11 @@ export function ControlBar({
   isMuted,
   currentMode,
   setCurrentMode = null,
+  modeValue = 0,
+  onModeChange = null,
+  modeTitle = "DISPLAY MODE",
+  modeLeftLabel = "DARK",
+  modeRightLabel = "LIGHT",
   variant = "medium",
   // Medium body specific props
   projects = null,
@@ -64,6 +69,11 @@ export function ControlBar({
 }) {
   // Local state for large variant dropdown
   const [largeDropdownOpen, setLargeDropdownOpen] = React.useState(false);
+  const projectCount = projects ? Object.keys(projects).length : 0;
+  const frequencyLabel =
+    projectCount > 0
+      ? `${Math.round(((currentProject + 1) / projectCount) * 89 + 10)} KHZ`
+      : "10 KHZ";
   // SVG Components for medium body
   function SVG1() {
     return (
@@ -481,48 +491,73 @@ export function ControlBar({
                     <div className="medium-menu-body">
                       <div className="medium-circular-dial-container">
                         <div className="signal">SIGNAL</div>
-                        <div className="dial" onClick={handleDialClick}>
-                          <div className="medium-dialer"></div>
+                        <div className="lifeline-monitor" onClick={handleDialClick}>
+                          <svg viewBox="0 0 120 44" className="lifeline-svg" role="img">
+                            <polyline
+                              className="lifeline-grid"
+                              points="0,22 120,22"
+                            />
+                            <polyline
+                              className="lifeline-path"
+                              points="0,22 20,22 28,22 33,10 40,34 48,18 56,22 120,22"
+                            />
+                          </svg>
                         </div>
-                        <div className="frequency">10 KHZ</div>
+                        <div className="frequency">{frequencyLabel}</div>
                       </div>
                       <div className="right-horizontal-row"></div>
                       <div className="medium-brightness-mode">
-                        <div className="medium-brightness-title">DARK MODE</div>
+                        <div className="medium-brightness-title">{modeTitle}</div>
                         <div className="medium-mode-toggle-container">
                           <div
                             className={
                               "medium-toggle-btn " +
-                              (currentMode == 1 && "medium-active-btn")
+                              (modeValue == 1 && "medium-active-btn")
                             }
-                            onClick={() => setCurrentMode && setCurrentMode(1)}
+                            onClick={() =>
+                              onModeChange
+                                ? onModeChange(1)
+                                : setCurrentMode && setCurrentMode(1)
+                            }
                           ></div>
                           <div
                             className={
                               "medium-toggle-btn " +
-                              (currentMode == 0 && "medium-active-btn")
+                              (modeValue == 0 && "medium-active-btn")
                             }
-                            onClick={() => setCurrentMode && setCurrentMode(0)}
+                            onClick={() =>
+                              onModeChange
+                                ? onModeChange(0)
+                                : setCurrentMode && setCurrentMode(0)
+                            }
                           ></div>
                         </div>
                         <div className="btn-container">
                           <div
                             className={
                               "medium-psuedo-btn " +
-                              (currentMode == 1 && "medium-active-psuedo-btn")
+                              (modeValue == 1 && "medium-active-psuedo-btn")
                             }
-                            onClick={() => setCurrentMode && setCurrentMode(1)}
+                            onClick={() =>
+                              onModeChange
+                                ? onModeChange(1)
+                                : setCurrentMode && setCurrentMode(1)
+                            }
                           >
-                            ON
+                            {modeLeftLabel}
                           </div>
                           <div
                             className={
                               "medium-psuedo-btn " +
-                              (currentMode == 0 && "medium-active-psuedo-btn")
+                              (modeValue == 0 && "medium-active-psuedo-btn")
                             }
-                            onClick={() => setCurrentMode && setCurrentMode(0)}
+                            onClick={() =>
+                              onModeChange
+                                ? onModeChange(0)
+                                : setCurrentMode && setCurrentMode(0)
+                            }
                           >
-                            OFF
+                            {modeRightLabel}
                           </div>
                         </div>
                       </div>

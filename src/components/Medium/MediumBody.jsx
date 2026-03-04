@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { addComment } from "../../firebase/addcomment";
 import {
   TwitterShareBody,
@@ -50,21 +50,21 @@ export function MediumBody({
   const [isMuted, setIsMuted] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [currentShareSocial, setCurrentShareSocial] = useState(0);
-  const channels = ["CHANNEL 1 / SAKURA", "CHANNEL 2 / DUNNO"];
+  const [sceneMode, setSceneMode] = useState(0);
+  const rootRef = useRef(null);
+  const visualMode = view3d ? sceneMode : currentMode;
+  const sceneTime = sceneMode === 1 ? "night" : "day";
+  const channels = [
+    "CHANNEL 1 / SAKURA",
+    "CHANNEL 2 / DESERT",
+    "CHANNEL 3 / ARCTIC",
+    "CHANNEL 4 / NEON",
+  ];
 
   function handleDialClick(event) {
-    let dial = document.getElementsByClassName("dial")[0];
-    dial.style.transition = "transform 0.5s";
-    let frequency = document.getElementsByClassName("frequency")[0];
-    frequency.style.transition = "transform 0.5s";
-    frequency.innerHTML = `${Math.round(
-      ((currentProject + 1) / Object.keys(projects).length) * 89 + 10
-    )} KHZ`;
-    dial.style.transform = `rotate(${
-      ((currentProject + 1) / Object.keys(projects).length) * 360
-    }deg)`;
-
-    setCurrentProject((currentProject + 1) % Object.keys(projects).length);
+    const projectCount = Object.keys(projects).length;
+    if (projectCount === 0) return;
+    setCurrentProject((currentProject + 1) % projectCount);
   }
 
   function handleCommentSubmit(event) {
@@ -82,9 +82,15 @@ export function MediumBody({
   }
 
   useEffect(() => {
-    const qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
+    let qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
+    if (view3d && rootRef.current) {
+      const cssQr = getComputedStyle(rootRef.current)
+        .getPropertyValue("--scene-ui-qr")
+        .trim();
+      if (cssQr) qrColor = cssQr;
+    }
     generateQrCode("https://www.linkedin.com/in/malikgaurav626/", qrColor);
-  }, [currentMode]);
+  }, [view3d, currentMode, sceneMode, currentChannel]);
 
   return (
     <>
@@ -93,9 +99,20 @@ export function MediumBody({
           view3d ? "three_env_visible" : "three_env_hidden"
         }`}
       >
-        {view3d && <ThreeEnv channel={currentChannel} />}
+        {view3d && (
+          <ThreeEnv
+            channel={currentChannel}
+            currentMode={currentMode}
+            sceneMode={sceneMode}
+          />
+        )}
       </div>
-      <div className="medium-body-container">
+      <div
+        ref={rootRef}
+        className={`medium-body-container ${
+          view3d ? `scene-ui-active scene-ch-${currentChannel} scene-time-${sceneTime}` : ""
+        }`}
+      >
         <div className="medium-extra-btn-container">
           <div
             className="home-btn top-btn"
@@ -259,8 +276,16 @@ export function MediumBody({
             }
             onMute={() => setIsMuted(!isMuted)}
             isMuted={isMuted}
-            currentMode={currentMode}
+            currentMode={visualMode}
             setCurrentMode={setCurrentMode}
+            modeValue={visualMode}
+            onModeChange={(nextMode) => {
+              if (view3d) setSceneMode(nextMode);
+              else setCurrentMode(nextMode);
+            }}
+            modeTitle={view3d ? "SCENE TIME" : "DISPLAY MODE"}
+            modeLeftLabel={view3d ? "NIGHT" : "DARK"}
+            modeRightLabel={view3d ? "DAY" : "LIGHT"}
             variant="medium"
             projects={projects}
             currentProject={currentProject}

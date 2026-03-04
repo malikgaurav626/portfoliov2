@@ -27,7 +27,7 @@
 .control-td::before {
   width: 100%;
   height: 0%;
-  background-color: #002fff2d;
+  background-color: #0000002d;
   content: '';
   position: absolute;
   top: 100%;
@@ -67,7 +67,7 @@
 .control-td-medium::before {
   width: 100%;
   height: 0%;
-  background-color: #002fff2d;
+  background-color: #0000002d;
   content: '';
   position: absolute;
   top: 100%;
@@ -107,7 +107,7 @@
 .control-td-large::before {
   width: 100%;
   height: 0%;
-  background-color: #002fff2d;
+  background-color: #0000002d;
   content: '';
   position: absolute;
   top: 100%;
