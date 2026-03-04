@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addComment } from "../../firebase/addcomment";
 import QRCode from "qrcode";
 import { CommentList } from "../Comments/CommentList";
@@ -21,7 +21,14 @@ export function LargeBody({
   const [leftSectionVisible, setLeftSectionVisible] = useState(false);
   const [currentChannel, setCurrentChannel] = useState(0);
   const [view3d, setView3d] = useState(false);
-  const channels = ["CHANNEL 1 / SAKURA", "CHANNEL 2 / DUNNO"];
+  const [sceneMode, setSceneMode] = useState(0);
+  const rootRef = useRef(null);
+  const channels = [
+    "CHANNEL 1 / SAKURA",
+    "CHANNEL 2 / DESERT",
+    "CHANNEL 3 / ARCTIC",
+    "CHANNEL 4 / NEON",
+  ];
 
   // Animate sections in after loading is complete
   useEffect(() => {
@@ -31,40 +38,10 @@ export function LargeBody({
     }
   }, [loadingComplete]);
 
-  function handleImmerseClick() {
-    // Collapse both sections; future enhancements can be added here
-    setLeftSectionVisible(false);
-    setRightSectionVisible(false);
-  }
-
   function handleDialClick(event) {
     const projectCount = Object.keys(projects).length;
     if (projectCount === 0) return;
-
-    let dial = document.getElementsByClassName("dial")[0];
-    dial.style.transition = "transform 0.5s";
-    let frequency = document.getElementsByClassName("frequency")[0];
-    frequency.style.transition = "transform 0.5s";
-    frequency.innerHTML = `${Math.round(
-      ((currentProject + 1) / projectCount) * 89 + 10
-    )} KHZ`;
-    dial.style.transform = `rotate(${
-      ((currentProject + 1) / projectCount) * 360
-    }deg)`;
-
     setCurrentProject((currentProject + 1) % projectCount);
-  }
-
-  function resetDial() {
-    const projectCount = Object.keys(projects).length;
-    if (projectCount === 0) return;
-
-    let dial = document.getElementsByClassName("dial")[0];
-    dial.style.transition = "transform 0.5s";
-    let frequency = document.getElementsByClassName("frequency")[0];
-    frequency.style.transition = "transform 0.5s";
-    frequency.innerHTML = `${Math.round((0 / projectCount) * 89 + 10)} KHZ`;
-    dial.style.transform = `rotate(${(0 / projectCount) * 360}deg)`;
   }
 
   function handleCommentSubmit(event) {
@@ -81,14 +58,39 @@ export function LargeBody({
     addComment(user, comment, project_id);
   }
 
+  const modeValue = view3d ? sceneMode : currentMode;
+  const modeTitle = view3d ? "SCENE TIME" : "DISPLAY MODE";
+  const leftModeLabel = view3d ? "NIGHT" : "DARK";
+  const rightModeLabel = view3d ? "DAY" : "LIGHT";
+  const sceneTime = sceneMode === 1 ? "night" : "day";
+
   useEffect(() => {
-    const qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
+    let qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
+    if (view3d && rootRef.current) {
+      const cssQr = getComputedStyle(rootRef.current)
+        .getPropertyValue("--scene-ui-qr")
+        .trim();
+      if (cssQr) qrColor = cssQr;
+    }
     generateQrCode("https://www.linkedin.com/in/malikgaurav626/", qrColor);
-  }, [currentMode]);
+  }, [view3d, currentMode, sceneMode, currentChannel]);
+
+  function handleModeChange(nextMode) {
+    if (view3d) {
+      setSceneMode(nextMode);
+      return;
+    }
+    setCurrentMode(nextMode);
+  }
 
   return (
     <>
-      <div className="container">
+      <div
+        ref={rootRef}
+        className={`container ${
+          view3d ? `scene-ui-active scene-ch-${currentChannel} scene-time-${sceneTime}` : ""
+        }`}
+      >
         <div
           className={`left-section ${
             leftSectionVisible ? "visible" : "hidden"
@@ -115,51 +117,64 @@ export function LargeBody({
               className="home-btn"
               onClick={() => {
                 setCurrentProject(0);
-                resetDial();
               }}
             >
               <span id="home-title-id">HOME</span>{" "}
-              <img src="/power.png" alt="power" id="power-img-id"></img>
+              <PowerIcon />
             </div>
             <div className="horizontal-row"></div>
             <div className="circular-dial-container">
               <div className="signal">SIGNAL</div>
-              <div className="dial" onClick={handleDialClick}>
-                <div className="dialer"></div>
+              <div className="lifeline-monitor" onClick={handleDialClick}>
+                <svg viewBox="0 0 120 44" className="lifeline-svg" role="img">
+                  <polyline className="lifeline-grid" points="0,22 120,22" />
+                  <polyline
+                    className="lifeline-path"
+                    points="0,22 18,22 28,22 34,10 42,34 50,18 58,22 120,22"
+                  />
+                </svg>
               </div>
-              <div className="frequency">10 KHZ</div>
+              <div className="frequency">
+                {Object.keys(projects).length > 0
+                  ? `${Math.round(
+                      ((currentProject + 1) / Object.keys(projects).length) *
+                        89 +
+                        10
+                    )} KHZ`
+                  : "10 KHZ"}
+              </div>
             </div>
             <div className="horizontal-row"></div>
           </div>
 
           <div className="brightness-mode">
-            <div className="brightness-title">DARK MODE</div>
+            <div className="brightness-title">{modeTitle}</div>
             <div className="mode-toggle-container">
               <div
-                className={"toggle-btn " + (currentMode == 1 && "active-btn")}
-                onClick={() => setCurrentMode(1)}
+                className={"toggle-btn " + (modeValue == 1 && "active-btn")}
+                onClick={() => handleModeChange(1)}
               ></div>
               <div
-                className={"toggle-btn " + (currentMode == 0 && "active-btn")}
-                onClick={() => setCurrentMode(0)}
+                className={"toggle-btn " + (modeValue == 0 && "active-btn")}
+                onClick={() => handleModeChange(0)}
               ></div>
             </div>
             <div className="btn-container">
               <div
                 className={
-                  "psuedo-btn " + (currentMode == 1 && "active-psuedo-btn")
+                  "psuedo-btn " + (modeValue == 1 && "active-psuedo-btn")
                 }
-                onClick={() => setCurrentMode(1)}
+                onClick={() => handleModeChange(1)}
               >
-                ON
+                {leftModeLabel}
               </div>
               <div
                 className={
-                  "psuedo-btn " + (currentMode == 0 && "active-psuedo-btn")
+                  "psuedo-btn " + (modeValue == 0 && "active-psuedo-btn")
                 }
-                onClick={() => setCurrentMode(0)}
+                onClick={() => handleModeChange(0)}
               >
-                OFF
+                {rightModeLabel}
               </div>
             </div>
           </div>
@@ -183,7 +198,7 @@ export function LargeBody({
               }
               onMute={() => {}}
               isMuted={false}
-              currentMode={currentMode}
+              currentMode={modeValue}
               variant="large"
               channels={channels}
               currentChannel={currentChannel}
@@ -223,14 +238,14 @@ export function LargeBody({
         >
           <div className="toggle-arrow">
             {leftSectionVisible ? (
-              <LeftArrowSVG currentMode={currentMode} />
+              <LeftArrowSVG currentMode={modeValue} />
             ) : (
-              <RightArrowSVG currentMode={currentMode} />
+              <RightArrowSVG currentMode={modeValue} />
             )}
           </div>
           <div
             className={`toggle-line ${
-              currentMode === 1 ? "mode-dark" : "mode-light"
+              modeValue === 1 ? "mode-dark" : "mode-light"
             }`}
           />
         </div>
@@ -248,14 +263,14 @@ export function LargeBody({
             }`}
           >
             {rightSectionVisible ? (
-              <RightArrowSVG currentMode={currentMode} />
+              <RightArrowSVG currentMode={modeValue} />
             ) : (
-              <LeftArrowSVG currentMode={currentMode} />
+              <LeftArrowSVG currentMode={modeValue} />
             )}
           </div>
           <div
             className={`toggle-line ${
-              currentMode === 1 ? "mode-dark" : "mode-light"
+              modeValue === 1 ? "mode-dark" : "mode-light"
             }`}
           />
         </div>
@@ -268,7 +283,7 @@ export function LargeBody({
           <div className="comments">
             <div className="right-horizontal-row"></div>
             <div className="comments-heading">
-              {currentMode == 1 ? <SVG1 /> : <SVG2 />}
+              {modeValue == 1 ? <SVG1 /> : <SVG2 />}
               <div className="comment-title">COMMENTS</div>
             </div>
             <div className="comments-body">
@@ -281,23 +296,23 @@ export function LargeBody({
           </div>
           <Footer />
         </div>
-        {/* Immerse button centered at bottom, conditionally slid in/out */}
-        <div
-          className={`immerse-btn ${
-            leftSectionVisible || rightSectionVisible
-              ? "immerse-visible"
-              : "immerse-hidden"
-          }`}
-          onClick={handleImmerseClick}
-        >
-          IMMERSE
-        </div>
         <div
           className={`three_env_container ${
             view3d ? "three_env_visible" : "three_env_hidden"
           }`}
         >
-          {view3d && <ThreeEnv channel={currentChannel} />}
+          {view3d && (
+            <ThreeEnv
+              channel={currentChannel}
+              currentMode={currentMode}
+              sceneMode={sceneMode}
+              onTvFocusChange={(isFocused) => {
+                if (!view3d) return;
+                setLeftSectionVisible(!isFocused);
+                setRightSectionVisible(!isFocused);
+              }}
+            />
+          )}
         </div>
       </div>
     </>
@@ -356,6 +371,34 @@ function generateQrCode(url, color) {
     .catch((err) => {
       console.error(err);
     });
+}
+
+function PowerIcon() {
+  return (
+    <svg
+      className="power-icon"
+      viewBox="0 0 24 24"
+      width="18"
+      height="18"
+      role="img"
+      aria-label="power"
+    >
+      <path
+        d="M12 3v8"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M7.2 5.9A8 8 0 1 0 16.8 5.9"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
 }
 
 function LeftArrowSVG({ currentMode }) {

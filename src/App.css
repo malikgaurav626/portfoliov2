@@ -586,7 +586,7 @@ body {
   position: relative;
 }
 .home-btn::before {
-  background-color: #002fff2d;
+  background-color: color-mix(in srgb, currentColor 18%, transparent);
   width: 100%;
   height: 0%;
   content: "";
@@ -606,6 +606,12 @@ body {
 #power-img-id {
   width: 20px;
   margin-right: 15px;
+}
+.power-icon{
+  color: #0030ff;
+  margin-right: 14px;
+  width: 18px;
+  height: 18px;
 }
 .circular-dial-container {
   font-family: "maison";
@@ -658,6 +664,42 @@ body {
   border-radius: 0.2px;
   background-color: #dec0f7;
   box-shadow: 0px 0px 10px 0px #8d92f7;
+}
+.lifeline-monitor{
+  margin: 12px 0px;
+  width: 120px;
+  height: 46px;
+  border: 1.5px solid #aca5f5;
+  border-radius: 6px;
+  background: rgba(0, 48, 255, 0.02);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.lifeline-svg{
+  width: 112px;
+  height: 36px;
+}
+.lifeline-grid{
+  fill: none;
+  stroke: #8d92f7;
+  stroke-width: 1.2;
+  opacity: 0.45;
+}
+.lifeline-path{
+  fill: none;
+  stroke: #0030ff;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 200;
+  animation: lifelinePulse 1.8s linear infinite;
+}
+@keyframes lifelinePulse{
+  0% { stroke-dashoffset: 200; }
+  100% { stroke-dashoffset: 0; }
 }
 .brightness-title {
   font-family: "maison";
@@ -918,7 +960,8 @@ body {
   transition: 0.3s all;
 }
 .extra-btn:hover{
-  box-shadow: 0px 0px 4px #0030ff;
+  border-color: currentColor;
+  box-shadow: 0px 0px 4px currentColor;
   user-select: none;
   cursor: pointer;
   transition: 0.15s all;
@@ -993,9 +1036,19 @@ body {
   display: flex;
   flex-direction: column;
   height: 96vh;
+  position: relative;
+  z-index: 5;
+  pointer-events: none;
 }
 .medium-footer{
   margin-top: auto;
+  position: relative;
+  z-index: 6;
+  pointer-events: auto;
+}
+.medium-extra-btn-container,
+.medium-heading-container {
+  pointer-events: auto;
 }
 .medium-table {
   width: 100%;
@@ -1019,7 +1072,7 @@ body {
 .medium-td::before{
   width: 100%;
   height: 0%;
-  background-color: #002fff2d;
+  background-color: #0000002d;
   content: '';
   position: absolute;
   top: 100%;
@@ -1106,6 +1159,7 @@ body {
   opacity: 0;
   z-index: -10;
   user-select: none;
+  pointer-events: none;
   cursor: auto;
 }
 
@@ -1116,6 +1170,7 @@ body {
   opacity: 1;
   z-index: 1;
   user-select: auto;
+  pointer-events: auto;
 }
 .medium-comments-container{
   color: #dec0f7;
@@ -1188,6 +1243,7 @@ body {
   color: #dec0f7;
   opacity: 0;
   cursor: auto;
+  pointer-events: none;
 }
 .medium-menu-active{
   transform: translateY(-52.5px);
@@ -1195,6 +1251,7 @@ body {
   user-select: auto;
   transition: 0.2s all;
   opacity: 1;
+  pointer-events: auto;
 }
 .medium-menu-heading{
   display: flex;
@@ -1259,6 +1316,7 @@ body {
   opacity: 0;
   cursor: auto;
   border: 1px solid #0030ff;
+  pointer-events: none;
 }
 .medium-share-active{
   transform: translate(-0.6px,-105px);
@@ -1267,6 +1325,7 @@ body {
   cursor: auto !important;
   z-index: 1;
   opacity: 1;
+  pointer-events: auto;
 }
 .medium-share-title{
   color: #dec0f7;
@@ -1488,6 +1547,280 @@ body {
   /* no background/box-shadow on hover in dark; ::after covers */
 }
 
+/* Scene-aware UI colors when 3D is enabled */
+.scene-ui-active {
+  color: var(--scene-ui-text);
+  --scene-ui-grid: var(--scene-ui-border);
+}
+.scene-ui-active.scene-ch-0.scene-time-day {
+  --scene-ui-text: #5d2e4b;
+  --scene-ui-muted: #8c5a76;
+  --scene-ui-border: #7a3f63;
+  --scene-ui-icon: #6b3555;
+  --scene-ui-qr: #6b3555;
+}
+.scene-ui-active.scene-ch-0.scene-time-night {
+  --scene-ui-text: #ffd9ea;
+  --scene-ui-muted: #f2bfd8;
+  --scene-ui-border: #ffb7d7;
+  --scene-ui-icon: #ffd9ea;
+  --scene-ui-qr: #ffd9ea;
+}
+.scene-ui-active.scene-ch-1.scene-time-day {
+  --scene-ui-text: #5a3417;
+  --scene-ui-muted: #886245;
+  --scene-ui-border: #7a4b21;
+  --scene-ui-icon: #6e3f18;
+  --scene-ui-qr: #6e3f18;
+}
+.scene-ui-active.scene-ch-1.scene-time-night {
+  --scene-ui-text: #ffd9ad;
+  --scene-ui-muted: #e8bc84;
+  --scene-ui-border: #ffc483;
+  --scene-ui-icon: #ffd9ad;
+  --scene-ui-qr: #ffd9ad;
+}
+.scene-ui-active.scene-ch-2.scene-time-day {
+  --scene-ui-text: #ffffff;
+  --scene-ui-muted: #ffffff;
+  --scene-ui-border: #ffffff;
+  --scene-ui-icon: #ffffff;
+  --scene-ui-qr: #ffffff;
+}
+.scene-ui-active.scene-ch-2.scene-time-night {
+  --scene-ui-text: #cbf3ff;
+  --scene-ui-muted: #9ed5ea;
+  --scene-ui-border: #9ee8ff;
+  --scene-ui-icon: #cbf3ff;
+  --scene-ui-qr: #cbf3ff;
+}
+.scene-ui-active.scene-ch-3.scene-time-day {
+  --scene-ui-text: #8df7e9;
+  --scene-ui-muted: #63d9cb;
+  --scene-ui-border: #5be8d6;
+  --scene-ui-icon: #8df7e9;
+  --scene-ui-qr: #8df7e9;
+}
+.scene-ui-active.scene-ch-3.scene-time-night {
+  --scene-ui-text: #ffb8f3;
+  --scene-ui-muted: #e58dd4;
+  --scene-ui-border: #ff8fe8;
+  --scene-ui-icon: #ffb8f3;
+  --scene-ui-qr: #ffb8f3;
+}
+
+.scene-ui-active .heading-nav-item,
+.scene-ui-active .project-title,
+.scene-ui-active .medium-project-title,
+.scene-ui-active .project-subtitle,
+.scene-ui-active .medium-project-subtitle,
+.scene-ui-active .duration,
+.scene-ui-active .signal,
+.scene-ui-active .brightness-title,
+.scene-ui-active .medium-brightness-title,
+.scene-ui-active .psuedo-btn,
+.scene-ui-active .medium-psuedo-btn,
+.scene-ui-active .time-title-title,
+.scene-ui-active .made-for,
+.scene-ui-active .scan-qr,
+.scene-ui-active .current-channel,
+.scene-ui-active .comment-title {
+  color: var(--scene-ui-text) !important;
+}
+.scene-ui-active .fading-stripes {
+  background: linear-gradient(
+        to top,
+        color-mix(in srgb, var(--scene-ui-border) 100%, transparent) 1.5px,
+        transparent 1.5px
+      )
+      0 0,
+    linear-gradient(
+        to top,
+        color-mix(in srgb, var(--scene-ui-border) 80%, transparent) 1.5px,
+        transparent 1.5px
+      )
+      0 10%,
+    linear-gradient(
+        to top,
+        color-mix(in srgb, var(--scene-ui-border) 60%, transparent) 1.5px,
+        transparent 1.5px
+      )
+      0 19%,
+    linear-gradient(
+        to top,
+        color-mix(in srgb, var(--scene-ui-border) 40%, transparent) 1.5px,
+        transparent 1.5px
+      )
+      0 29%,
+    linear-gradient(
+        to top,
+        color-mix(in srgb, var(--scene-ui-border) 25%, transparent) 1.5px,
+        transparent 1.5px
+      )
+      0 38%,
+    linear-gradient(
+        to top,
+        color-mix(in srgb, var(--scene-ui-border) 12%, transparent) 1.5px,
+        transparent 1.5px
+      )
+      0 48%;
+}
+.scene-ui-active .fading-stripes {
+  display: none !important;
+}
+
+.scene-ui-active .medium-heading-container {
+  background:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--scene-ui-grid) 100%, transparent) 1px,
+      transparent 1px
+    ) 0 0,
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--scene-ui-grid) 100%, transparent) 1px,
+      transparent 1px
+    ) 0 0,
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--scene-ui-grid) 100%, transparent) 1px,
+      transparent 1px
+    ) 50% 0,
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--scene-ui-grid) 100%, transparent) 1px,
+      transparent 1px
+    ) 0 50% !important;
+  border-color: var(--scene-ui-grid) !important;
+}
+
+.scene-ui-active .heading-container,
+.scene-ui-active .left-footer-wrapper,
+.scene-ui-active .left-footer,
+.scene-ui-active .medium-heading-container {
+  background: transparent !important;
+}
+
+.scene-ui-active .comment-time,
+.scene-ui-active .frequency {
+  color: var(--scene-ui-muted) !important;
+}
+
+.scene-ui-active .home-btn,
+.scene-ui-active .github-btn,
+.scene-ui-active .extra-btn,
+.scene-ui-active .control-td,
+.scene-ui-active .control-td-medium,
+.scene-ui-active .control-td-large,
+.scene-ui-active .medium-td,
+.scene-ui-active .toggle-btn,
+.scene-ui-active .medium-toggle-btn,
+.scene-ui-active .dropdown-menu,
+.scene-ui-active .dropdown-item {
+  color: var(--scene-ui-text) !important;
+  border-color: var(--scene-ui-border) !important;
+}
+.scene-ui-active .extra-btn:hover {
+  border-color: var(--scene-ui-border) !important;
+  box-shadow: 0px 0px 6px color-mix(in srgb, var(--scene-ui-border) 85%, transparent) !important;
+}
+.scene-ui-active .home-btn::before {
+  background-color: color-mix(in srgb, var(--scene-ui-border) 24%, transparent) !important;
+}
+.scene-ui-active .medium-comments-container,
+.scene-ui-active .medium-menu-container,
+.scene-ui-active .medium-share-container,
+.scene-ui-active .medium-comments-heading,
+.scene-ui-active .medium-comments-logo,
+.scene-ui-active .medium-comments-title,
+.scene-ui-active .medium-comments-close-btn,
+.scene-ui-active .medium-comments-body,
+.scene-ui-active .medium-menu-logo,
+.scene-ui-active .medium-menu-title,
+.scene-ui-active .medium-menu-close-btn,
+.scene-ui-active .medium-share-logo,
+.scene-ui-active .medium-share-title,
+.scene-ui-active .medium-share-close-btn,
+.scene-ui-active .social-icon,
+.scene-ui-active .social-icon-active {
+  color: var(--scene-ui-text) !important;
+  border-color: var(--scene-ui-border) !important;
+}
+.scene-ui-active .medium-comments-container,
+.scene-ui-active .medium-menu-container,
+.scene-ui-active .medium-share-container,
+.scene-ui-active .dropdown-menu {
+  background-color: color-mix(in srgb, var(--scene-ui-border) 24%, #05070f) !important;
+}
+
+.scene-ui-active #comment-input-id {
+  color: var(--scene-ui-text) !important;
+  border-color: var(--scene-ui-border) !important;
+  background-color: color-mix(in srgb, var(--scene-ui-border) 16%, transparent) !important;
+}
+
+.scene-ui-active #comment-input-id::placeholder {
+  color: var(--scene-ui-muted) !important;
+  opacity: 0.92;
+}
+
+.scene-ui-active #comment-input-id:focus {
+  outline: none !important;
+  box-shadow: inset 0 0 0 1px var(--scene-ui-border);
+}
+
+.scene-ui-active .active-btn,
+.scene-ui-active .medium-active-btn {
+  background-color: var(--scene-ui-border) !important;
+  box-shadow: 0px 0px 10px 0px var(--scene-ui-border) !important;
+}
+
+.scene-ui-active .active-psuedo-btn,
+.scene-ui-active .medium-active-psuedo-btn {
+  color: var(--scene-ui-text) !important;
+}
+
+.scene-ui-active .horizontal-row,
+.scene-ui-active .right-horizontal-row,
+.scene-ui-active .toggle-line.mode-dark,
+.scene-ui-active .toggle-line.mode-light {
+  background-color: var(--scene-ui-border) !important;
+}
+.scene-ui-active .lifeline-monitor {
+  border-color: var(--scene-ui-border) !important;
+}
+.scene-ui-active .lifeline-grid {
+  stroke: var(--scene-ui-muted) !important;
+}
+.scene-ui-active .lifeline-path {
+  stroke: var(--scene-ui-icon) !important;
+}
+.scene-ui-active .power-icon {
+  color: var(--scene-ui-icon) !important;
+}
+.scene-ui-active .immerse-btn {
+  color: var(--scene-ui-text) !important;
+  border-color: var(--scene-ui-border) !important;
+}
+.scene-ui-active .immerse-btn::before {
+  background-color: color-mix(in srgb, var(--scene-ui-border) 24%, transparent) !important;
+}
+
+.scene-ui-active .time-title {
+  -webkit-text-stroke: 1px var(--scene-ui-text) !important;
+  text-stroke: 1px var(--scene-ui-text) !important;
+}
+
+.scene-ui-active svg path,
+.scene-ui-active svg g,
+.scene-ui-active svg rect,
+.scene-ui-active svg circle,
+.scene-ui-active svg polygon,
+.scene-ui-active svg line {
+  fill: var(--scene-ui-icon) !important;
+  stroke: var(--scene-ui-icon) !important;
+}
+
 @media (max-width: 998px)
 {
   .dropdown-menu{
@@ -1662,3 +1995,4 @@ body {
   width: 410px;
   z-index: 3;
 }
+
