@@ -27,11 +27,13 @@ import {
   FacebookShareBody,
   LinkShareBody,
 } from "../Social/ShareComponents";
+import { ConstellationPanel } from "../Constellation/ConstellationPanel";
 import "./ControlBar.css";
 
 export function ControlBar({
   isPlaying,
   setisPlaying,
+  onPlayPause = null,
   onShare,
   onInfo,
   onBack,
@@ -45,6 +47,7 @@ export function ControlBar({
   modeTitle = "DISPLAY MODE",
   modeLeftLabel = "DARK",
   modeRightLabel = "LIGHT",
+  showSceneConstellation = false,
   variant = "medium",
   // Medium body specific props
   projects = null,
@@ -320,7 +323,9 @@ export function ControlBar({
                 </td>
                 <td
                   className={`control-td control-td-${variant}`}
-                  onClick={() => setisPlaying(!isPlaying)}
+                  onClick={() =>
+                    onPlayPause ? onPlayPause() : setisPlaying(!isPlaying)
+                  }
                 >
                   {isPlaying ? <PauseSVG /> : <PlaySVG />}
                 </td>
@@ -507,59 +512,65 @@ export function ControlBar({
                       </div>
                       <div className="right-horizontal-row"></div>
                       <div className="medium-brightness-mode">
-                        <div className="medium-brightness-title">{modeTitle}</div>
-                        <div className="medium-mode-toggle-container">
-                          <div
-                            className={
-                              "medium-toggle-btn " +
-                              (modeValue == 1 && "medium-active-btn")
-                            }
-                            onClick={() =>
-                              onModeChange
-                                ? onModeChange(1)
-                                : setCurrentMode && setCurrentMode(1)
-                            }
-                          ></div>
-                          <div
-                            className={
-                              "medium-toggle-btn " +
-                              (modeValue == 0 && "medium-active-btn")
-                            }
-                            onClick={() =>
-                              onModeChange
-                                ? onModeChange(0)
-                                : setCurrentMode && setCurrentMode(0)
-                            }
-                          ></div>
-                        </div>
-                        <div className="btn-container">
-                          <div
-                            className={
-                              "medium-psuedo-btn " +
-                              (modeValue == 1 && "medium-active-psuedo-btn")
-                            }
-                            onClick={() =>
-                              onModeChange
-                                ? onModeChange(1)
-                                : setCurrentMode && setCurrentMode(1)
-                            }
-                          >
-                            {modeLeftLabel}
-                          </div>
-                          <div
-                            className={
-                              "medium-psuedo-btn " +
-                              (modeValue == 0 && "medium-active-psuedo-btn")
-                            }
-                            onClick={() =>
-                              onModeChange
-                                ? onModeChange(0)
-                                : setCurrentMode && setCurrentMode(0)
-                            }
-                          >
-                            {modeRightLabel}
-                          </div>
-                        </div>
+                        {showSceneConstellation ? (
+                          <ConstellationPanel channel={currentChannel} compact />
+                        ) : (
+                          <>
+                            <div className="medium-brightness-title">{modeTitle}</div>
+                            <div className="medium-mode-toggle-container">
+                              <div
+                                className={
+                                  "medium-toggle-btn " +
+                                  (modeValue == 1 && "medium-active-btn")
+                                }
+                                onClick={() =>
+                                  onModeChange
+                                    ? onModeChange(1)
+                                    : setCurrentMode && setCurrentMode(1)
+                                }
+                              ></div>
+                              <div
+                                className={
+                                  "medium-toggle-btn " +
+                                  (modeValue == 0 && "medium-active-btn")
+                                }
+                                onClick={() =>
+                                  onModeChange
+                                    ? onModeChange(0)
+                                    : setCurrentMode && setCurrentMode(0)
+                                }
+                              ></div>
+                            </div>
+                            <div className="btn-container">
+                              <div
+                                className={
+                                  "medium-psuedo-btn " +
+                                  (modeValue == 1 && "medium-active-psuedo-btn")
+                                }
+                                onClick={() =>
+                                  onModeChange
+                                    ? onModeChange(1)
+                                    : setCurrentMode && setCurrentMode(1)
+                                }
+                              >
+                                {modeLeftLabel}
+                              </div>
+                              <div
+                                className={
+                                  "medium-psuedo-btn " +
+                                  (modeValue == 0 && "medium-active-psuedo-btn")
+                                }
+                                onClick={() =>
+                                  onModeChange
+                                    ? onModeChange(0)
+                                    : setCurrentMode && setCurrentMode(0)
+                                }
+                              >
+                                {modeRightLabel}
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -676,24 +687,24 @@ export function ControlBar({
                     </div>
                   </div>
                 </td>
-                <td className="medium-td">
+                <td className="medium-td" onClick={onInfo}>
                   <InfoSVG />
                 </td>
-                <td className="medium-td">
+                <td className="medium-td" onClick={onBack}>
                   <BackSVG />
                 </td>
-                <td className="medium-td">
+                <td className="medium-td" onClick={onNext}>
                   <NextSVG />
                 </td>
                 <td
                   className="medium-td"
                   onClick={() => {
-                    setisPlaying(!isPlaying);
+                    onPlayPause ? onPlayPause() : setisPlaying(!isPlaying);
                   }}
                 >
                   {isPlaying ? <PauseSVG /> : <PlaySVG />}
                 </td>
-                <td className="medium-td" onClick={() => {}}>
+                <td className="medium-td" onClick={onMute}>
                   {isMuted ? <UnmuteSVG /> : <MuteSVG />}
                 </td>
               </tr>

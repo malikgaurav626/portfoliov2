@@ -716,6 +716,11 @@ body {
   margin-top: 25px;
   margin-bottom: 10px;
 }
+.brightness-mode {
+  width: 90%;
+  margin-top: 18px;
+  min-height: 108px;
+}
 .mode-toggle-container {
   display: flex;
   margin-top: 10px;
@@ -1293,6 +1298,9 @@ body {
   width: 100%;
   justify-content: center;
 }
+.medium-brightness-mode .constellation-panel {
+  margin-top: 16px;
+}
 .medium-mode-toggle-container{
   justify-content: center;
 }
@@ -1624,7 +1632,8 @@ body {
 .scene-ui-active .made-for,
 .scene-ui-active .scan-qr,
 .scene-ui-active .current-channel,
-.scene-ui-active .comment-title {
+.scene-ui-active .comment-title,
+.scene-ui-active .constellation-panel-mode {
   color: var(--scene-ui-text) !important;
 }
 .scene-ui-active .fading-stripes {
@@ -1702,7 +1711,9 @@ body {
 }
 
 .scene-ui-active .comment-time,
-.scene-ui-active .frequency {
+.scene-ui-active .frequency,
+.scene-ui-active .constellation-panel-kicker,
+.scene-ui-active .constellation-panel-status {
   color: var(--scene-ui-muted) !important;
 }
 

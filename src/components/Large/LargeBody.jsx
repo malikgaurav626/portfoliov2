@@ -6,6 +6,7 @@ import { CommentInput } from "../Comments/CommentInput";
 import { Footer } from "../Footer/Footer";
 import { ControlBar } from "../ControlBar/ControlBar";
 import { ThreeEnv } from "../ThreeEnv/ThreeEnv";
+import { ConstellationPanel } from "../Constellation/ConstellationPanel";
 
 export function LargeBody({
   projects,
@@ -20,8 +21,9 @@ export function LargeBody({
   const [rightSectionVisible, setRightSectionVisible] = useState(false);
   const [leftSectionVisible, setLeftSectionVisible] = useState(false);
   const [currentChannel, setCurrentChannel] = useState(0);
-  const [view3d, setView3d] = useState(false);
-  const [sceneMode, setSceneMode] = useState(0);
+  const [view3d, setView3d] = useState(true);
+  const [windEnabled, setWindEnabled] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const rootRef = useRef(null);
   const channels = [
     "CHANNEL 1 / SAKURA",
@@ -29,6 +31,8 @@ export function LargeBody({
     "CHANNEL 3 / ARCTIC",
     "CHANNEL 4 / NEON",
   ];
+  const projectCount = Object.keys(projects).length;
+  const channelCount = channels.length;
 
   // Animate sections in after loading is complete
   useEffect(() => {
@@ -58,11 +62,38 @@ export function LargeBody({
     addComment(user, comment, project_id);
   }
 
-  const modeValue = view3d ? sceneMode : currentMode;
-  const modeTitle = view3d ? "SCENE TIME" : "DISPLAY MODE";
-  const leftModeLabel = view3d ? "NIGHT" : "DARK";
-  const rightModeLabel = view3d ? "DAY" : "LIGHT";
-  const sceneTime = sceneMode === 1 ? "night" : "day";
+  function handleBackControl() {
+    if (view3d) {
+      setCurrentChannel((prev) => (prev - 1 + channelCount) % channelCount);
+      return;
+    }
+    if (!projectCount) return;
+    setCurrentProject((prev) => (prev - 1 + projectCount) % projectCount);
+  }
+
+  function handleNextControl() {
+    if (view3d) {
+      setCurrentChannel((prev) => (prev + 1) % channelCount);
+      return;
+    }
+    if (!projectCount) return;
+    setCurrentProject((prev) => (prev + 1) % projectCount);
+  }
+
+  function handlePlayPauseControl() {
+    if (view3d) {
+      setWindEnabled((prev) => !prev);
+      return;
+    }
+    setisPlaying(!isPlaying);
+  }
+
+  const modeValue = currentMode;
+  const controlPlayState = view3d ? windEnabled : isPlaying;
+  const modeTitle = "DISPLAY MODE";
+  const leftModeLabel = "DARK";
+  const rightModeLabel = "LIGHT";
+  const sceneTime = "night";
 
   useEffect(() => {
     let qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
@@ -73,15 +104,7 @@ export function LargeBody({
       if (cssQr) qrColor = cssQr;
     }
     generateQrCode("https://www.linkedin.com/in/malikgaurav626/", qrColor);
-  }, [view3d, currentMode, sceneMode, currentChannel]);
-
-  function handleModeChange(nextMode) {
-    if (view3d) {
-      setSceneMode(nextMode);
-      return;
-    }
-    setCurrentMode(nextMode);
-  }
+  }, [view3d, currentMode, currentChannel]);
 
   return (
     <>
@@ -148,56 +171,54 @@ export function LargeBody({
           </div>
 
           <div className="brightness-mode">
-            <div className="brightness-title">{modeTitle}</div>
-            <div className="mode-toggle-container">
-              <div
-                className={"toggle-btn " + (modeValue == 1 && "active-btn")}
-                onClick={() => handleModeChange(1)}
-              ></div>
-              <div
-                className={"toggle-btn " + (modeValue == 0 && "active-btn")}
-                onClick={() => handleModeChange(0)}
-              ></div>
-            </div>
-            <div className="btn-container">
-              <div
-                className={
-                  "psuedo-btn " + (modeValue == 1 && "active-psuedo-btn")
-                }
-                onClick={() => handleModeChange(1)}
-              >
-                {leftModeLabel}
-              </div>
-              <div
-                className={
-                  "psuedo-btn " + (modeValue == 0 && "active-psuedo-btn")
-                }
-                onClick={() => handleModeChange(0)}
-              >
-                {rightModeLabel}
-              </div>
-            </div>
+            {view3d ? (
+              <ConstellationPanel channel={currentChannel} />
+            ) : (
+              <>
+                <div className="brightness-title">{modeTitle}</div>
+                <div className="mode-toggle-container">
+                  <div
+                    className={"toggle-btn " + (modeValue == 1 && "active-btn")}
+                    onClick={() => setCurrentMode(1)}
+                  ></div>
+                  <div
+                    className={"toggle-btn " + (modeValue == 0 && "active-btn")}
+                    onClick={() => setCurrentMode(0)}
+                  ></div>
+                </div>
+                <div className="btn-container">
+                  <div
+                    className={
+                      "psuedo-btn " + (modeValue == 1 && "active-psuedo-btn")
+                    }
+                    onClick={() => setCurrentMode(1)}
+                  >
+                    {leftModeLabel}
+                  </div>
+                  <div
+                    className={
+                      "psuedo-btn " + (modeValue == 0 && "active-psuedo-btn")
+                    }
+                    onClick={() => setCurrentMode(0)}
+                  >
+                    {rightModeLabel}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="left-footer-wrapper">
             <ControlBar
-              isPlaying={isPlaying}
+              isPlaying={controlPlayState}
               setisPlaying={setisPlaying}
+              onPlayPause={handlePlayPauseControl}
               onShare={() => {}}
               onInfo={() => {}}
-              onBack={() =>
-                setCurrentProject(
-                  (currentProject - 1 + Object.keys(projects).length) %
-                    Object.keys(projects).length
-                )
-              }
-              onNext={() =>
-                setCurrentProject(
-                  (currentProject + 1) % Object.keys(projects).length
-                )
-              }
-              onMute={() => {}}
-              isMuted={false}
+              onBack={handleBackControl}
+              onNext={handleNextControl}
+              onMute={() => setIsMuted((prev) => !prev)}
+              isMuted={isMuted}
               currentMode={modeValue}
               variant="large"
               channels={channels}
@@ -305,7 +326,8 @@ export function LargeBody({
             <ThreeEnv
               channel={currentChannel}
               currentMode={currentMode}
-              sceneMode={sceneMode}
+              windEnabled={windEnabled}
+              ambientMuted={isMuted}
               onTvFocusChange={(isFocused) => {
                 if (!view3d) return;
                 setLeftSectionVisible(!isFocused);

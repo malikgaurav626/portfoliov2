@@ -45,7 +45,7 @@ function Body({ projects }) {
   const [currentProject, setCurrentProject] = useState(0);
   const [isPlaying, setisPlaying] = useState(false);
   const [currentMode, setCurrentMode] = useState(0);
-  const [view3d, setView3d] = useState(false);
+  const [view3d, setView3d] = useState(true);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 998);
 
   // Simulate loading completion after 2 seconds (replace with actual loading logic)

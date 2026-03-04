@@ -1,0 +1,111 @@
+.three-env-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.three-env-canvas {
+  position: absolute !important;
+  inset: 0;
+}
+
+.wind-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.wind-overlay-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(0, 0, 0, 0) 28%, var(--wind-edge) 100%);
+  opacity: 0.9;
+}
+
+.wind-overlay-particle {
+  position: absolute;
+  background: linear-gradient(115deg, var(--wind-base), var(--wind-accent));
+  opacity: 0;
+  filter: blur(0.35px);
+  will-change: transform, opacity;
+  animation-duration: var(--wind-duration);
+  animation-delay: var(--wind-delay);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.wind-overlay-forward {
+  animation-name: wind-flow-forward;
+}
+
+.wind-overlay-reverse {
+  animation-name: wind-flow-reverse;
+}
+
+.wind-overlay-sakura .wind-overlay-particle {
+  border-radius: 64% 36% 58% 42%;
+  box-shadow: 0 0 8px rgba(255, 197, 223, 0.24);
+}
+
+.wind-overlay-desert .wind-overlay-particle {
+  border-radius: 12px;
+  filter: blur(0.2px);
+  box-shadow: 0 0 6px rgba(247, 206, 148, 0.14);
+}
+
+.wind-overlay-arctic .wind-overlay-particle {
+  border-radius: 50%;
+  filter: blur(0.45px);
+  box-shadow: 0 0 9px rgba(198, 236, 255, 0.24);
+}
+
+.wind-overlay-neon .wind-overlay-particle {
+  border-radius: 10px;
+  filter: blur(0.15px);
+  box-shadow: 0 0 10px var(--wind-base);
+}
+
+.wind-overlay-night {
+  mix-blend-mode: screen;
+}
+
+.wind-overlay-day {
+  mix-blend-mode: soft-light;
+}
+
+@keyframes wind-flow-forward {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--wind-opacity);
+  }
+  90% {
+    opacity: calc(var(--wind-opacity) * 0.9);
+  }
+  100% {
+    transform: translate3d(148vw, var(--wind-drift-y), 0) rotate(var(--wind-rotate));
+    opacity: 0;
+  }
+}
+
+@keyframes wind-flow-reverse {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--wind-opacity);
+  }
+  90% {
+    opacity: calc(var(--wind-opacity) * 0.9);
+  }
+  100% {
+    transform: translate3d(-148vw, var(--wind-drift-y), 0) rotate(var(--wind-rotate));
+    opacity: 0;
+  }
+}

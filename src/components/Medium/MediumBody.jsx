@@ -50,16 +50,18 @@ export function MediumBody({
   const [isMuted, setIsMuted] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [currentShareSocial, setCurrentShareSocial] = useState(0);
-  const [sceneMode, setSceneMode] = useState(0);
+  const [windEnabled, setWindEnabled] = useState(true);
   const rootRef = useRef(null);
-  const visualMode = view3d ? sceneMode : currentMode;
-  const sceneTime = sceneMode === 1 ? "night" : "day";
+  const visualMode = currentMode;
+  const sceneTime = "night";
   const channels = [
     "CHANNEL 1 / SAKURA",
     "CHANNEL 2 / DESERT",
     "CHANNEL 3 / ARCTIC",
     "CHANNEL 4 / NEON",
   ];
+  const projectCount = Object.keys(projects).length;
+  const channelCount = channels.length;
 
   function handleDialClick(event) {
     const projectCount = Object.keys(projects).length;
@@ -81,6 +83,38 @@ export function MediumBody({
     addComment(user, comment, project_id);
   }
 
+  function handleBackControl() {
+    if (view3d) {
+      setCurrentChannel((prev) => (prev - 1 + channelCount) % channelCount);
+      return;
+    }
+    if (!projectCount) return;
+    setCurrentProject((prev) => (prev - 1 + projectCount) % projectCount);
+  }
+
+  function handleNextControl() {
+    if (view3d) {
+      setCurrentChannel((prev) => (prev + 1) % channelCount);
+      return;
+    }
+    if (!projectCount) return;
+    setCurrentProject((prev) => (prev + 1) % projectCount);
+  }
+
+  function handlePlayPauseControl() {
+    if (view3d) {
+      setWindEnabled((prev) => !prev);
+      return;
+    }
+    setisPlaying(!isPlaying);
+  }
+
+  function handleMuteControl() {
+    setIsMuted((prev) => !prev);
+  }
+
+  const controlPlayState = view3d ? windEnabled : isPlaying;
+
   useEffect(() => {
     let qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
     if (view3d && rootRef.current) {
@@ -90,7 +124,7 @@ export function MediumBody({
       if (cssQr) qrColor = cssQr;
     }
     generateQrCode("https://www.linkedin.com/in/malikgaurav626/", qrColor);
-  }, [view3d, currentMode, sceneMode, currentChannel]);
+  }, [view3d, currentMode, currentChannel]);
 
   return (
     <>
@@ -103,7 +137,8 @@ export function MediumBody({
           <ThreeEnv
             channel={currentChannel}
             currentMode={currentMode}
-            sceneMode={sceneMode}
+            windEnabled={windEnabled}
+            ambientMuted={isMuted}
           />
         )}
       </div>
@@ -237,11 +272,11 @@ export function MediumBody({
             </div>
             <div className="medium-project-vid-duration">
               <div className="duration-image-container">
-                <img
-                  src={isPlaying ? "/pause.png" : "/play.png"}
-                  id="play-pause-id"
-                  onClick={() => setisPlaying(!isPlaying)}
-                ></img>
+              <img
+                src={controlPlayState ? "/pause.png" : "/play.png"}
+                id="play-pause-id"
+                onClick={handlePlayPauseControl}
+              ></img>
               </div>{" "}
               <div className="duration">0:00</div>
               <button
@@ -259,33 +294,23 @@ export function MediumBody({
             </div>
           </div>
           <ControlBar
-            isPlaying={isPlaying}
+            isPlaying={controlPlayState}
             setisPlaying={setisPlaying}
+            onPlayPause={handlePlayPauseControl}
             onShare={() => setShareOpen(!shareOpen)}
             onInfo={() => {}}
-            onBack={() =>
-              setCurrentProject(
-                (currentProject - 1 + Object.keys(projects).length) %
-                  Object.keys(projects).length
-              )
-            }
-            onNext={() =>
-              setCurrentProject(
-                (currentProject + 1) % Object.keys(projects).length
-              )
-            }
-            onMute={() => setIsMuted(!isMuted)}
+            onBack={handleBackControl}
+            onNext={handleNextControl}
+            onMute={handleMuteControl}
             isMuted={isMuted}
             currentMode={visualMode}
             setCurrentMode={setCurrentMode}
             modeValue={visualMode}
-            onModeChange={(nextMode) => {
-              if (view3d) setSceneMode(nextMode);
-              else setCurrentMode(nextMode);
-            }}
-            modeTitle={view3d ? "SCENE TIME" : "DISPLAY MODE"}
-            modeLeftLabel={view3d ? "NIGHT" : "DARK"}
-            modeRightLabel={view3d ? "DAY" : "LIGHT"}
+            onModeChange={(nextMode) => setCurrentMode(nextMode)}
+            modeTitle="DISPLAY MODE"
+            modeLeftLabel="DARK"
+            modeRightLabel="LIGHT"
+            showSceneConstellation={view3d}
             variant="medium"
             projects={projects}
             currentProject={currentProject}

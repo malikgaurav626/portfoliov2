@@ -1,0 +1,142 @@
+.constellation-panel {
+  width: 100%;
+  border: 1px solid var(--scene-ui-border, #0030ff);
+  padding: 9px 10px 10px;
+  background:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--scene-ui-border, #0030ff) 22%, transparent),
+      color-mix(in srgb, var(--scene-ui-border, #0030ff) 8%, transparent)
+    );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--scene-ui-border, #0030ff) 22%, transparent);
+}
+
+.constellation-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "maison";
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 7px;
+}
+
+.constellation-panel-kicker {
+  color: var(--scene-ui-muted, #8d92f7);
+  font-size: 9px;
+}
+
+.constellation-panel-mode {
+  color: var(--scene-ui-text, #0030ff);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.constellation-panel-scope {
+  position: relative;
+  width: 100%;
+  height: 76px;
+  border: 1px solid color-mix(in srgb, var(--scene-ui-border, #0030ff) 70%, transparent);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 25%, color-mix(in srgb, var(--const-accent) 18%, transparent), transparent 45%),
+    radial-gradient(circle at 83% 74%, color-mix(in srgb, var(--const-trail) 18%, transparent), transparent 42%),
+    color-mix(in srgb, var(--scene-ui-border, #0030ff) 7%, transparent);
+}
+
+.constellation-panel-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, color-mix(in srgb, var(--scene-ui-border, #0030ff) 22%, transparent) 1px, transparent 1px)
+      0 0/14px 14px,
+    linear-gradient(to bottom, color-mix(in srgb, var(--scene-ui-border, #0030ff) 22%, transparent) 1px, transparent 1px)
+      0 0/14px 14px;
+  opacity: 0.6;
+}
+
+.constellation-panel-sweep {
+  position: absolute;
+  inset: -6px -35%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    color-mix(in srgb, var(--const-trail) 42%, transparent) 50%,
+    transparent 60%
+  );
+  animation: constellation-sweep 4.2s linear infinite;
+  opacity: 0.8;
+}
+
+.constellation-link {
+  position: absolute;
+  height: 1px;
+  transform-origin: 0 50%;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--const-accent) 75%, transparent),
+    color-mix(in srgb, var(--const-trail) 75%, transparent)
+  );
+  box-shadow: 0 0 4px color-mix(in srgb, var(--const-accent) 45%, transparent);
+}
+
+.constellation-star {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--const-trail) 0 35%, var(--const-accent) 65%, transparent 100%);
+  box-shadow:
+    0 0 7px color-mix(in srgb, var(--const-trail) 72%, transparent),
+    0 0 14px color-mix(in srgb, var(--const-accent) 35%, transparent);
+  animation: constellation-twinkle var(--twinkle-duration) ease-in-out var(--twinkle-delay) infinite;
+}
+
+.constellation-panel-status {
+  margin-top: 7px;
+  font-family: "maison";
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--scene-ui-muted, #8d92f7);
+  text-align: center;
+}
+
+.constellation-panel-compact {
+  padding: 8px 9px 9px;
+}
+
+.constellation-panel-compact .constellation-panel-scope {
+  height: 64px;
+}
+
+.constellation-panel-compact .constellation-panel-kicker {
+  font-size: 8px;
+}
+
+.constellation-panel-compact .constellation-panel-mode {
+  font-size: 9px;
+}
+
+.constellation-panel-compact .constellation-panel-status {
+  font-size: 8px;
+}
+
+@keyframes constellation-sweep {
+  0% {
+    transform: translateX(-45%);
+  }
+  100% {
+    transform: translateX(45%);
+  }
+}
+
+@keyframes constellation-twinkle {
+  0%,
+  100% {
+    opacity: calc(0.4 + var(--star-glow));
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: calc(0.15 + var(--star-glow));
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+}
