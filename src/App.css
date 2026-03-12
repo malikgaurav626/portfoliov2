@@ -378,6 +378,65 @@ body {
   overflow: hidden;
   user-select: none;
 }
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3500;
+  overflow: hidden;
+  contain: layout style paint;
+  transform: translateZ(0);
+}
+.crt-overlay-video,
+.crt-overlay-frame,
+.crt-overlay-scanlines-lite,
+.crt-overlay-noise-lite {
+  position: absolute;
+  inset: 0;
+}
+.crt-overlay-video {
+  width: 104%;
+  height: 104%;
+  top: -2%;
+  left: -2%;
+  object-fit: cover;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: saturate(0.72) contrast(1.08);
+}
+.crt-overlay-frame {
+  border-radius: 2.6% / 3.6%;
+  transform: scale(1.008);
+  background:
+    radial-gradient(86% 130% at -4% 50%, rgba(6, 8, 24, 0.38), transparent 70%),
+    radial-gradient(86% 130% at 104% 50%, rgba(6, 8, 24, 0.38), transparent 70%),
+    radial-gradient(120% 85% at 50% -18%, rgba(255, 255, 255, 0.1), transparent 45%),
+    radial-gradient(120% 90% at 50% 120%, rgba(0, 0, 0, 0.34), transparent 52%);
+  box-shadow:
+    inset 0 0 0 1px rgba(180, 196, 255, 0.08),
+    inset 0 0 54px rgba(0, 0, 0, 0.36),
+    inset 70px 0 78px -68px rgba(0, 0, 0, 0.44),
+    inset -70px 0 78px -68px rgba(0, 0, 0, 0.44);
+}
+.crt-overlay-scanlines-lite {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.035) 0px,
+      rgba(255, 255, 255, 0.008) 1px,
+      rgba(0, 0, 0, 0.06) 2px,
+      rgba(0, 0, 0, 0.02) 3px
+    );
+  mix-blend-mode: soft-light;
+  opacity: 0.32;
+}
+.crt-overlay-noise-lite {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.06) 0 0.8px, transparent 1px) 0 0 / 6px 6px,
+    radial-gradient(circle at 70% 65%, rgba(0, 0, 0, 0.1) 0 1px, transparent 1.2px) 0 0 / 8px 8px;
+  mix-blend-mode: overlay;
+  opacity: 0.08;
+}
 .body-container {
   color: #0030ff;
 }
@@ -1288,6 +1347,8 @@ body {
   bottom: 0;
 }
 .medium-menu-body{
+  width: 100%;
+  box-sizing: border-box;
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
@@ -1296,6 +1357,8 @@ body {
 }
 .medium-brightness-mode{
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
   justify-content: center;
 }
 .medium-brightness-mode .constellation-panel {
@@ -1799,6 +1862,13 @@ body {
 }
 .scene-ui-active .lifeline-monitor {
   border-color: var(--scene-ui-border) !important;
+}
+.scene-ui-active .signal-monitor {
+  border-color: var(--scene-ui-border) !important;
+}
+.scene-ui-active .signal-variant-nav {
+  border-color: var(--scene-ui-border) !important;
+  color: var(--scene-ui-icon) !important;
 }
 .scene-ui-active .lifeline-grid {
   stroke: var(--scene-ui-muted) !important;

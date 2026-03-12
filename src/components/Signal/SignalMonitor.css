@@ -1,0 +1,363 @@
+.signal-monitor-shell {
+  position: relative;
+  width: 136px;
+  height: 56px;
+  margin: 7px 0;
+  user-select: none;
+}
+
+.signal-monitor-shell-compact {
+  width: 126px;
+  height: 52px;
+}
+
+.signal-monitor {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--signal-primary) 11%, transparent),
+    color-mix(in srgb, var(--signal-primary) 3%, transparent)
+  );
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.signal-monitor:focus-visible {
+  outline: 1.5px solid var(--signal-primary);
+  outline-offset: 1px;
+}
+
+.signal-monitor-shell-compact .signal-monitor {
+  border-radius: 5px;
+}
+
+.signal-variant-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 20px;
+  border: 1px solid color-mix(in srgb, var(--signal-primary) 72%, transparent);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--signal-primary) 10%, transparent);
+  color: var(--signal-primary);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 15px;
+  padding: 0;
+  cursor: pointer;
+  z-index: 4;
+}
+
+.signal-variant-prev {
+  left: -18px;
+}
+
+.signal-variant-next {
+  right: -18px;
+}
+
+.signal-monitor-shell-compact .signal-variant-nav {
+  width: 13px;
+  height: 18px;
+  line-height: 13px;
+  font-size: 13px;
+}
+
+.signal-monitor-shell-compact .signal-variant-prev {
+  left: -16px;
+}
+
+.signal-monitor-shell-compact .signal-variant-next {
+  right: -16px;
+}
+
+.signal-variant-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1px;
+  text-align: center;
+  font-family: "maison";
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  color: var(--signal-muted);
+  text-shadow: 0 0 5px color-mix(in srgb, var(--signal-primary) 36%, transparent);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.signal-monitor-shell-compact .signal-variant-label {
+  font-size: 6px;
+}
+
+.signal-svg {
+  position: absolute;
+  inset: 2px 12px 11px;
+  width: calc(100% - 24px);
+  height: calc(100% - 13px);
+}
+
+.signal-grid-line {
+  fill: none;
+  stroke: var(--signal-muted);
+  stroke-width: 1;
+  opacity: 0.35;
+}
+
+.signal-vector-path {
+  fill: none;
+  stroke: var(--signal-primary);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 220;
+  animation: signal-vector-sweep 2.7s linear infinite;
+}
+
+.signal-svg-radar .signal-radar-ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--signal-muted) 70%, transparent);
+  stroke-width: 0.8;
+}
+
+.signal-svg-radar .signal-radar-axis {
+  stroke: color-mix(in srgb, var(--signal-muted) 50%, transparent);
+  stroke-width: 0.8;
+}
+
+.signal-radar-sweep {
+  transform-origin: 60px 22px;
+  animation: signal-radar-spin 2s linear infinite;
+}
+
+.signal-radar-sweep line {
+  stroke: var(--signal-primary);
+  stroke-width: 1.8;
+}
+
+.signal-radar-blip {
+  fill: var(--signal-primary);
+}
+
+.signal-radar-blip-a {
+  animation: signal-blip 1.4s ease-in-out infinite;
+}
+
+.signal-radar-blip-b {
+  animation: signal-blip 1.8s ease-in-out infinite 0.35s;
+}
+
+.signal-waterfall {
+  position: absolute;
+  inset: 6px 12px 13px;
+}
+
+.signal-waterfall-bar {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: calc((var(--bar-base) + 0.2) * 100%);
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--signal-primary) 24%, transparent),
+    color-mix(in srgb, var(--signal-primary) 88%, transparent)
+  );
+  border-radius: 2px 2px 0 0;
+  opacity: 0.85;
+  animation: signal-waterfall-wave var(--bar-speed) ease-in-out var(--bar-delay) infinite;
+}
+
+.signal-bitstream-path {
+  fill: none;
+  stroke: var(--signal-primary);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 240;
+  animation: signal-bitstream-flow 2.4s linear infinite;
+}
+
+.signal-vu {
+  position: absolute;
+  inset: 8px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.signal-vu-track {
+  height: 5px;
+  border: 1px solid color-mix(in srgb, var(--signal-muted) 58%, transparent);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.signal-vu-fill {
+  display: block;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(to right, var(--signal-primary), var(--signal-muted));
+  transform-origin: left center;
+}
+
+.signal-vu-fill-a {
+  animation: signal-vu-a 1.2s ease-in-out infinite;
+}
+
+.signal-vu-fill-b {
+  animation: signal-vu-b 1.55s ease-in-out infinite;
+}
+
+.signal-vu-lock {
+  font-family: "maison";
+  font-size: 7px;
+  letter-spacing: 0.08em;
+  color: var(--signal-muted);
+  text-align: right;
+  margin-top: 1px;
+}
+
+.signal-sync-rings {
+  position: absolute;
+  inset: 5px 12px 12px;
+}
+
+.signal-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid color-mix(in srgb, var(--signal-primary) 75%, transparent);
+  border-radius: 50%;
+}
+
+.signal-ring-a {
+  width: 15px;
+  height: 15px;
+  animation: signal-ring-pulse 1.7s ease-out infinite;
+}
+
+.signal-ring-b {
+  width: 25px;
+  height: 25px;
+  animation: signal-ring-pulse 1.7s ease-out infinite 0.25s;
+}
+
+.signal-ring-c {
+  width: 35px;
+  height: 35px;
+  animation: signal-ring-pulse 1.7s ease-out infinite 0.52s;
+}
+
+.signal-ring-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--signal-primary);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--signal-primary) 78%, transparent);
+}
+
+@keyframes signal-vector-sweep {
+  0% {
+    stroke-dashoffset: 220;
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.7;
+  }
+}
+
+@keyframes signal-radar-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes signal-blip {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.45);
+  }
+}
+
+@keyframes signal-waterfall-wave {
+  0%,
+  100% {
+    height: calc((var(--bar-base) - var(--bar-swing)) * 100%);
+    opacity: 0.62;
+  }
+  50% {
+    height: calc((var(--bar-base) + var(--bar-swing)) * 100%);
+    opacity: 1;
+  }
+}
+
+@keyframes signal-bitstream-flow {
+  0% {
+    stroke-dashoffset: 240;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes signal-vu-a {
+  0%,
+  100% {
+    transform: scaleX(0.26);
+  }
+  50% {
+    transform: scaleX(0.98);
+  }
+}
+
+@keyframes signal-vu-b {
+  0%,
+  100% {
+    transform: scaleX(0.4);
+  }
+  45% {
+    transform: scaleX(0.75);
+  }
+  78% {
+    transform: scaleX(0.9);
+  }
+}
+
+@keyframes signal-ring-pulse {
+  0% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  80% {
+    opacity: 0.15;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.28);
+  }
+}

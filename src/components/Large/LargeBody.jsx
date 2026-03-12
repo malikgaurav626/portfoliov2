@@ -7,6 +7,7 @@ import { Footer } from "../Footer/Footer";
 import { ControlBar } from "../ControlBar/ControlBar";
 import { ThreeEnv } from "../ThreeEnv/ThreeEnv";
 import { ConstellationPanel } from "../Constellation/ConstellationPanel";
+import { SignalMonitor } from "../Signal/SignalMonitor";
 
 export function LargeBody({
   projects,
@@ -23,13 +24,13 @@ export function LargeBody({
   const [currentChannel, setCurrentChannel] = useState(0);
   const [view3d, setView3d] = useState(true);
   const [windEnabled, setWindEnabled] = useState(true);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const rootRef = useRef(null);
   const channels = [
     "CHANNEL 1 / SAKURA",
     "CHANNEL 2 / DESERT",
     "CHANNEL 3 / ARCTIC",
-    "CHANNEL 4 / NEON",
+    "CHANNEL 4 / SPACE",
   ];
   const projectCount = Object.keys(projects).length;
   const channelCount = channels.length;
@@ -148,15 +149,7 @@ export function LargeBody({
             <div className="horizontal-row"></div>
             <div className="circular-dial-container">
               <div className="signal">SIGNAL</div>
-              <div className="lifeline-monitor" onClick={handleDialClick}>
-                <svg viewBox="0 0 120 44" className="lifeline-svg" role="img">
-                  <polyline className="lifeline-grid" points="0,22 120,22" />
-                  <polyline
-                    className="lifeline-path"
-                    points="0,22 18,22 28,22 34,10 42,34 50,18 58,22 120,22"
-                  />
-                </svg>
-              </div>
+              <SignalMonitor channel={currentChannel} onSignalClick={handleDialClick} />
               <div className="frequency">
                 {Object.keys(projects).length > 0
                   ? `${Math.round(

@@ -47,6 +47,7 @@ function Body({ projects }) {
   const [currentMode, setCurrentMode] = useState(0);
   const [view3d, setView3d] = useState(true);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 998);
+  const [useCrtVideo, setUseCrtVideo] = useState(true);
 
   // Simulate loading completion after 2 seconds (replace with actual loading logic)
   useEffect(() => {
@@ -140,6 +141,25 @@ function Body({ projects }) {
             setView3d={setView3d}
           />
         )}
+      </div>
+      <div className="crt-overlay" aria-hidden="true">
+        {useCrtVideo && (
+          <video
+            className="crt-overlay-video"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            onError={() => setUseCrtVideo(false)}
+          >
+            <source src="/crt-overlay.webm" type="video/webm" />
+            <source src="/crt-overlay.mp4" type="video/mp4" />
+          </video>
+        )}
+        <div className="crt-overlay-frame"></div>
+        <div className="crt-overlay-scanlines-lite"></div>
+        {!useCrtVideo && <div className="crt-overlay-noise-lite"></div>}
       </div>
     </>
   );

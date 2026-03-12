@@ -1,5 +1,8 @@
 .constellation-panel {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   border: 1px solid var(--scene-ui-border, #0030ff);
   padding: 9px 10px 10px;
   background:
@@ -35,6 +38,8 @@
 .constellation-panel-scope {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   height: 76px;
   border: 1px solid color-mix(in srgb, var(--scene-ui-border, #0030ff) 70%, transparent);
   overflow: hidden;

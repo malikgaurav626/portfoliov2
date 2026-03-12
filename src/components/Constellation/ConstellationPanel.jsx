@@ -5,7 +5,7 @@ const CONSTELLATION_THEMES = [
   { label: "SAKURA ORBIT", accent: "#ff8cc8", trail: "#ffd3ec" },
   { label: "DESERT ORBIT", accent: "#ffc27d", trail: "#ffe6bf" },
   { label: "ARCTIC ORBIT", accent: "#8fe1ff", trail: "#d5f4ff" },
-  { label: "NEON ORBIT", accent: "#ff8cff", trail: "#86cbff" },
+  { label: "SPACE ORBIT", accent: "#8eb4ff", trail: "#c4d8ff" },
 ];
 
 function seededRandom(seed) {

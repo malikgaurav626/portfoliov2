@@ -28,6 +28,7 @@ import {
   LinkShareBody,
 } from "../Social/ShareComponents";
 import { ConstellationPanel } from "../Constellation/ConstellationPanel";
+import { SignalMonitor } from "../Signal/SignalMonitor";
 import "./ControlBar.css";
 
 export function ControlBar({
@@ -496,18 +497,11 @@ export function ControlBar({
                     <div className="medium-menu-body">
                       <div className="medium-circular-dial-container">
                         <div className="signal">SIGNAL</div>
-                        <div className="lifeline-monitor" onClick={handleDialClick}>
-                          <svg viewBox="0 0 120 44" className="lifeline-svg" role="img">
-                            <polyline
-                              className="lifeline-grid"
-                              points="0,22 120,22"
-                            />
-                            <polyline
-                              className="lifeline-path"
-                              points="0,22 20,22 28,22 33,10 40,34 48,18 56,22 120,22"
-                            />
-                          </svg>
-                        </div>
+                        <SignalMonitor
+                          channel={currentChannel}
+                          onSignalClick={handleDialClick}
+                          compact
+                        />
                         <div className="frequency">{frequencyLabel}</div>
                       </div>
                       <div className="right-horizontal-row"></div>

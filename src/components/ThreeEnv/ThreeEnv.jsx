@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
 import "./ThreeEnv.css";
 
@@ -23,7 +23,7 @@ const SCENE_CONFIG = {
   wind: {
     sakuraCount: 72,
     desertCount: 180,
-    neonCount: 120,
+    spaceCount: 120,
   },
 };
 
@@ -32,6 +32,8 @@ const SAKURA_GRASS_PATH = "/low_poly_grass_pack.glb";
 const SAKURA_STONE_PATH = "/stylized_low-poly_stone.glb";
 const SAKURA_BRIDGE_PATH = "/japanese_bridge_garden.glb";
 const WINTER_SCENE_PATH = "/low_poly_winter_scene.glb";
+const DESERT_ROAD_PATH = "/desert_road.glb";
+const SPACE_PLANET_PATH = "/space_exploration_wlp_series_8.glb";
 const SOVIET_TV_PATH = "/soviet_retro_tv.glb";
 
 const DEFAULT_TV_VISUALS = {
@@ -70,6 +72,7 @@ const CHANNEL_CONTROLS = [
     anchorOffsetZ: 0,
     sceneOffset: [0, 0, 0],
     sceneScale: 1,
+    lookAtHeight: 1.1,
     sakuraBridgeModel: {
       position: [-0.05, -1.08, 1],
       rotation: [0, Math.PI * 0.5, 0],
@@ -79,16 +82,14 @@ const CHANNEL_CONTROLS = [
       position: [0.12, 1.22, -0.12],
       rotation: [0, Math.PI * 0.95, 0],
     },
-    tvVisuals: {
-      model: { scale: 1.1 },
-    },
+    tvVisuals: { model: { scale: 1.1 } },
   },
   {
     anchorOffsetZ: 0,
     sceneOffset: [0, 0, 0],
     sceneScale: 1,
     tvLayout: {
-      position: [0.75, 0.72, 2.35],
+      position: [0.75, 1.13, 2.35],
       rotation: [0, Math.PI * 0.95, 0],
     },
     tvVisuals: {
@@ -105,24 +106,26 @@ const CHANNEL_CONTROLS = [
       scale: 2.3,
     },
     tvLayout: {
-      position: [0.75, 0.72, 2.35],
+      position: [0.75, 0.42, 2.35],
       rotation: [0, Math.PI * 0.95, 0],
     },
-    tvVisuals: {
-      model: { scale: 1.65 },
-    },
+    tvVisuals: { model: { scale: 1.65 } },
   },
   {
     anchorOffsetZ: 0,
     sceneOffset: [0, 0, 0],
     sceneScale: 1,
+    lookAtHeight: 1.4,
+    spacePlanetModel: {
+      position: [2, 3, -14],
+      rotation: [0.15, 0.4, -0.1],
+      scale: 0.5,
+    },
     tvLayout: {
-      position: [0.75, 0.72, 2.35],
+      position: [0.9, 1.5, 1.2],
       rotation: [0, Math.PI * 0.95, 0],
     },
-    tvVisuals: {
-      model: { scale: 1.65 },
-    },
+    tvVisuals: { model: { scale: 1.4 } },
   },
 ];
 
@@ -294,37 +297,43 @@ const ENVIRONMENT_MODES = [
     },
   },
   {
-    name: "NEON",
+    name: "SPACE",
     day: {
       scene: {
-        backgroundTop: "#1c1f3a",
-        backgroundBottom: "#090b1d",
-        fogColor: "#171830",
-        planeColor: "#1a2040",
-        hemisphereGround: "#20164f",
-        ambientIntensity: 0.34,
-        directionalIntensity: 0.8,
+        backgroundTop: "#050510",
+        backgroundBottom: "#020208",
+        fogColor: "#08081a",
+        planeColor: "#060612",
+        hemisphereGround: "#0a0a1e",
+        ambientIntensity: 0.22,
+        directionalIntensity: 0.55,
       },
       palette: {
-        ground: "#1c1f3a",
-        accent: "#00ffd0",
-        prop: "#7a3fff",
+        ground: "#050510",
+        accent: "#6eb4ff",
+        prop: "#b48eff",
+        starField: "#ffffff",
+        nebula: "#2a1a4e",
+        fogTint: "#08081a",
       },
     },
     night: {
       scene: {
-        backgroundTop: "#30143d",
-        backgroundBottom: "#12061c",
-        fogColor: "#291235",
-        planeColor: "#35154a",
-        hemisphereGround: "#210b30",
-        ambientIntensity: 0.32,
-        directionalIntensity: 0.78,
+        backgroundTop: "#030308",
+        backgroundBottom: "#010104",
+        fogColor: "#060612",
+        planeColor: "#040410",
+        hemisphereGround: "#080818",
+        ambientIntensity: 0.18,
+        directionalIntensity: 0.45,
       },
       palette: {
-        ground: "#2d1142",
-        accent: "#ff47f0",
-        prop: "#3f87ff",
+        ground: "#030308",
+        accent: "#8ecaff",
+        prop: "#c4a0ff",
+        starField: "#e8e8ff",
+        nebula: "#1e1040",
+        fogTint: "#060612",
       },
     },
   },
@@ -333,114 +342,218 @@ const ENVIRONMENT_MODES = [
 const AMBIENT_AUDIO_PROFILES = [
   {
     day: {
-      primaryType: "sine",
-      secondaryType: "triangle",
-      primaryHz: 196,
-      secondaryHz: 293.66,
-      primaryGain: 0.22,
-      secondaryGain: 0.16,
-      filterHz: 980,
-      filterQ: 0.7,
-      lfoRate: 0.06,
-      lfoDepth: 180,
-      masterGain: 0.026,
-    },
-    night: {
-      primaryType: "sine",
-      secondaryType: "sine",
-      primaryHz: 130.81,
-      secondaryHz: 207.65,
-      primaryGain: 0.19,
-      secondaryGain: 0.13,
-      filterHz: 760,
-      filterQ: 0.85,
-      lfoRate: 0.045,
-      lfoDepth: 140,
-      masterGain: 0.02,
-    },
-  },
-  {
-    day: {
-      primaryType: "triangle",
-      secondaryType: "sawtooth",
-      primaryHz: 174.61,
-      secondaryHz: 261.63,
-      primaryGain: 0.2,
-      secondaryGain: 0.11,
-      filterHz: 650,
-      filterQ: 0.95,
-      lfoRate: 0.08,
-      lfoDepth: 230,
-      masterGain: 0.024,
-    },
-    night: {
       primaryType: "triangle",
       secondaryType: "sine",
-      primaryHz: 116.54,
-      secondaryHz: 174.61,
-      primaryGain: 0.18,
-      secondaryGain: 0.1,
-      filterHz: 520,
+      subType: "sine",
+      baseHz: 220,
+      harmonyRatio: 1.4983,
+      subRatio: 0.5,
+      primaryGain: 0.13,
+      secondaryGain: 0.09,
+      subGain: 0.06,
+      noiseGain: 0.009,
+      filterHz: 1550,
       filterQ: 1.05,
-      lfoRate: 0.055,
-      lfoDepth: 170,
-      masterGain: 0.018,
-    },
-  },
-  {
-    day: {
-      primaryType: "sine",
-      secondaryType: "triangle",
-      primaryHz: 220,
-      secondaryHz: 329.63,
-      primaryGain: 0.17,
-      secondaryGain: 0.11,
-      filterHz: 1250,
-      filterQ: 0.6,
-      lfoRate: 0.09,
-      lfoDepth: 210,
-      masterGain: 0.021,
+      lfoRate: 0.12,
+      lfoDepth: 260,
+      vibratoRate: 5.2,
+      vibratoDepth: 8,
+      panRate: 0.05,
+      panDepth: 0.22,
+      delayTime: 0.22,
+      feedbackGain: 0.31,
+      wetGain: 0.2,
+      masterGain: 0.024,
+      stepMs: 420,
+      arpRatios: [1, 1.12246, 1.25992, 1.4983, 1.33484, 1.25992],
     },
     night: {
-      primaryType: "sine",
-      secondaryType: "triangle",
-      primaryHz: 146.83,
-      secondaryHz: 233.08,
-      primaryGain: 0.15,
+      primaryType: "triangle",
+      secondaryType: "sine",
+      subType: "sine",
+      baseHz: 196,
+      harmonyRatio: 1.4983,
+      subRatio: 0.5,
+      primaryGain: 0.14,
       secondaryGain: 0.1,
-      filterHz: 870,
-      filterQ: 0.75,
-      lfoRate: 0.06,
-      lfoDepth: 165,
-      masterGain: 0.017,
+      subGain: 0.065,
+      noiseGain: 0.012,
+      filterHz: 1320,
+      filterQ: 1.2,
+      lfoRate: 0.11,
+      lfoDepth: 220,
+      vibratoRate: 4.9,
+      vibratoDepth: 8.6,
+      panRate: 0.045,
+      panDepth: 0.24,
+      delayTime: 0.24,
+      feedbackGain: 0.34,
+      wetGain: 0.24,
+      masterGain: 0.026,
+      stepMs: 430,
+      arpRatios: [1, 1.12246, 1.25992, 1.4983, 1.33484, 1.25992],
     },
   },
   {
     day: {
       primaryType: "sawtooth",
-      secondaryType: "triangle",
-      primaryHz: 261.63,
-      secondaryHz: 392.0,
-      primaryGain: 0.15,
-      secondaryGain: 0.14,
-      filterHz: 1650,
-      filterQ: 0.8,
-      lfoRate: 0.11,
-      lfoDepth: 260,
-      masterGain: 0.023,
+      secondaryType: "sawtooth",
+      subType: "sine",
+      baseHz: 130.81,
+      harmonyRatio: 1.33484,
+      subRatio: 0.5,
+      primaryGain: 0.11,
+      secondaryGain: 0.09,
+      subGain: 0.055,
+      noiseGain: 0.024,
+      filterHz: 1180,
+      filterQ: 0.82,
+      lfoRate: 0.08,
+      lfoDepth: 170,
+      vibratoRate: 3.9,
+      vibratoDepth: 6.5,
+      panRate: 0.03,
+      panDepth: 0.18,
+      delayTime: 0.17,
+      feedbackGain: 0.22,
+      wetGain: 0.14,
+      masterGain: 0.022,
+      stepMs: 350,
+      arpRatios: [1, 1.12246, 1.33484, 1.5874, 1.33484, 1.1892],
     },
     night: {
-      primaryType: "triangle",
+      primaryType: "sawtooth",
       secondaryType: "sine",
-      primaryHz: 174.61,
-      secondaryHz: 261.63,
-      primaryGain: 0.14,
-      secondaryGain: 0.12,
-      filterHz: 1080,
-      filterQ: 0.9,
-      lfoRate: 0.085,
-      lfoDepth: 210,
-      masterGain: 0.019,
+      subType: "sine",
+      baseHz: 110,
+      harmonyRatio: 1.33484,
+      subRatio: 0.5,
+      primaryGain: 0.12,
+      secondaryGain: 0.09,
+      subGain: 0.06,
+      noiseGain: 0.03,
+      filterHz: 920,
+      filterQ: 0.95,
+      lfoRate: 0.074,
+      lfoDepth: 145,
+      vibratoRate: 3.5,
+      vibratoDepth: 5.8,
+      panRate: 0.026,
+      panDepth: 0.16,
+      delayTime: 0.19,
+      feedbackGain: 0.24,
+      wetGain: 0.17,
+      masterGain: 0.024,
+      stepMs: 360,
+      arpRatios: [1, 1.12246, 1.33484, 1.5874, 1.33484, 1.1892],
+    },
+  },
+  {
+    day: {
+      primaryType: "sine",
+      secondaryType: "triangle",
+      subType: "sine",
+      baseHz: 174.61,
+      harmonyRatio: 1.4983,
+      subRatio: 0.5,
+      primaryGain: 0.1,
+      secondaryGain: 0.08,
+      subGain: 0.05,
+      noiseGain: 0.008,
+      filterHz: 1800,
+      filterQ: 0.62,
+      lfoRate: 0.065,
+      lfoDepth: 300,
+      vibratoRate: 5.8,
+      vibratoDepth: 7,
+      panRate: 0.03,
+      panDepth: 0.12,
+      delayTime: 0.26,
+      feedbackGain: 0.33,
+      wetGain: 0.19,
+      masterGain: 0.021,
+      stepMs: 500,
+      arpRatios: [1, 1.25992, 1.4983, 2, 1.4983, 1.25992],
+    },
+    night: {
+      primaryType: "sine",
+      secondaryType: "triangle",
+      subType: "sine",
+      baseHz: 146.83,
+      harmonyRatio: 1.4983,
+      subRatio: 0.5,
+      primaryGain: 0.11,
+      secondaryGain: 0.085,
+      subGain: 0.055,
+      noiseGain: 0.01,
+      filterHz: 1420,
+      filterQ: 0.74,
+      lfoRate: 0.055,
+      lfoDepth: 250,
+      vibratoRate: 5.4,
+      vibratoDepth: 7.8,
+      panRate: 0.028,
+      panDepth: 0.14,
+      delayTime: 0.28,
+      feedbackGain: 0.36,
+      wetGain: 0.21,
+      masterGain: 0.022,
+      stepMs: 520,
+      arpRatios: [1, 1.25992, 1.4983, 2, 1.4983, 1.25992],
+    },
+  },
+  {
+    day: {
+      primaryType: "sine",
+      secondaryType: "sine",
+      subType: "sine",
+      baseHz: 82.41,
+      harmonyRatio: 1.5,
+      subRatio: 0.5,
+      primaryGain: 0.08,
+      secondaryGain: 0.06,
+      subGain: 0.07,
+      noiseGain: 0.006,
+      filterHz: 900,
+      filterQ: 0.45,
+      lfoRate: 0.03,
+      lfoDepth: 120,
+      vibratoRate: 2.2,
+      vibratoDepth: 4,
+      panRate: 0.018,
+      panDepth: 0.35,
+      delayTime: 0.42,
+      feedbackGain: 0.48,
+      wetGain: 0.32,
+      masterGain: 0.02,
+      stepMs: 800,
+      arpRatios: [1, 1.4983, 2, 2.9966, 2, 1.4983],
+    },
+    night: {
+      primaryType: "sine",
+      secondaryType: "sine",
+      subType: "sine",
+      baseHz: 65.41,
+      harmonyRatio: 1.5,
+      subRatio: 0.5,
+      primaryGain: 0.09,
+      secondaryGain: 0.065,
+      subGain: 0.075,
+      noiseGain: 0.007,
+      filterHz: 750,
+      filterQ: 0.5,
+      lfoRate: 0.025,
+      lfoDepth: 100,
+      vibratoRate: 1.8,
+      vibratoDepth: 3.5,
+      panRate: 0.015,
+      panDepth: 0.4,
+      delayTime: 0.48,
+      feedbackGain: 0.52,
+      wetGain: 0.36,
+      masterGain: 0.022,
+      stepMs: 900,
+      arpRatios: [1, 1.4983, 2, 2.9966, 2, 1.4983],
     },
   },
 ];
@@ -448,70 +561,86 @@ const AMBIENT_AUDIO_PROFILES = [
 const WIND_OVERLAY_PROFILES = [
   {
     id: "sakura",
-    count: 20,
-    duration: [9.5, 16.5],
-    size: [7, 13],
-    driftY: [-40, 40],
+    count: 28,
+    duration: [11.2, 19.8],
+    size: [6, 15],
+    driftY: [-35, 45],
+    speedVariation: 0.35,
+    oscillationAmount: 0.78,
+    oscillationFreq: 0.42,
+    glowIntensity: 0.72,
     day: {
-      base: "rgba(255, 132, 171, 0.92)",
-      accent: "rgba(255, 214, 231, 0.88)",
-      edge: "rgba(255, 166, 198, 0.16)",
+      base: "rgba(255, 132, 171, 0.88)",
+      accent: "rgba(255, 214, 231, 0.92)",
+      edge: "rgba(255, 166, 198, 0.14)",
     },
     night: {
-      base: "rgba(241, 155, 182, 0.9)",
-      accent: "rgba(255, 214, 235, 0.82)",
-      edge: "rgba(185, 128, 166, 0.2)",
+      base: "rgba(241, 155, 182, 0.85)",
+      accent: "rgba(255, 214, 235, 0.88)",
+      edge: "rgba(185, 128, 166, 0.18)",
     },
   },
   {
     id: "desert",
-    count: 24,
-    duration: [8.2, 13.2],
-    size: [5, 10],
-    driftY: [-20, 20],
+    count: 32,
+    duration: [7.8, 14.2],
+    size: [8, 18],
+    driftY: [-15, 28],
+    speedVariation: 0.52,
+    oscillationAmount: 0.45,
+    oscillationFreq: 0.68,
+    glowIntensity: 0.38,
     day: {
-      base: "rgba(229, 187, 124, 0.84)",
-      accent: "rgba(255, 228, 184, 0.76)",
-      edge: "rgba(245, 201, 150, 0.18)",
+      base: "rgba(229, 187, 124, 0.8)",
+      accent: "rgba(255, 228, 184, 0.72)",
+      edge: "rgba(245, 201, 150, 0.12)",
     },
     night: {
-      base: "rgba(197, 150, 100, 0.8)",
+      base: "rgba(197, 150, 100, 0.78)",
       accent: "rgba(228, 193, 149, 0.68)",
-      edge: "rgba(129, 91, 64, 0.22)",
+      edge: "rgba(129, 91, 64, 0.2)",
     },
   },
   {
     id: "arctic",
-    count: 28,
-    duration: [10.5, 17.5],
-    size: [4, 9],
-    driftY: [-55, 55],
+    count: 35,
+    duration: [12.5, 20.8],
+    size: [3, 8],
+    driftY: [-68, 68],
+    speedVariation: 0.28,
+    oscillationAmount: 1.05,
+    oscillationFreq: 0.35,
+    glowIntensity: 0.62,
     day: {
-      base: "rgba(230, 245, 255, 0.86)",
-      accent: "rgba(182, 225, 245, 0.74)",
-      edge: "rgba(192, 229, 247, 0.18)",
+      base: "rgba(230, 245, 255, 0.84)",
+      accent: "rgba(182, 225, 245, 0.76)",
+      edge: "rgba(192, 229, 247, 0.16)",
     },
     night: {
-      base: "rgba(205, 230, 245, 0.84)",
-      accent: "rgba(138, 188, 222, 0.72)",
-      edge: "rgba(94, 134, 164, 0.22)",
+      base: "rgba(205, 230, 245, 0.8)",
+      accent: "rgba(138, 188, 222, 0.74)",
+      edge: "rgba(94, 134, 164, 0.2)",
     },
   },
   {
-    id: "neon",
+    id: "space",
     count: 22,
-    duration: [7.4, 12.8],
-    size: [6, 11],
-    driftY: [-32, 32],
+    duration: [14, 26],
+    size: [2, 6],
+    driftY: [-18, 18],
+    speedVariation: 0.2,
+    oscillationAmount: 0.35,
+    oscillationFreq: 0.18,
+    glowIntensity: 0.95,
     day: {
-      base: "rgba(0, 255, 214, 0.8)",
-      accent: "rgba(120, 197, 255, 0.78)",
-      edge: "rgba(88, 229, 255, 0.15)",
+      base: "rgba(180, 210, 255, 0.7)",
+      accent: "rgba(140, 180, 255, 0.65)",
+      edge: "rgba(60, 80, 140, 0.08)",
     },
     night: {
-      base: "rgba(255, 87, 240, 0.84)",
-      accent: "rgba(95, 170, 255, 0.82)",
-      edge: "rgba(109, 72, 188, 0.24)",
+      base: "rgba(200, 220, 255, 0.75)",
+      accent: "rgba(160, 190, 255, 0.7)",
+      edge: "rgba(50, 60, 120, 0.1)",
     },
   },
 ];
@@ -522,10 +651,14 @@ function seededRandom(seed) {
 }
 
 function getWindParticleSize(profileId, baseSize) {
-  if (profileId === "sakura") return { width: baseSize, height: baseSize * 0.68 };
-  if (profileId === "desert") return { width: baseSize * 1.7, height: baseSize * 0.26 };
-  if (profileId === "arctic") return { width: baseSize * 0.62, height: baseSize * 0.62 };
-  return { width: baseSize * 2.05, height: baseSize * 0.22 };
+  // Sakura: Soft, organic petal shapes
+  if (profileId === "sakura") return { width: baseSize * 0.85, height: baseSize * 0.72, blur: 2.2 };
+  // Desert: Stretched sand/dust particles with slight blur
+  if (profileId === "desert") return { width: baseSize * 1.9, height: baseSize * 0.28, blur: 3.8 };
+  // Arctic: Small crystalline snowflakes, almost square
+  if (profileId === "arctic") return { width: baseSize * 0.68, height: baseSize * 0.64, blur: 1.5 };
+  // Space: Small round star-dust particles with soft glow
+  return { width: baseSize * 0.7, height: baseSize * 0.65, blur: 1.8 };
 }
 
 function WindOverlay({ channel, isNight, enabled }) {
@@ -541,19 +674,29 @@ function WindOverlay({ channel, isNight, enabled }) {
       Array.from({ length: profile.count }, (_, index) => {
         const seed = seedOffset + channel * 97 + index * 53;
         const top = seededRandom(seed + 1) * 100;
-        const duration =
+        const baseDuration =
           profile.duration[0] +
           seededRandom(seed + 2) * (profile.duration[1] - profile.duration[0]);
+        // Speed variation creates realistic wind gusts
+        const speedMult = 1 - profile.speedVariation * (seededRandom(seed + 20) - 0.5) * 2;
+        const duration = baseDuration / speedMult;
         const delay = -seededRandom(seed + 3) * duration;
         const driftRange = profile.driftY[1] - profile.driftY[0];
         const driftY = profile.driftY[0] + seededRandom(seed + 4) * driftRange;
         const baseSize =
           profile.size[0] +
           seededRandom(seed + 5) * (profile.size[1] - profile.size[0]);
-        const { width, height } = getWindParticleSize(profile.id, baseSize);
+        const { width, height, blur } = getWindParticleSize(profile.id, baseSize);
         const reverse = seededRandom(seed + 6) > 0.62;
-        const opacity = 0.36 + seededRandom(seed + 7) * 0.52;
-        const rotate = (seededRandom(seed + 8) - 0.5) * 260;
+        const opacity = 0.32 + seededRandom(seed + 7) * 0.56;
+        const rotate = (seededRandom(seed + 8) - 0.5) * 280;
+        
+        // Oscillation creates wave-like motion
+        const oscillationAmount = profile.oscillationAmount * baseSize;
+        const oscillationPhase = seededRandom(seed + 21) * Math.PI * 2;
+        
+        // Glow effect adds artistic depth
+        const glowAmount = profile.glowIntensity * (0.4 + seededRandom(seed + 22) * 0.6);
 
         return {
           key: `wind-${profile.id}-${index}`,
@@ -563,9 +706,14 @@ function WindOverlay({ channel, isNight, enabled }) {
           driftY,
           width,
           height,
+          blur,
           reverse,
           opacity,
           rotate,
+          oscillationAmount,
+          oscillationPhase,
+          oscillationFreq: profile.oscillationFreq,
+          glowAmount,
         };
       }),
     [channel, profile, seedOffset]
@@ -600,6 +748,11 @@ function WindOverlay({ channel, isNight, enabled }) {
             "--wind-drift-y": `${particle.driftY}px`,
             "--wind-opacity": particle.opacity,
             "--wind-rotate": `${particle.rotate}deg`,
+            "--wind-blur": `${particle.blur}px`,
+            "--wind-glow": particle.glowAmount,
+            "--wind-oscillation": `${particle.oscillationAmount}px`,
+            "--wind-oscillation-freq": particle.oscillationFreq,
+            "--wind-oscillation-phase": `${particle.oscillationPhase}rad`,
           }}
         />
       ))}
@@ -607,129 +760,317 @@ function WindOverlay({ channel, isNight, enabled }) {
   );
 }
 
+function createNoiseBuffer(context) {
+  const length = context.sampleRate * 2;
+  const buffer = context.createBuffer(1, length, context.sampleRate);
+  const data = buffer.getChannelData(0);
+  let previous = 0;
+
+  for (let i = 0; i < length; i++) {
+    const white = Math.random() * 2 - 1;
+    previous = previous * 0.96 + white * 0.04;
+    data[i] = previous;
+  }
+
+  return buffer;
+}
+
 function useSceneAmbientAudio({ channel, isNight, muted }) {
   const rigRef = useRef(null);
+  const sequencerRef = useRef(null);
+  const stepRef = useRef(0);
 
   useEffect(() => {
     return () => {
+      if (sequencerRef.current) {
+        window.clearInterval(sequencerRef.current);
+        sequencerRef.current = null;
+      }
+
       const rig = rigRef.current;
       if (!rig) return;
 
       const now = rig.context.currentTime;
       rig.masterGain.gain.cancelScheduledValues(now);
-      rig.masterGain.gain.linearRampToValueAtTime(0, now + 0.12);
+      rig.masterGain.gain.linearRampToValueAtTime(0, now + 0.15);
 
       window.setTimeout(() => {
         try {
           rig.primary.stop();
           rig.secondary.stop();
-          rig.lfo.stop();
+          rig.sub.stop();
+          rig.noiseSource.stop();
+          rig.filterLfo.stop();
+          rig.vibratoLfo.stop();
+          rig.panLfo.stop();
         } catch {
-          // Oscillators can only be stopped once.
+          // Audio nodes can only be stopped once.
         }
         rig.context.close().catch(() => {});
-      }, 180);
+      }, 220);
 
       rigRef.current = null;
     };
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return undefined;
 
     const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextCtor) return;
+    if (!AudioContextCtor) return undefined;
 
     if (!rigRef.current) {
       const context = new AudioContextCtor();
       const masterGain = context.createGain();
+      const mixGain = context.createGain();
       const filter = context.createBiquadFilter();
+      const compressor = context.createDynamicsCompressor();
+      const delay = context.createDelay(1.5);
+      const feedbackGain = context.createGain();
+      const dryGain = context.createGain();
+      const wetGain = context.createGain();
+      const panner = context.createStereoPanner();
+
       const primary = context.createOscillator();
       const secondary = context.createOscillator();
+      const sub = context.createOscillator();
       const primaryGain = context.createGain();
       const secondaryGain = context.createGain();
-      const lfo = context.createOscillator();
-      const lfoGain = context.createGain();
+      const subGain = context.createGain();
+
+      const noiseSource = context.createBufferSource();
+      const noiseFilter = context.createBiquadFilter();
+      const noiseGain = context.createGain();
+
+      const filterLfo = context.createOscillator();
+      const filterLfoGain = context.createGain();
+      const vibratoLfo = context.createOscillator();
+      const vibratoGain = context.createGain();
+      const panLfo = context.createOscillator();
+      const panGain = context.createGain();
 
       masterGain.gain.value = 0;
+      mixGain.gain.value = 1;
       filter.type = "lowpass";
-      filter.frequency.value = 900;
-      filter.Q.value = 0.8;
-      primaryGain.gain.value = 0.16;
-      secondaryGain.gain.value = 0.11;
-      lfo.type = "sine";
-      lfo.frequency.value = 0.06;
-      lfoGain.gain.value = 160;
+      filter.frequency.value = 1200;
+      filter.Q.value = 0.9;
+
+      compressor.threshold.value = -22;
+      compressor.knee.value = 24;
+      compressor.ratio.value = 3.4;
+      compressor.attack.value = 0.01;
+      compressor.release.value = 0.22;
+
+      delay.delayTime.value = 0.2;
+      feedbackGain.gain.value = 0.28;
+      dryGain.gain.value = 0.79;
+      wetGain.gain.value = 0.2;
+
+      primaryGain.gain.value = 0.1;
+      secondaryGain.gain.value = 0.08;
+      subGain.gain.value = 0.06;
+
+      noiseSource.buffer = createNoiseBuffer(context);
+      noiseSource.loop = true;
+      noiseFilter.type = "highpass";
+      noiseFilter.frequency.value = 1200;
+      noiseFilter.Q.value = 0.6;
+      noiseGain.gain.value = 0.01;
+
+      filterLfo.type = "sine";
+      filterLfo.frequency.value = 0.1;
+      filterLfoGain.gain.value = 180;
+
+      vibratoLfo.type = "sine";
+      vibratoLfo.frequency.value = 5;
+      vibratoGain.gain.value = 6;
+
+      panLfo.type = "triangle";
+      panLfo.frequency.value = 0.04;
+      panGain.gain.value = 0.2;
 
       primary.connect(primaryGain);
       secondary.connect(secondaryGain);
-      primaryGain.connect(filter);
-      secondaryGain.connect(filter);
-      filter.connect(masterGain);
+      sub.connect(subGain);
+      primaryGain.connect(mixGain);
+      secondaryGain.connect(mixGain);
+      subGain.connect(mixGain);
+
+      noiseSource.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(mixGain);
+
+      mixGain.connect(filter);
+      filter.connect(compressor);
+
+      compressor.connect(dryGain);
+      dryGain.connect(panner);
+
+      compressor.connect(delay);
+      delay.connect(feedbackGain);
+      feedbackGain.connect(delay);
+      delay.connect(wetGain);
+      wetGain.connect(panner);
+
+      panner.connect(masterGain);
       masterGain.connect(context.destination);
-      lfo.connect(lfoGain);
-      lfoGain.connect(filter.frequency);
+
+      filterLfo.connect(filterLfoGain);
+      filterLfoGain.connect(filter.frequency);
+
+      vibratoLfo.connect(vibratoGain);
+      vibratoGain.connect(primary.detune);
+      vibratoGain.connect(secondary.detune);
+
+      panLfo.connect(panGain);
+      panGain.connect(panner.pan);
 
       primary.start();
       secondary.start();
-      lfo.start();
+      sub.start();
+      noiseSource.start();
+      filterLfo.start();
+      vibratoLfo.start();
+      panLfo.start();
 
       rigRef.current = {
         context,
         masterGain,
         filter,
+        delay,
+        feedbackGain,
+        wetGain,
+        dryGain,
+        panner,
         primary,
         secondary,
+        sub,
+        noiseSource,
+        noiseFilter,
         primaryGain,
         secondaryGain,
-        lfo,
-        lfoGain,
+        subGain,
+        noiseGain,
+        filterLfo,
+        filterLfoGain,
+        vibratoLfo,
+        vibratoGain,
+        panLfo,
+        panGain,
       };
     }
 
     const rig = rigRef.current;
+    if (!rig) return undefined;
+
     const modeKey = isNight ? "night" : "day";
     const profileByChannel =
       AMBIENT_AUDIO_PROFILES[clampChannel(channel)] || AMBIENT_AUDIO_PROFILES[0];
     const profile = profileByChannel[modeKey] || profileByChannel.day;
     const now = rig.context.currentTime;
 
+    const setParam = (audioParam, value, ramp = 0.3) => {
+      audioParam.cancelScheduledValues(now);
+      audioParam.linearRampToValueAtTime(value, now + ramp);
+    };
+
     rig.primary.type = profile.primaryType;
     rig.secondary.type = profile.secondaryType;
+    rig.sub.type = profile.subType;
 
-    rig.primary.frequency.cancelScheduledValues(now);
-    rig.primary.frequency.linearRampToValueAtTime(profile.primaryHz, now + 0.6);
+    setParam(rig.filter.frequency, profile.filterHz, 0.4);
+    setParam(rig.filter.Q, profile.filterQ, 0.4);
+    setParam(rig.delay.delayTime, profile.delayTime, 0.35);
+    setParam(rig.feedbackGain.gain, profile.feedbackGain, 0.35);
+    setParam(rig.wetGain.gain, profile.wetGain, 0.35);
+    setParam(rig.dryGain.gain, 1 - profile.wetGain * 0.55, 0.35);
 
-    rig.secondary.frequency.cancelScheduledValues(now);
-    rig.secondary.frequency.linearRampToValueAtTime(profile.secondaryHz, now + 0.6);
+    setParam(rig.filterLfo.frequency, profile.lfoRate, 0.35);
+    setParam(rig.filterLfoGain.gain, profile.lfoDepth, 0.35);
+    setParam(rig.vibratoLfo.frequency, profile.vibratoRate, 0.35);
+    setParam(rig.vibratoGain.gain, profile.vibratoDepth, 0.35);
+    setParam(rig.panLfo.frequency, profile.panRate, 0.35);
+    setParam(rig.panGain.gain, profile.panDepth, 0.35);
+    setParam(rig.noiseGain.gain, profile.noiseGain, 0.25);
+    setParam(rig.masterGain.gain, muted ? 0 : profile.masterGain, 0.35);
 
-    rig.primaryGain.gain.cancelScheduledValues(now);
-    rig.primaryGain.gain.linearRampToValueAtTime(profile.primaryGain, now + 0.6);
+    if (sequencerRef.current) {
+      window.clearInterval(sequencerRef.current);
+      sequencerRef.current = null;
+    }
 
-    rig.secondaryGain.gain.cancelScheduledValues(now);
-    rig.secondaryGain.gain.linearRampToValueAtTime(profile.secondaryGain, now + 0.6);
+    const ratios = profile.arpRatios && profile.arpRatios.length > 0
+      ? profile.arpRatios
+      : [1];
+    stepRef.current = clampChannel(channel) % ratios.length;
 
-    rig.filter.frequency.cancelScheduledValues(now);
-    rig.filter.frequency.linearRampToValueAtTime(profile.filterHz, now + 0.8);
+    const playStep = () => {
+      const step = stepRef.current++;
+      const ratio = ratios[step % ratios.length];
+      const base = profile.baseHz * ratio;
+      const t = rig.context.currentTime;
+      const accent = step % 4 === 0 ? 1.16 : step % 2 === 0 ? 1.04 : 0.96;
 
-    rig.filter.Q.cancelScheduledValues(now);
-    rig.filter.Q.linearRampToValueAtTime(profile.filterQ, now + 0.8);
+      rig.primary.frequency.cancelScheduledValues(t);
+      rig.primary.frequency.linearRampToValueAtTime(base, t + 0.08);
 
-    rig.lfo.frequency.cancelScheduledValues(now);
-    rig.lfo.frequency.linearRampToValueAtTime(profile.lfoRate, now + 0.8);
+      rig.secondary.frequency.cancelScheduledValues(t);
+      rig.secondary.frequency.linearRampToValueAtTime(
+        base * profile.harmonyRatio,
+        t + 0.09
+      );
 
-    rig.lfoGain.gain.cancelScheduledValues(now);
-    rig.lfoGain.gain.linearRampToValueAtTime(profile.lfoDepth, now + 0.8);
+      rig.sub.frequency.cancelScheduledValues(t);
+      rig.sub.frequency.linearRampToValueAtTime(
+        Math.max(40, base * profile.subRatio),
+        t + 0.1
+      );
 
-    rig.masterGain.gain.cancelScheduledValues(now);
-    rig.masterGain.gain.linearRampToValueAtTime(
-      muted ? 0 : profile.masterGain,
-      now + 0.35
+      rig.primaryGain.gain.cancelScheduledValues(t);
+      rig.primaryGain.gain.linearRampToValueAtTime(
+        profile.primaryGain * accent,
+        t + 0.06
+      );
+
+      rig.secondaryGain.gain.cancelScheduledValues(t);
+      rig.secondaryGain.gain.linearRampToValueAtTime(
+        profile.secondaryGain * (step % 3 === 0 ? 1.07 : 0.95),
+        t + 0.06
+      );
+
+      rig.subGain.gain.cancelScheduledValues(t);
+      rig.subGain.gain.linearRampToValueAtTime(
+        profile.subGain * (step % 2 === 0 ? 1.02 : 0.92),
+        t + 0.07
+      );
+
+      rig.noiseGain.gain.cancelScheduledValues(t);
+      rig.noiseGain.gain.linearRampToValueAtTime(
+        profile.noiseGain * (step % 2 === 0 ? 1.2 : 0.82),
+        t + 0.06
+      );
+    };
+
+    playStep();
+    sequencerRef.current = window.setInterval(
+      playStep,
+      Math.max(120, profile.stepMs || 420)
     );
 
-    if (!muted && rig.context.state !== "running") {
+    if (muted) {
+      if (rig.context.state === "running") {
+        rig.context.suspend().catch(() => {});
+      }
+    } else if (rig.context.state !== "running") {
       rig.context.resume().catch(() => {});
     }
+
+    return () => {
+      if (sequencerRef.current) {
+        window.clearInterval(sequencerRef.current);
+        sequencerRef.current = null;
+      }
+    };
   }, [channel, isNight, muted]);
 }
 
@@ -744,6 +1085,11 @@ function getChannelControls(index) {
 function getChannelAnchor(channel) {
   const controls = getChannelControls(channel);
   return -channel * SCENE_CONFIG.environmentSpacing + (controls.anchorOffsetZ || 0);
+}
+
+function getChannelLookAtHeight(channel) {
+  const controls = getChannelControls(channel);
+  return controls.lookAtHeight !== undefined ? controls.lookAtHeight : SCENE_CONFIG.camera.lookAtHeight;
 }
 
 function getSceneTheme({ channel, currentMode, useEnvironmentModes }) {
@@ -1161,102 +1507,6 @@ function ArcticWind({ index, palette, isActive }) {
   );
 }
 
-function NeonWind({ index, palette, isActive }) {
-  const pointsRef = useRef();
-  const dotTexture = useMemo(() => createSoftDotTexture(), []);
-  const count = SCENE_CONFIG.wind.neonCount;
-  const z = getChannelAnchor(index);
-  const laneY = useMemo(() => [0.8, 1.6, 2.4, 3.2], []);
-  const laneZ = useMemo(() => [-1.4, -0.4, 0.6, 1.5], []);
-  const laneWeights = useMemo(() => [0.9, 2.2, 2.1, 0.9], []);
-  const laneIndices = useMemo(() => new Uint8Array(count), [count]);
-  const positions = useMemo(() => {
-    const arr = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      const lane = pickLaneByWeights(laneWeights);
-      laneIndices[i] = lane;
-      arr[i * 3] = (Math.random() * 2 - 1) * 7.2;
-      arr[i * 3 + 1] = laneY[lane] + (Math.random() * 2 - 1) * 0.2;
-      arr[i * 3 + 2] = laneZ[lane] + (Math.random() * 2 - 1) * 0.25;
-    }
-    return arr;
-  }, [count, laneIndices, laneWeights, laneY, laneZ]);
-  const speeds = useMemo(
-    () => Array.from({ length: count }, () => 1.2 + Math.random() * 0.8),
-    [count]
-  );
-  const phases = useMemo(
-    () => Array.from({ length: count }, () => Math.random() * Math.PI * 2),
-    [count]
-  );
-  const ampY = useMemo(
-    () => Array.from({ length: count }, () => 0.12 + Math.random() * 0.14),
-    [count]
-  );
-  const ampZ = useMemo(
-    () => Array.from({ length: count }, () => 0.18 + Math.random() * 0.17),
-    [count]
-  );
-
-  useEffect(() => () => dotTexture.dispose(), [dotTexture]);
-
-  useFrame((state, delta) => {
-    if (!isActive || !pointsRef.current) return;
-    const t = state.clock.elapsedTime;
-
-    for (let i = 0; i < count; i++) {
-      const idx = i * 3;
-      const lane = laneIndices[i];
-      positions[idx] += speeds[i] * delta * 1.55;
-      const flow = getLaminarOffsets(
-        positions[idx],
-        t,
-        phases[i],
-        ampY[i],
-        ampZ[i],
-        speeds[i]
-      );
-      const targetY = laneY[lane] + flow.dy;
-      const targetZ = laneZ[lane] + flow.dz;
-      positions[idx + 1] = THREE.MathUtils.lerp(positions[idx + 1], targetY, 0.2);
-      positions[idx + 2] = THREE.MathUtils.lerp(positions[idx + 2], targetZ, 0.2);
-
-      if (positions[idx] > 7.2) {
-        positions[idx] = -7.2;
-        laneIndices[i] = Math.random() < 0.2 ? pickLaneByWeights(laneWeights) : lane;
-        const nextLane = laneIndices[i];
-        positions[idx + 1] = laneY[nextLane] + (Math.random() * 2 - 1) * 0.2;
-        positions[idx + 2] = laneZ[nextLane] + (Math.random() * 2 - 1) * 0.25;
-      }
-    }
-
-    pointsRef.current.geometry.attributes.position.needsUpdate = true;
-  });
-
-  return (
-    <group position={[0, 0, z]}>
-      <points ref={pointsRef} raycast={() => null}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[positions, 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          map={dotTexture}
-          color={palette.accent}
-          size={0.12}
-          transparent
-          opacity={0.72}
-          alphaTest={0.1}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </points>
-    </group>
-  );
-}
-
 function CRTTV({
   channel,
   onScreenFocus,
@@ -1301,21 +1551,62 @@ function CRTTV({
     screenRef.current.getWorldQuaternion(screenQuaternion);
     normal.applyQuaternion(screenQuaternion).normalize();
 
+    const yOffset = channel === 0 ? -0.12 : 0.05;
+    const lookAtOffset = channel === 0 ? -0.08 : 0;
     const cameraPosition = screenPosition
       .clone()
-      .add(normal.multiplyScalar(1.65))
-      .add(new THREE.Vector3(0, 0.22, 0));
+      .add(normal.multiplyScalar(0.92))
+      .add(new THREE.Vector3(0, yOffset, 0));
+
+    const lookAtPoint = [
+      screenPosition.x,
+      screenPosition.y + lookAtOffset,
+      screenPosition.z,
+    ];
 
     onScreenFocus({
       key: `tv-${channel}`,
       channel,
       cameraPosition: [cameraPosition.x, cameraPosition.y, cameraPosition.z],
-      lookAt: [screenPosition.x, screenPosition.y, screenPosition.z],
+      lookAt: lookAtPoint,
     });
   }
 
+  const handlePointerOver = useCallback(() => {
+    document.body.style.cursor = "pointer";
+  }, []);
+
+  const handlePointerOut = useCallback(() => {
+    document.body.style.cursor = "default";
+  }, []);
+
+  useEffect(() => {
+    return () => { document.body.style.cursor = "default"; };
+  }, []);
+
+  const spotTargetRef = useRef();
+  const spotRef = useRef();
+
+  useEffect(() => {
+    if (spotRef.current && spotTargetRef.current) {
+      spotRef.current.target = spotTargetRef.current;
+    }
+  }, []);
+
   return (
     <group position={layout.position} rotation={layout.rotation}>
+      <object3D ref={spotTargetRef} position={[0, 0, -0.1]} />
+      <spotLight
+        ref={spotRef}
+        position={[0, 2.4, 0]}
+        angle={0.55}
+        penumbra={0.7}
+        intensity={4.5}
+        distance={6}
+        color="#fff6e6"
+        castShadow={false}
+      />
+
       <primitive
         object={tvModel}
         position={tvVisuals.model.position}
@@ -1328,6 +1619,8 @@ function CRTTV({
         position={tvVisuals.screen.position}
         rotation={tvVisuals.screen.rotation}
         onPointerDown={handleScreenClick}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
         renderOrder={6}
       >
         <planeGeometry args={tvVisuals.screen.size} />
@@ -1644,9 +1937,46 @@ function SakuraEnvironment({
         color={isNight ? "#ffd9a6" : "#fff3c2"}
       />
 
-      <CRTTV
-        channel={index}
-        onScreenFocus={onScreenFocus}
+      <CRTTV channel={index} onScreenFocus={onScreenFocus} />
+    </group>
+  );
+}
+
+function DesertRoadModel({ index, isActive, isNight }) {
+  const { scene } = useGLTF(DESERT_ROAD_PATH);
+  const model = useMemo(() => scene.clone(true), [scene]);
+  const modelRef = useRef();
+  const controls = getChannelControls(index);
+  const modelControls = controls.desertRoadModel || {
+    position: [0, -0.5, 0],
+    rotation: [0, 0, 0],
+    scale: 1,
+  };
+
+  useFrame((state) => {
+    if (!isActive || !modelRef.current) return;
+    modelRef.current.rotation.y =
+      modelControls.rotation[1] + Math.sin(state.clock.elapsedTime * 0.1) * 0.01;
+  });
+
+  useEffect(() => {
+    model.traverse((child) => {
+      if (!child.isMesh) return;
+      child.frustumCulled = true;
+      const transparent = child.material?.transparent && (child.material?.opacity ?? 1) < 0.95;
+      child.castShadow = !transparent;
+      child.receiveShadow = !transparent;
+    });
+  }, [model]);
+
+  return (
+    <group position={controls.sceneOffset} scale={controls.sceneScale}>
+      <primitive
+        ref={modelRef}
+        object={model}
+        position={modelControls.position}
+        rotation={modelControls.rotation}
+        scale={modelControls.scale}
       />
     </group>
   );
@@ -1660,6 +1990,7 @@ function DesertEnvironment({
   isActive,
   isNight,
 }) {
+  const controls = getChannelControls(index);
   const heatRippleRef = useRef();
   const z = getChannelAnchor(index);
 
@@ -1683,6 +2014,12 @@ function DesertEnvironment({
         <ringGeometry args={[8.1, 8.9, 48]} />
         <meshBasicMaterial color={palette.accent} transparent opacity={0.2} />
       </mesh>
+
+      <DesertRoadModel
+        index={index}
+        isActive={isActive}
+        isNight={isNight}
+      />
 
       <mesh position={[-2.0, 0.78, 0.7]} scale={[1.8, 0.6, 1.2]}>
         <sphereGeometry args={[1.2, 24, 20]} />
@@ -1726,10 +2063,7 @@ function DesertEnvironment({
         color={palette.accent}
       />
 
-      <CRTTV
-        channel={index}
-        onScreenFocus={onScreenFocus}
-      />
+      <CRTTV channel={index} onScreenFocus={onScreenFocus} />
     </group>
   );
 }
@@ -1742,11 +2076,11 @@ function ArcticEnvironment({
   isActive,
   isNight,
 }) {
+  const controls = getChannelControls(index);
   const { scene } = useGLTF(WINTER_SCENE_PATH);
   const model = useMemo(() => scene.clone(true), [scene]);
   const modelRef = useRef();
   const z = getChannelAnchor(index);
-  const controls = getChannelControls(index);
   const modelControls = controls.winterModel || {
     position: [0, -0.2, -0.75],
     rotation: [0, 0, 0],
@@ -1799,15 +2133,108 @@ function ArcticEnvironment({
         color={palette.accent}
       />
 
-      <CRTTV
-        channel={index}
-        onScreenFocus={onScreenFocus}
+      <CRTTV channel={index} onScreenFocus={onScreenFocus} />
+    </group>
+  );
+}
+
+function SpacePlanetModel({ index, isActive }) {
+  const { scene } = useGLTF(SPACE_PLANET_PATH);
+  const model = useMemo(() => scene.clone(true), [scene]);
+  const modelRef = useRef();
+  const controls = getChannelControls(index);
+  const modelControls = controls.spacePlanetModel || {
+    position: [2.8, -0.6, -3.5],
+    rotation: [0.15, 0.4, -0.1],
+    scale: 1.8,
+  };
+
+  useFrame((state) => {
+    if (!isActive || !modelRef.current) return;
+    modelRef.current.rotation.y =
+      modelControls.rotation[1] + state.clock.elapsedTime * 0.02;
+  });
+
+  useEffect(() => {
+    model.traverse((child) => {
+      if (!child.isMesh) return;
+      child.frustumCulled = true;
+      child.castShadow = false;
+      child.receiveShadow = false;
+    });
+  }, [model]);
+
+  return (
+    <group position={controls.sceneOffset} scale={controls.sceneScale}>
+      <primitive
+        ref={modelRef}
+        object={model}
+        position={modelControls.position}
+        rotation={modelControls.rotation}
+        scale={modelControls.scale}
       />
     </group>
   );
 }
 
-function PlaceholderEnvironment({
+function SpaceStarField({ isActive }) {
+  const pointsRef = useRef();
+  const starCount = 320;
+
+  const { positions, sizes, twinklePhases } = useMemo(() => {
+    const positions = new Float32Array(starCount * 3);
+    const sizes = new Float32Array(starCount);
+    const twinklePhases = new Float32Array(starCount);
+    for (let i = 0; i < starCount; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = 8 + Math.random() * 4;
+      positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = Math.abs(r * Math.cos(phi)) * 0.7 + 0.3;
+      positions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+      sizes[i] = 0.02 + Math.random() * 0.06;
+      twinklePhases[i] = Math.random() * Math.PI * 2;
+    }
+    return { positions, sizes, twinklePhases };
+  }, []);
+
+  const dotTexture = useMemo(() => createSoftDotTexture(), []);
+
+  useEffect(() => () => dotTexture.dispose(), [dotTexture]);
+
+  useFrame((state) => {
+    if (!isActive || !pointsRef.current) return;
+    const t = state.clock.elapsedTime;
+    const sizeAttr = pointsRef.current.geometry.attributes.size;
+    for (let i = 0; i < starCount; i++) {
+      const twinkle = 0.5 + 0.5 * Math.sin(t * (0.8 + twinklePhases[i] * 0.5) + twinklePhases[i]);
+      sizeAttr.array[i] = sizes[i] * (0.4 + twinkle * 0.6);
+    }
+    sizeAttr.needsUpdate = true;
+  });
+
+  return (
+    <points ref={pointsRef} raycast={() => null} frustumCulled={false}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-size" args={[sizes.slice(), 1]} />
+      </bufferGeometry>
+      <pointsMaterial
+        map={dotTexture}
+        color="#e8e8ff"
+        size={0.12}
+        sizeAttenuation
+        transparent
+        opacity={0.95}
+        alphaTest={0.05}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </points>
+  );
+}
+
+function SpaceEnvironment({
   index,
   palette,
   onScreenFocus,
@@ -1815,38 +2242,47 @@ function PlaceholderEnvironment({
   isActive,
   isNight,
 }) {
-  const spinRef = useRef();
+  const tvFloatRef = useRef();
   const z = getChannelAnchor(index);
 
   useFrame((state) => {
-    if (!isActive || !spinRef.current) return;
-    spinRef.current.rotation.y = state.clock.elapsedTime * 0.4;
+    if (!isActive || !tvFloatRef.current) return;
+    const t = state.clock.elapsedTime;
+    tvFloatRef.current.position.y = Math.sin(t * 0.6) * 0.08;
+    tvFloatRef.current.rotation.z = Math.sin(t * 0.35) * 0.015;
   });
 
   return (
     <group position={[0, 0, z]}>
-      <SceneFogEnvelope palette={palette} isNight={isNight} />
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[8, 32]} />
-        <meshStandardMaterial color={palette.ground} roughness={0.95} />
-      </mesh>
+      <SpaceStarField isActive={isActive} />
 
-      <mesh ref={spinRef} position={[0, 1.1, 0]}>
-        <torusKnotGeometry args={[0.8, 0.18, 80, 16]} />
-        <meshStandardMaterial color={palette.accent} roughness={0.45} metalness={0.4} />
-      </mesh>
+      <SpacePlanetModel
+        index={index}
+        isActive={isActive}
+      />
+
+      <directionalLight
+        position={[-8, 12, 6]}
+        intensity={isActive ? 1.8 : 0}
+        color="#fff4e0"
+      />
 
       <pointLight
-        position={[0, 3.2, 0.5]}
-        intensity={isActive ? 0.9 : 0}
+        position={[-1.5, 3.5, -2]}
+        intensity={isActive ? 0.6 : 0}
+        distance={14}
+        color="#8ecaff"
+      />
+      <pointLight
+        position={[2, 1, 1]}
+        intensity={isActive ? 0.35 : 0}
         distance={10}
-        color={palette.accent}
+        color="#c4a0ff"
       />
 
-      <CRTTV
-        channel={index}
-        onScreenFocus={onScreenFocus}
-      />
+      <group ref={tvFloatRef}>
+        <CRTTV channel={index} onScreenFocus={onScreenFocus} />
+      </group>
     </group>
   );
 }
@@ -1871,7 +2307,8 @@ function CameraRail({ channel, onSceneReady, focusTarget }) {
         SCENE_CONFIG.camera.height,
         anchorZ + SCENE_CONFIG.camera.zOffset
       );
-      targetLookAt.current.set(0, SCENE_CONFIG.camera.lookAtHeight, anchorZ);
+      const lookAtHeight = getChannelLookAtHeight(clamped);
+      targetLookAt.current.set(0, lookAtHeight, anchorZ);
     }
 
     notifiedRef.current = false;
@@ -1884,7 +2321,8 @@ function CameraRail({ channel, onSceneReady, focusTarget }) {
       SCENE_CONFIG.camera.height,
       initialAnchorZ + SCENE_CONFIG.camera.zOffset
     );
-    liveLookAt.current.set(0, SCENE_CONFIG.camera.lookAtHeight, initialAnchorZ);
+    const initialLookAtHeight = getChannelLookAtHeight(clampChannel(channel));
+    liveLookAt.current.set(0, initialLookAtHeight, initialAnchorZ);
     camera.lookAt(liveLookAt.current);
   }, [camera]);
 
@@ -1940,10 +2378,64 @@ function RendererTuning({ isNight }) {
   return null;
 }
 
-function CinematicLighting({ isNight, theme, anchorZ }) {
+function FogDarkening({ isFocused, activeChannel, theme }) {
+  const { scene } = useThree();
+
+  useEffect(() => {
+    if (!scene.fog) {
+      const isSpace = activeChannel === 3;
+      scene.fog = new THREE.Fog(
+        theme.fogColor,
+        isSpace ? 80 : SCENE_CONFIG.fog.near,
+        isSpace ? 120 : SCENE_CONFIG.fog.far
+      );
+    }
+  }, [scene, theme.fogColor, activeChannel]);
+
+  useFrame((_, delta) => {
+    if (!scene.fog) return;
+    const t = 1 - Math.exp(-delta * 2.8);
+    const isSpace = activeChannel === 3;
+
+    const targetNear = isFocused ? 0.8 : (isSpace ? 80 : SCENE_CONFIG.fog.near);
+    const targetFar = isFocused ? 5.5 : (isSpace ? 120 : SCENE_CONFIG.fog.far);
+
+    scene.fog.near += (targetNear - scene.fog.near) * t;
+    scene.fog.far += (targetFar - scene.fog.far) * t;
+    scene.fog.color.set(isFocused ? "#050508" : theme.fogColor);
+  });
+
+  return null;
+}
+
+function CinematicLighting({ isNight, theme, anchorZ, isFocused }) {
   const targetRef = useRef();
   const keyRef = useRef();
   const fillRef = useRef();
+  const ambientRef = useRef();
+  const hemiRef = useRef();
+
+  const baseAmbient = isNight ? theme.ambientIntensity * 0.92 : theme.ambientIntensity * 0.72;
+  const baseHemi = isNight ? 0.42 : 0.44;
+  const baseKey = isNight ? theme.directionalIntensity * 0.98 : theme.directionalIntensity * 1.12;
+  const baseFill = isNight ? 0.24 : 0.22;
+
+  useFrame((_, delta) => {
+    const t = 1 - Math.exp(-delta * 3.2);
+    const focusMul = isFocused ? 0.06 : 1;
+    if (ambientRef.current) {
+      ambientRef.current.intensity += (baseAmbient * focusMul - ambientRef.current.intensity) * t;
+    }
+    if (hemiRef.current) {
+      hemiRef.current.intensity += (baseHemi * focusMul - hemiRef.current.intensity) * t;
+    }
+    if (keyRef.current) {
+      keyRef.current.intensity += (baseKey * focusMul - keyRef.current.intensity) * t;
+    }
+    if (fillRef.current) {
+      fillRef.current.intensity += (baseFill * focusMul - fillRef.current.intensity) * t;
+    }
+  });
 
   useEffect(() => {
     if (!targetRef.current) return;
@@ -1980,13 +2472,15 @@ function CinematicLighting({ isNight, theme, anchorZ }) {
       <object3D ref={targetRef} position={[0, 1.1, anchorZ]} />
 
       <ambientLight
-        intensity={isNight ? theme.ambientIntensity * 0.92 : theme.ambientIntensity * 0.72}
+        ref={ambientRef}
+        intensity={baseAmbient}
         color={isNight ? "#9bb2d6" : "#fff1d7"}
       />
       <hemisphereLight
+        ref={hemiRef}
         color={isNight ? "#9ab4dd" : "#ffeac2"}
         groundColor={theme.hemisphereGround}
-        intensity={isNight ? 0.42 : 0.44}
+        intensity={baseHemi}
       />
 
       <directionalLight
@@ -1996,7 +2490,7 @@ function CinematicLighting({ isNight, theme, anchorZ }) {
           isNight ? 12.2 : 14.8,
           anchorZ + (isNight ? 7.1 : 6.4),
         ]}
-        intensity={isNight ? theme.directionalIntensity * 0.98 : theme.directionalIntensity * 1.12}
+        intensity={baseKey}
         color={isNight ? "#b8d2ff" : "#ffe2ad"}
         castShadow
       />
@@ -2007,7 +2501,7 @@ function CinematicLighting({ isNight, theme, anchorZ }) {
           isNight ? 6.6 : 8.4,
           anchorZ + (isNight ? -5.8 : -6.8),
         ]}
-        intensity={isNight ? 0.24 : 0.22}
+        intensity={baseFill}
         color={isNight ? "#86a7ff" : "#b1ffe9"}
       />
     </>
@@ -2069,19 +2563,18 @@ function MultiEnvironmentScene({
     <>
       <RendererTuning isNight={isNight} />
 
-      <fog
-        attach="fog"
-        args={[theme.fogColor, SCENE_CONFIG.fog.near, SCENE_CONFIG.fog.far]}
-      />
+      <FogDarkening isFocused={!!focusedScreen} activeChannel={activeChannel} theme={theme} />
 
-      <CinematicLighting isNight={isNight} theme={theme} anchorZ={activeAnchorZ} />
+      <CinematicLighting isNight={isNight} theme={theme} anchorZ={activeAnchorZ} isFocused={!!focusedScreen} />
 
       <CelestialBodies isNight={isNight} />
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.4, -54]} receiveShadow>
-        <planeGeometry args={[64, 240]} />
-        <meshStandardMaterial color={theme.planeColor} roughness={1} />
-      </mesh>
+      {activeChannel !== 3 && (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.4, -54]} receiveShadow>
+          <planeGeometry args={[64, 240]} />
+          <meshStandardMaterial color={theme.planeColor} roughness={1} />
+        </mesh>
+      )}
 
       {ENVIRONMENT_MODES.map((env, index) => {
         const isActive = activeChannel === index;
@@ -2127,7 +2620,7 @@ function MultiEnvironmentScene({
                 isNight={isNight}
               />
             ) : (
-              <PlaceholderEnvironment
+              <SpaceEnvironment
                 index={index}
                 palette={palette}
                 onScreenFocus={onScreenFocus}
@@ -2224,5 +2717,7 @@ export function ThreeEnv({
 }
 
 useGLTF.preload(SAKURA_BRIDGE_PATH);
+useGLTF.preload(DESERT_ROAD_PATH);
 useGLTF.preload(WINTER_SCENE_PATH);
+useGLTF.preload(SPACE_PLANET_PATH);
 useGLTF.preload(SOVIET_TV_PATH);

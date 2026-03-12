@@ -47,7 +47,7 @@ export function MediumBody({
   const [currentChannel, setCurrentChannel] = useState(0);
   const [commentOpen, setCommentOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [shareOpen, setShareOpen] = useState(false);
   const [currentShareSocial, setCurrentShareSocial] = useState(0);
   const [windEnabled, setWindEnabled] = useState(true);
@@ -58,7 +58,7 @@ export function MediumBody({
     "CHANNEL 1 / SAKURA",
     "CHANNEL 2 / DESERT",
     "CHANNEL 3 / ARCTIC",
-    "CHANNEL 4 / NEON",
+    "CHANNEL 4 / SPACE",
   ];
   const projectCount = Object.keys(projects).length;
   const channelCount = channels.length;
@@ -148,47 +148,6 @@ export function MediumBody({
           view3d ? `scene-ui-active scene-ch-${currentChannel} scene-time-${sceneTime}` : ""
         }`}
       >
-        <div className="medium-extra-btn-container">
-          <div
-            className="home-btn top-btn"
-            style={{ margin: "5px" }}
-            onClick={() =>
-              window.open("https://github.com/malikgaurav626", "_blank")
-            }
-          >
-            GITHUB
-          </div>
-          <div
-            style={{ margin: "5px" }}
-            className="home-btn top-btn"
-            onClick={() =>
-              window.open(
-                "https://www.linkedin.com/in/malikgaurav626/",
-                "_blank"
-              )
-            }
-          >
-            LINKEDIN
-          </div>
-          <div
-            style={{ margin: "5px" }}
-            className="home-btn top-btn"
-            onClick={() =>
-              window.open("https://twitter.com/gauravm444", "_blank")
-            }
-          >
-            INSTAGRAM
-          </div>
-          <div
-            style={{ margin: "5px" }}
-            className="home-btn top-btn"
-            onClick={() =>
-              window.open("https://www.instagram.com/malik_aryan_58/", "_blank")
-            }
-          >
-            TWITTER
-          </div>
-        </div>
         <div className="medium-heading-container">
           <div className="medium-heading-title-container">
             <div className="medium-heading-left-side">
@@ -206,17 +165,6 @@ export function MediumBody({
                   <span className="heading-nav-item only-medium">ALL YEAR</span>
                 </div>
               </div>
-              <div className="time-title time-title-left">
-                <div>
-                  {new Date().toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "numeric",
-                    hour12: false,
-                  })}
-                </div>
-                <div className="time-title-title">GAU</div>
-                <div className="made-for">Made For Gaurav</div>
-              </div>
             </div>
             <div className="medium-heading-right-side">
               <div className="medium-made-in">
@@ -232,17 +180,6 @@ export function MediumBody({
                   <img id="qr-id"></img>
                 </div>
               </div>
-              <div className="time-title time-title-right">
-                <div>
-                  {new Date().toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "numeric",
-                    hour12: false,
-                  })}
-                </div>
-                <div className="time-title-title">GAU</div>
-                <div className="made-for">Made For Gaurav</div>
-              </div>
 
               <div className="logo"></div>
             </div>
@@ -251,46 +188,8 @@ export function MediumBody({
         <div className="fading-stripes"></div>
         <div className="medium-footer">
           <div className="project-details">
-            <div className="medium-project-image">
-              <img
-                id="project-img-id"
-                src="/temp.webp"
-                alt="project logo"
-              ></img>
-            </div>
-
             <div className="medium-project-title">
               {projects[currentProject]?.name}
-            </div>
-            <div className="medium-project-subtitle">
-              BY{" "}
-              {projects[currentProject]?.developers.map((dev, ind) => (
-                <span className="dev-item" key={"dev-" + ind}>
-                  @{dev.toUpperCase()}
-                </span>
-              ))}
-            </div>
-            <div className="medium-project-vid-duration">
-              <div className="duration-image-container">
-              <img
-                src={controlPlayState ? "/pause.png" : "/play.png"}
-                id="play-pause-id"
-                onClick={handlePlayPauseControl}
-              ></img>
-              </div>{" "}
-              <div className="duration">0:00</div>
-              <button
-                className={
-                  "github-btn " +
-                  (projects[currentProject]?.github ? " " : " disabled-btn")
-                }
-                onClick={() => {
-                  if (projects[currentProject].github)
-                    window.open(projects[currentProject].githubLink, "_blank");
-                }}
-              >
-                GITHUB
-              </button>
             </div>
           </div>
           <ControlBar
