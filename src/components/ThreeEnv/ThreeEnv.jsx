@@ -1,7 +1,8 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { Html, useGLTF } from "@react-three/drei";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
+import { TV_SCREEN_HTML_HEIGHT, TV_SCREEN_HTML_WIDTH, TVScreenPage } from "./TVScreenPage";
 import "./ThreeEnv.css";
 
 const SCENE_CONFIG = {
@@ -42,11 +43,18 @@ const DEFAULT_TV_VISUALS = {
     rotation: [0, Math.PI, 0],
     scale: 0.46,
   },
-  screen: {
-    position: [0, 0.03, -0.24],
-    rotation: [0, Math.PI, 0],
-    size: [0.62, 0.44],
-  },
+};
+
+const DEFAULT_TV_SCREEN_CONFIG = {
+  position: [0, 0.03, -0.24],
+  rotation: [0, Math.PI, 0],
+  scale: 1,
+  height: 0.44,
+  aspectRatio: 0.62 / 0.44,
+  curvature: 0.085,
+  surfaceOffset: 0.03,
+  glassOffset: 0.004,
+  segments: [48, 36],
 };
 
 const SAKURA_BRIDGE_MATERIAL_OVERRIDES = {
@@ -82,7 +90,18 @@ const CHANNEL_CONTROLS = [
       position: [0.12, 1.22, -0.12],
       rotation: [0, Math.PI * 0.95, 0],
     },
-    tvVisuals: { model: { scale: 1.1 } },
+    tvVisuals: {
+      model: { scale: 1.1 },
+    },
+    screen: {
+      scale: 0.56,
+      aspectRatio: 0.55 / 0.44,
+      curvature: 0.035,
+      position: [0, 0.24, 0.19],
+      rotation: [Math.PI * -0.01, Math.PI * 2, 0],
+      surfaceOffset: 0.03,
+      glassOffset: 0.004,
+    },
   },
   {
     anchorOffsetZ: 0,
@@ -94,6 +113,15 @@ const CHANNEL_CONTROLS = [
     },
     tvVisuals: {
       model: { scale: 1.65 },
+    },
+    screen: {
+      scale: 0.56,
+      aspectRatio: 0.55 / 0.44,
+      curvature: 0.035,
+      position: [0, 0.24, 0.19],
+      rotation: [Math.PI * -0.01, Math.PI * 2, 0],
+      surfaceOffset: 0.03,
+      glassOffset: 0.004,
     },
   },
   {
@@ -109,7 +137,18 @@ const CHANNEL_CONTROLS = [
       position: [0.75, 0.42, 2.35],
       rotation: [0, Math.PI * 0.95, 0],
     },
-    tvVisuals: { model: { scale: 1.65 } },
+    tvVisuals: {
+      model: { scale: 1.65 },
+    },
+    screen: {
+      scale: 0.56,
+      aspectRatio: 0.55 / 0.44,
+      curvature: 0.035,
+      position: [0, 0.24, 0.19],
+      rotation: [Math.PI * -0.01, Math.PI * 2, 0],
+      surfaceOffset: 0.03,
+      glassOffset: 0.004,
+    },
   },
   {
     anchorOffsetZ: 0,
@@ -125,9 +164,41 @@ const CHANNEL_CONTROLS = [
       position: [0.9, 1.5, 1.2],
       rotation: [0, Math.PI * 0.95, 0],
     },
-    tvVisuals: { model: { scale: 1.4 } },
+    tvVisuals: {
+      model: { scale: 1.4 },
+    },
+    screen: {
+      scale: 0.56,
+      aspectRatio: 0.55 / 0.44,
+      curvature: 0.035,
+      position: [0, 0.24, 0.19],
+      rotation: [Math.PI * -0.01, Math.PI * 2, 0],
+      surfaceOffset: 0.03,
+      glassOffset: 0.004,
+    },
   },
 ];
+
+function createCurvedScreenGeometry(width, height, curvature = 0.085, segmentsX = 48, segmentsY = 36) {
+  const geometry = new THREE.PlaneGeometry(width, height, segmentsX, segmentsY);
+  const position = geometry.attributes.position;
+  const bulgeDepth = Math.min(width, height) * curvature;
+
+  for (let index = 0; index < position.count; index += 1) {
+    const x = position.getX(index);
+    const y = position.getY(index);
+    const nx = x / (width * 0.5);
+    const ny = y / (height * 0.5);
+    const influence = Math.max(0, 1 - nx * nx) * Math.max(0, 1 - ny * ny);
+
+    position.setZ(index, influence * bulgeDepth);
+  }
+
+  position.needsUpdate = true;
+  geometry.computeVertexNormals();
+
+  return geometry;
+}
 
 const UI_THEMES = {
   light: {
@@ -1082,6 +1153,36 @@ function getChannelControls(index) {
   return CHANNEL_CONTROLS[clampChannel(index)] || CHANNEL_CONTROLS[0];
 }
 
+function getChannelTVConfig(index) {
+  const controls = getChannelControls(index);
+  const screenOverrides = controls.screen || {};
+  const scale = Number.isFinite(screenOverrides.scale)
+    ? screenOverrides.scale
+    : DEFAULT_TV_SCREEN_CONFIG.scale;
+  const height = Number.isFinite(screenOverrides.height)
+    ? screenOverrides.height
+    : DEFAULT_TV_SCREEN_CONFIG.height;
+  const aspectRatio = Number.isFinite(screenOverrides.aspectRatio)
+    ? screenOverrides.aspectRatio
+    : DEFAULT_TV_SCREEN_CONFIG.aspectRatio;
+
+  return {
+    layout: controls.tvLayout,
+    model: {
+      ...DEFAULT_TV_VISUALS.model,
+      ...(controls.tvVisuals?.model || {}),
+    },
+    screen: {
+      ...DEFAULT_TV_SCREEN_CONFIG,
+      ...screenOverrides,
+      position: screenOverrides.position || DEFAULT_TV_SCREEN_CONFIG.position,
+      rotation: screenOverrides.rotation || DEFAULT_TV_SCREEN_CONFIG.rotation,
+      segments: screenOverrides.segments || DEFAULT_TV_SCREEN_CONFIG.segments,
+      size: [height * aspectRatio * scale, height * scale],
+    },
+  };
+}
+
 function getChannelAnchor(channel) {
   const controls = getChannelControls(channel);
   return -channel * SCENE_CONFIG.environmentSpacing + (controls.anchorOffsetZ || 0);
@@ -1510,22 +1611,40 @@ function ArcticWind({ index, palette, isActive }) {
 function CRTTV({
   channel,
   onScreenFocus,
+  tvConfig,
+  focused = false,
 }) {
   const screenRef = useRef();
   const { scene } = useGLTF(SOVIET_TV_PATH);
   const tvModel = useMemo(() => scene.clone(true), [scene]);
-  const controls = getChannelControls(channel);
-  const layout = controls.tvLayout;
-  const tvVisuals = {
-    model: {
-      ...DEFAULT_TV_VISUALS.model,
-      ...(controls.tvVisuals?.model || {}),
-    },
-    screen: {
-      ...DEFAULT_TV_VISUALS.screen,
-      ...(controls.tvVisuals?.screen || {}),
-    },
-  };
+  const layout = tvConfig.layout;
+  const modelConfig = tvConfig.model;
+  const screenConfig = tvConfig.screen;
+  const screenGeometry = useMemo(
+    () =>
+      createCurvedScreenGeometry(
+        screenConfig.size[0],
+        screenConfig.size[1],
+        screenConfig.curvature,
+        screenConfig.segments[0],
+        screenConfig.segments[1]
+      ),
+    [
+      screenConfig.size[0],
+      screenConfig.size[1],
+      screenConfig.curvature,
+      screenConfig.segments[0],
+      screenConfig.segments[1],
+    ]
+  );
+  const htmlScale = useMemo(
+    () =>
+      Math.min(
+        screenConfig.size[0] / TV_SCREEN_HTML_WIDTH,
+        screenConfig.size[1] / TV_SCREEN_HTML_HEIGHT
+      ),
+    [screenConfig.size[0], screenConfig.size[1]]
+  );
 
   useEffect(() => {
     tvModel.traverse((child) => {
@@ -1538,6 +1657,12 @@ function CRTTV({
       child.raycast = () => null;
     });
   }, [tvModel]);
+
+  useEffect(() => {
+    return () => {
+      screenGeometry.dispose();
+    };
+  }, [screenGeometry]);
 
   function handleScreenClick(event) {
     event.stopPropagation();
@@ -1607,30 +1732,46 @@ function CRTTV({
         castShadow={false}
       />
 
-      <primitive
-        object={tvModel}
-        position={tvVisuals.model.position}
-        rotation={tvVisuals.model.rotation}
-        scale={tvVisuals.model.scale}
-      />
-
-      <mesh
-        ref={screenRef}
-        position={tvVisuals.screen.position}
-        rotation={tvVisuals.screen.rotation}
-        onPointerDown={handleScreenClick}
-        onPointerOver={handlePointerOver}
-        onPointerOut={handlePointerOut}
-        renderOrder={6}
+      <group
+        position={modelConfig.position}
+        rotation={modelConfig.rotation}
+        scale={modelConfig.scale}
       >
-        <planeGeometry args={tvVisuals.screen.size} />
-        <meshBasicMaterial
-          transparent
-          opacity={0}
-          depthWrite={false}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
+        <primitive object={tvModel} />
+        <group
+          position={screenConfig.position}
+          rotation={screenConfig.rotation}
+        >
+          <mesh
+            ref={screenRef}
+            geometry={screenGeometry}
+            position={[0, 0, screenConfig.surfaceOffset]}
+            onPointerDown={handleScreenClick}
+            onPointerOver={handlePointerOver}
+            onPointerOut={handlePointerOut}
+            renderOrder={6}
+          >
+            <meshBasicMaterial
+              transparent
+              opacity={0}
+              depthWrite={false}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+          <Html
+            transform
+            center
+            scale={htmlScale}
+            distanceFactor={400}
+            pointerEvents={focused ? "auto" : "none"}
+            position={[0, 0, screenConfig.surfaceOffset + screenConfig.glassOffset + 0.003]}
+            className={`tv-screen-html ${focused ? "tv-screen-html-active" : ""}`}
+            occlude={false}
+          >
+            <TVScreenPage channel={channel} interactive={focused} />
+          </Html>
+        </group>
+      </group>
     </group>
   );
 }
@@ -1908,6 +2049,7 @@ function SakuraEnvironment({
   isTvFocused,
   isActive,
   isNight,
+  tvConfig,
 }) {
   const z = getChannelAnchor(index);
 
@@ -1937,7 +2079,12 @@ function SakuraEnvironment({
         color={isNight ? "#ffd9a6" : "#fff3c2"}
       />
 
-      <CRTTV channel={index} onScreenFocus={onScreenFocus} />
+      <CRTTV
+        channel={index}
+        onScreenFocus={onScreenFocus}
+        tvConfig={tvConfig}
+        focused={isTvFocused}
+      />
     </group>
   );
 }
@@ -1989,6 +2136,7 @@ function DesertEnvironment({
   isTvFocused,
   isActive,
   isNight,
+  tvConfig,
 }) {
   const controls = getChannelControls(index);
   const heatRippleRef = useRef();
@@ -2063,7 +2211,12 @@ function DesertEnvironment({
         color={palette.accent}
       />
 
-      <CRTTV channel={index} onScreenFocus={onScreenFocus} />
+      <CRTTV
+        channel={index}
+        onScreenFocus={onScreenFocus}
+        tvConfig={tvConfig}
+        focused={isTvFocused}
+      />
     </group>
   );
 }
@@ -2075,6 +2228,7 @@ function ArcticEnvironment({
   isTvFocused,
   isActive,
   isNight,
+  tvConfig,
 }) {
   const controls = getChannelControls(index);
   const { scene } = useGLTF(WINTER_SCENE_PATH);
@@ -2133,7 +2287,12 @@ function ArcticEnvironment({
         color={palette.accent}
       />
 
-      <CRTTV channel={index} onScreenFocus={onScreenFocus} />
+      <CRTTV
+        channel={index}
+        onScreenFocus={onScreenFocus}
+        tvConfig={tvConfig}
+        focused={isTvFocused}
+      />
     </group>
   );
 }
@@ -2241,6 +2400,7 @@ function SpaceEnvironment({
   isTvFocused,
   isActive,
   isNight,
+  tvConfig,
 }) {
   const tvFloatRef = useRef();
   const z = getChannelAnchor(index);
@@ -2281,7 +2441,12 @@ function SpaceEnvironment({
       />
 
       <group ref={tvFloatRef}>
-        <CRTTV channel={index} onScreenFocus={onScreenFocus} />
+        <CRTTV
+          channel={index}
+          onScreenFocus={onScreenFocus}
+          tvConfig={tvConfig}
+          focused={isTvFocused}
+        />
       </group>
     </group>
   );
@@ -2553,10 +2718,7 @@ function MultiEnvironmentScene({
   const activeAnchorZ = getChannelAnchor(activeChannel);
 
   const onScreenFocus = (focusData) => {
-    setFocusedScreen((prev) => {
-      if (prev?.key === focusData.key) return null;
-      return focusData;
-    });
+    setFocusedScreen(focusData);
   };
 
   return (
@@ -2580,6 +2742,7 @@ function MultiEnvironmentScene({
         const isActive = activeChannel === index;
         const palette = getEnvironmentPalette(index, useEnvironmentModes);
         const isTvFocused = focusedScreen?.key === `tv-${index}`;
+        const tvConfig = getChannelTVConfig(index);
 
         return (
           <group
@@ -2600,6 +2763,7 @@ function MultiEnvironmentScene({
                 isTvFocused={isTvFocused}
                 isActive={isActive}
                 isNight={isNight}
+                tvConfig={tvConfig}
               />
             ) : index === 1 ? (
               <DesertEnvironment
@@ -2609,6 +2773,7 @@ function MultiEnvironmentScene({
                 isTvFocused={isTvFocused}
                 isActive={isActive}
                 isNight={isNight}
+                tvConfig={tvConfig}
               />
             ) : index === 2 ? (
               <ArcticEnvironment
@@ -2618,6 +2783,7 @@ function MultiEnvironmentScene({
                 isTvFocused={isTvFocused}
                 isActive={isActive}
                 isNight={isNight}
+                tvConfig={tvConfig}
               />
             ) : (
               <SpaceEnvironment
@@ -2627,6 +2793,7 @@ function MultiEnvironmentScene({
                 isTvFocused={isTvFocused}
                 isActive={isActive}
                 isNight={isNight}
+                tvConfig={tvConfig}
               />
             )}
           </group>
