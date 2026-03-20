@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { addComment } from "../../firebase/addcomment";
 import {
   TwitterShareBody,
   InstagramShareBody,
@@ -67,20 +66,6 @@ export function MediumBody({
     const projectCount = Object.keys(projects).length;
     if (projectCount === 0) return;
     setCurrentProject((currentProject + 1) % projectCount);
-  }
-
-  function handleCommentSubmit(event) {
-    let comment = event.target.value;
-    let user = "anonymous";
-    let project_id = currentProject;
-
-    const match = comment.match(/^@.*?_/);
-    if (match) {
-      user = match[0].slice(1, -1);
-      comment = comment.replace(match[0], "").trim();
-    }
-
-    addComment(user, comment, project_id);
   }
 
   function handleBackControl() {
@@ -229,7 +214,6 @@ export function MediumBody({
             view3d={view3d}
             setView3d={setView3d}
             handleDialClick={handleDialClick}
-            handleCommentSubmit={handleCommentSubmit}
           />
         </div>
       </div>
@@ -413,4 +397,3 @@ function generateQrCode(url, color) {
       console.error(err);
     });
 }
-

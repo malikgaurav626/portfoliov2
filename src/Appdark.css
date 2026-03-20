@@ -175,7 +175,9 @@ body {
 
 .comments-heading,
 .comments-body,
-.right-footer {
+.right-footer,
+.recruiter-heading,
+.recruiter-panel {
   color: var(--dark-text);
 }
 
@@ -221,6 +223,23 @@ body {
   background-color: var(--dark-bg-panel);
   border-color: var(--dark-border);
   color: var(--dark-text);
+}
+
+.recruiter-panel-card,
+.recruiter-panel-status span,
+.recruiter-panel-action {
+  border-color: var(--dark-border);
+}
+
+.recruiter-panel-status span,
+.recruiter-panel-action {
+  background-color: rgba(222, 192, 247, 0.08);
+}
+
+.recruiter-heading-subtitle,
+.recruiter-panel-label,
+.recruiter-compact-kicker {
+  color: var(--dark-muted);
 }
 
 .dropdown-menu {
@@ -339,8 +358,25 @@ body .control-td-large::before {
 .medium-td svg path,
 .medium-td svg g,
 .comments-heading svg path,
-.comments-heading svg g {
+.comments-heading svg g,
+.recruiter-heading svg path,
+.recruiter-heading svg rect,
+.recruiter-heading svg g,
+.recruiter-heading svg line,
+.medium-comments-logo svg path,
+.medium-comments-logo svg rect,
+.medium-comments-logo svg g,
+.medium-comments-logo svg line {
   fill: var(--dark-text) !important;
+}
+
+.recruiter-heading svg path,
+.recruiter-heading svg rect,
+.recruiter-heading svg line,
+.medium-comments-logo svg path,
+.medium-comments-logo svg rect,
+.medium-comments-logo svg line {
+  stroke: var(--dark-text) !important;
 }
 
 #power-img-id,

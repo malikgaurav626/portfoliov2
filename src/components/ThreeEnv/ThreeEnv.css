@@ -47,17 +47,20 @@
 }
 
 .tv-page::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.06);
   border-radius: 999px;
 }
 
 .tv-page::-webkit-scrollbar-thumb {
-  background: rgba(76, 46, 24, 0.34);
   border-radius: 999px;
 }
 
 .tv-page-interactive {
   user-select: text;
+}
+
+.tv-page:focus,
+.tv-page:focus-visible {
+  outline: none;
 }
 
 .tv-page-header {
@@ -146,6 +149,11 @@
   background: rgba(255, 255, 255, 0.6);
 }
 
+.tv-chip-link {
+  color: inherit;
+  text-decoration: none;
+}
+
 .tv-mini-list {
   display: grid;
   gap: 8px;
@@ -167,23 +175,204 @@
 }
 
 .tv-page-sakura {
-  color: #2c1b24;
+  color: #311826;
   background:
-    radial-gradient(circle at 12% 16%, rgba(255, 233, 243, 0.95), rgba(255, 233, 243, 0) 42%),
-    linear-gradient(145deg, #fef7f1 0%, #f8e9f1 54%, #f2dce8 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 22%),
+    radial-gradient(circle at 84% 16%, rgba(255, 211, 228, 0.56), rgba(255, 211, 228, 0) 22%),
+    radial-gradient(circle at 12% 18%, rgba(255, 244, 247, 0.92), rgba(255, 244, 247, 0) 30%),
+    linear-gradient(135deg, #fff8f4 0%, #f8e2ec 46%, #efcadf 100%);
+  scrollbar-color: rgba(171, 104, 142, 0.72) rgba(255, 235, 243, 0.62);
+  position: relative;
+  border-color: rgba(147, 83, 119, 0.42);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 251, 252, 0.42),
+    inset 0 0 24px rgba(255, 255, 255, 0.16);
+  font-family: "IBM Plex Mono", "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.tv-page-sakura::-webkit-scrollbar-track {
+  background: rgba(255, 235, 243, 0.62);
+}
+
+.tv-page-sakura::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(180deg, rgba(201, 128, 167, 0.9), rgba(138, 78, 114, 0.9));
+  box-shadow: inset 0 0 0 1px rgba(255, 246, 250, 0.32);
+}
+
+.tv-page-sakura::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(121, 57, 93, 0.08) 0, rgba(121, 57, 93, 0.08) 1px, transparent 1px, transparent 14px);
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.tv-page-sakura::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(135, 72, 104, 0.08) 0, transparent 16%, transparent 84%, rgba(135, 72, 104, 0.08));
+  pointer-events: none;
+}
+
+.tv-page-sakura .tv-page-header,
+.tv-page-sakura .tv-featured-card,
+.tv-page-sakura .tv-sakura-ornament-band,
+.tv-page-sakura .tv-sakura-band,
+.tv-page-sakura .tv-chip {
+  position: relative;
+  z-index: 1;
+}
+
+.tv-page-sakura .tv-live-pill,
+.tv-page-sakura .tv-time-label,
+.tv-page-sakura .tv-kicker,
+.tv-page-sakura .tv-section-label,
+.tv-page-sakura .tv-page-footer {
+  color: rgba(110, 48, 82, 0.9);
+}
+
+.tv-page-sakura .tv-live-pill {
+  border-radius: 4px;
+  padding: 4px 9px;
+  border-color: rgba(134, 67, 102, 0.65);
+  background:
+    linear-gradient(180deg, rgba(255, 244, 248, 0.88), rgba(241, 209, 223, 0.7));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.34),
+    0 0 0 1px rgba(115, 59, 90, 0.08);
 }
 
 .tv-sakura-hero {
   display: grid;
+  gap: 10px;
+}
+
+.tv-sakura-window-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 8px) 1fr;
+  gap: 6px;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border: 1px solid rgba(140, 78, 110, 0.32);
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 252, 0.74), rgba(242, 221, 231, 0.62));
+}
+
+.tv-sakura-window-bar span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(171, 100, 140, 0.94), rgba(103, 44, 73, 0.88));
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.34);
+}
+
+.tv-sakura-window-label {
+  justify-self: end;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(96, 39, 68, 0.92);
+}
+
+.tv-sakura-hero-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.tv-sakura-hero-copy {
+  display: grid;
   gap: 4px;
+}
+
+.tv-sakura-title {
+  margin: 0;
+  font-family: "Asrog", "Bebas Neue", "Oswald", "Arial Narrow", sans-serif;
+  font-size: 46px;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: #5f2748;
+  text-shadow:
+    1px 0 rgba(255, 251, 253, 0.9),
+    3px 3px 0 rgba(179, 108, 145, 0.22);
 }
 
 .tv-sakura-role {
   margin: 0;
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: rgba(90, 48, 72, 0.9);
+  letter-spacing: 0.28em;
+  color: rgba(94, 47, 74, 0.92);
+}
+
+.tv-sakura-tagline {
+  max-width: 100%;
+  font-size: 11px;
+  line-height: 1.52;
+  color: rgba(58, 33, 47, 0.9);
+}
+
+.tv-sakura-emblem-card {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid rgba(123, 63, 94, 0.28);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 247, 249, 0.8), rgba(242, 215, 228, 0.56));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+
+.tv-sakura-emblem {
+  position: relative;
+  min-height: 116px;
+  overflow: hidden;
+  border: 1px solid rgba(130, 73, 102, 0.28);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 252, 253, 0.92), rgba(246, 220, 232, 0.82));
+}
+
+.tv-sakura-sun {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255, 249, 251, 0.92), rgba(255, 213, 232, 0.96) 52%, rgba(204, 100, 147, 0.96) 100%);
+  box-shadow: 0 0 20px rgba(209, 113, 153, 0.18);
+}
+
+.tv-sakura-grid-lines {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(119, 64, 93, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(119, 64, 93, 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.42));
+}
+
+.tv-sakura-emblem-copy {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: grid;
+  gap: 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(99, 41, 70, 0.9);
 }
 
 .tv-sakura-grid {
@@ -195,14 +384,23 @@
 
 .tv-sakura-profile-card,
 .tv-sakura-credentials-card,
-.tv-sakura-band {
+.tv-sakura-band,
+.tv-sakura-scroll-panel {
   position: relative;
   overflow: hidden;
+  border-radius: 10px;
+  border-color: rgba(126, 67, 97, 0.24);
+  background:
+    linear-gradient(180deg, rgba(255, 250, 251, 0.8), rgba(244, 221, 231, 0.54));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.26),
+    0 10px 18px rgba(122, 74, 101, 0.08);
 }
 
 .tv-sakura-profile-card::before,
 .tv-sakura-credentials-card::before,
-.tv-sakura-band::before {
+.tv-sakura-band::before,
+.tv-sakura-scroll-panel::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -215,21 +413,247 @@
   gap: 7px;
 }
 
-.tv-sakura-pill-grid {
+.tv-sakura-ornament-band {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(133, 75, 105, 0.24);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 247, 250, 0.72), rgba(247, 224, 234, 0.54));
+}
+
+.tv-sakura-ornament-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(98, 45, 72, 0.88);
+}
+
+.tv-sakura-ornament-grid {
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.tv-sakura-ornament-card {
+  min-height: 94px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid rgba(133, 75, 105, 0.2);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(245, 219, 231, 0.6));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.24),
+    0 6px 12px rgba(123, 74, 100, 0.08);
+  overflow: hidden;
+}
+
+.tv-sakura-ornament-visual {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(132, 72, 102, 0.18);
+  border-radius: 6px;
+  background: rgba(255, 252, 253, 0.56);
+}
+
+.tv-sakura-ornament-meta {
+  display: grid;
+  gap: 2px;
+  color: rgba(77, 37, 56, 0.88);
+}
+
+.tv-sakura-ornament-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.tv-sakura-ornament-copy {
+  font-size: 9px;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(102, 56, 79, 0.72);
+}
+
+.tv-sakura-wave-visual {
+  min-height: 52px;
+  background:
+    radial-gradient(circle at 50% 100%, transparent 14px, rgba(163, 92, 127, 0.34) 14px, rgba(163, 92, 127, 0.34) 16px, transparent 16px) 0 24px / 32px 20px repeat-x,
+    radial-gradient(circle at 50% 100%, transparent 14px, rgba(163, 92, 127, 0.28) 14px, rgba(163, 92, 127, 0.28) 16px, transparent 16px) 16px 12px / 32px 20px repeat-x,
+    radial-gradient(circle at 50% 100%, transparent 14px, rgba(163, 92, 127, 0.22) 14px, rgba(163, 92, 127, 0.22) 16px, transparent 16px) 0 0 / 32px 20px repeat-x,
+    linear-gradient(180deg, rgba(255, 250, 252, 0.92), rgba(246, 222, 233, 0.72));
+}
+
+.tv-sakura-wave-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18), transparent 35%, transparent 65%, rgba(255, 255, 255, 0.16));
+}
+
+.tv-sakura-seal-visual {
+  min-height: 52px;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(135deg, rgba(255, 247, 250, 0.92), rgba(246, 221, 232, 0.74));
+}
+
+.tv-sakura-seal-mark {
+  width: 42px;
+  height: 42px;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  border: 2px solid rgba(170, 54, 83, 0.88);
+  background:
+    linear-gradient(180deg, rgba(255, 214, 224, 0.92), rgba(235, 110, 149, 0.9));
+  box-shadow:
+    0 0 0 2px rgba(255, 246, 249, 0.58),
+    0 8px 16px rgba(183, 79, 120, 0.18);
+  transform: rotate(-6deg);
+}
+
+.tv-sakura-seal-mark span {
+  display: block;
+  border-radius: 1px;
+  background:
+    linear-gradient(180deg, rgba(124, 22, 42, 0.96), rgba(94, 10, 31, 0.92));
+}
+
+.tv-sakura-seal-mark span:nth-child(1) {
+  clip-path: polygon(0 0, 100% 0, 100% 24%, 56% 24%, 56% 76%, 0 76%);
+}
+
+.tv-sakura-seal-mark span:nth-child(2) {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 44% 100%, 44% 66%, 0 66%);
+}
+
+.tv-sakura-seal-mark span:nth-child(3) {
+  clip-path: polygon(0 0, 58% 0, 58% 40%, 100% 40%, 100% 100%, 0 100%);
+}
+
+.tv-sakura-seal-mark span:nth-child(4) {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 58%, 46% 58%, 46% 0);
+}
+
+.tv-sakura-hemp-visual {
+  min-height: 52px;
+  background:
+    linear-gradient(60deg, transparent 47%, rgba(161, 92, 126, 0.22) 47%, rgba(161, 92, 126, 0.22) 53%, transparent 53%) 0 0 / 28px 28px,
+    linear-gradient(-60deg, transparent 47%, rgba(161, 92, 126, 0.22) 47%, rgba(161, 92, 126, 0.22) 53%, transparent 53%) 0 0 / 28px 28px,
+    linear-gradient(0deg, transparent 47%, rgba(161, 92, 126, 0.16) 47%, rgba(161, 92, 126, 0.16) 53%, transparent 53%) 0 0 / 28px 28px,
+    radial-gradient(circle at center, rgba(201, 122, 158, 0.22) 0 1px, transparent 1px) 0 0 / 28px 28px,
+    linear-gradient(180deg, rgba(255, 251, 252, 0.92), rgba(245, 221, 232, 0.74));
+}
+
+.tv-sakura-ornament-card-wave {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(245, 226, 234, 0.68));
+}
+
+.tv-sakura-ornament-card-seal {
+  background:
+    linear-gradient(180deg, rgba(255, 250, 251, 0.82), rgba(247, 220, 226, 0.7));
+}
+
+.tv-sakura-ornament-card-hemp {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 253, 0.8), rgba(242, 221, 233, 0.66));
 }
 
 .tv-sakura-band {
-  border: 1px solid rgba(120, 64, 90, 0.18);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.4);
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 10px;
   padding: 10px;
 }
 
 .tv-sakura-band-copy {
   font-size: 11px;
-  line-height: 1.4;
-  max-width: 94%;
+  line-height: 1.45;
+  color: rgba(58, 31, 45, 0.9);
+}
+
+.tv-sakura-band-meter {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+}
+
+.tv-sakura-band-meter-label,
+.tv-sakura-band-meter-value {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: rgba(96, 43, 69, 0.82);
+}
+
+.tv-sakura-band-meter-track {
+  height: 9px;
+  overflow: hidden;
+  border: 1px solid rgba(131, 70, 99, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.tv-sakura-band-meter-track div {
+  width: 78%;
+  height: 100%;
+  background:
+    linear-gradient(90deg, rgba(250, 180, 210, 0.98), rgba(189, 98, 138, 0.96));
+  box-shadow: 0 0 10px rgba(195, 105, 145, 0.18);
+}
+
+.tv-sakura-link-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.tv-sakura-link {
+  display: grid;
+  gap: 6px;
+  min-height: 58px;
+  align-content: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border-color: rgba(128, 70, 99, 0.34);
+  background:
+    linear-gradient(180deg, rgba(255, 251, 252, 0.84), rgba(242, 214, 227, 0.72));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+    0 8px 14px rgba(122, 77, 101, 0.08);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.tv-sakura-link:hover,
+.tv-sakura-link:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(110, 52, 80, 0.54);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.36),
+    0 10px 18px rgba(161, 96, 130, 0.18);
+  outline: none;
+}
+
+.tv-sakura-link-kicker {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(118, 54, 86, 0.72);
+}
+
+.tv-sakura-link span:last-child {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(76, 35, 56, 0.94);
 }
 
 .tv-page-desert {
@@ -239,6 +663,17 @@
     radial-gradient(circle at 18% 80%, rgba(148, 83, 37, 0.24), rgba(148, 83, 37, 0) 34%),
     linear-gradient(155deg, #f0d6a0 0%, #dca567 50%, #8c592d 100%);
   position: relative;
+  scrollbar-color: rgba(135, 77, 35, 0.88) rgba(248, 222, 170, 0.42);
+}
+
+.tv-page-desert::-webkit-scrollbar-track {
+  background: rgba(248, 222, 170, 0.42);
+}
+
+.tv-page-desert::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(180deg, rgba(180, 109, 53, 0.92), rgba(109, 62, 28, 0.94));
+  box-shadow: inset 0 0 0 1px rgba(255, 238, 206, 0.16);
 }
 
 .tv-page-desert::before {
@@ -275,6 +710,17 @@
     radial-gradient(circle at 14% 82%, rgba(126, 153, 179, 0.12), rgba(126, 153, 179, 0) 36%),
     linear-gradient(155deg, #111722 0%, #1c2533 46%, #324355 100%);
   position: relative;
+  scrollbar-color: rgba(150, 182, 214, 0.82) rgba(209, 226, 246, 0.14);
+}
+
+.tv-page-arctic::-webkit-scrollbar-track {
+  background: rgba(209, 226, 246, 0.14);
+}
+
+.tv-page-arctic::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(180deg, rgba(182, 209, 235, 0.92), rgba(105, 131, 156, 0.92));
+  box-shadow: inset 0 0 0 1px rgba(236, 245, 255, 0.16);
 }
 
 .tv-page-arctic::before {
@@ -300,6 +746,20 @@
     radial-gradient(circle at 18% 76%, rgba(255, 69, 162, 0.16), rgba(255, 69, 162, 0) 26%),
     linear-gradient(145deg, #07111f 0%, #111b36 46%, #160f2d 100%);
   position: relative;
+  scrollbar-color: rgba(103, 223, 255, 0.88) rgba(255, 92, 184, 0.16);
+}
+
+.tv-page-space::-webkit-scrollbar-track {
+  background:
+    linear-gradient(180deg, rgba(255, 92, 184, 0.12), rgba(103, 223, 255, 0.12));
+}
+
+.tv-page-space::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(180deg, rgba(88, 231, 255, 0.96), rgba(255, 86, 180, 0.94));
+  box-shadow:
+    inset 0 0 0 1px rgba(228, 247, 255, 0.2),
+    0 0 10px rgba(103, 223, 255, 0.18);
 }
 
 .tv-page-space::before {

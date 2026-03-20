@@ -29,6 +29,11 @@ import {
 } from "../Social/ShareComponents";
 import { ConstellationPanel } from "../Constellation/ConstellationPanel";
 import { SignalMonitor } from "../Signal/SignalMonitor";
+import {
+  RecruiterPanel,
+  RecruiterPanelIcon,
+  getRecruiterPanelConfig,
+} from "../RecruiterPanel/RecruiterPanel";
 import "./ControlBar.css";
 
 export function ControlBar({
@@ -69,55 +74,15 @@ export function ControlBar({
   view3d = false,
   setView3d = null,
   handleDialClick = null,
-  handleCommentSubmit = null,
 }) {
   // Local state for large variant dropdown
   const [largeDropdownOpen, setLargeDropdownOpen] = React.useState(false);
   const projectCount = projects ? Object.keys(projects).length : 0;
+  const recruiterPanel = getRecruiterPanelConfig(currentChannel);
   const frequencyLabel =
     projectCount > 0
       ? `${Math.round(((currentProject + 1) / projectCount) * 89 + 10)} KHZ`
       : "10 KHZ";
-  // SVG Components for medium body
-  function SVG1() {
-    return (
-      <svg
-        width="30"
-        height="18"
-        viewBox="0 0 30 18"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-      >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M13.627 14.341 13.33 14H7.5a6.5 6.5 0 1 1 0-13h15a6.5 6.5 0 1 1 0 13h-4.829l-.299.341-1.872 2.14-1.873-2.14ZM15.5 18l.664-.76L18.125 15H22.5a7.5 7.5 0 0 0 0-15h-15a7.5 7.5 0 1 0 0 15h5.375l1.96 2.24.665.76Zm-5-9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM14 7.5a1.5 1.5 0 1 0 3 0h-3ZM20.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-          fill="#F2D4F2"
-        ></path>
-      </svg>
-    );
-  }
-
-  function SVG2() {
-    return (
-      <svg
-        width="30"
-        height="18"
-        viewBox="0 0 30 18"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-      >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M13.627 14.341 13.33 14H7.5a6.5 6.5 0 1 1 0-13h15a6.5 6.5 0 1 1 0 13h-4.829l-.299.341-1.872 2.14-1.873-2.14ZM15.5 18l.664-.76L18.125 15H22.5a7.5 7.5 0 0 0 0-15h-15a7.5 7.5 0 1 0 0 15h5.375l1.96 2.24.665.76Zm-5-9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM14 7.5a1.5 1.5 0 1 0 3 0h-3ZM20.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-          fill="#0E3DFF"
-        ></path>
-      </svg>
-    );
-  }
 
   function View3dEnv() {
     return (
@@ -347,7 +312,7 @@ export function ControlBar({
                   className="medium-td"
                   onClick={() => setCommentOpen && setCommentOpen(!commentOpen)}
                 >
-                  {currentMode == 1 ? <SVG1 /> : <SVG2 />}
+                  <RecruiterPanelIcon />
                   <div
                     className={
                       "medium-comments-container " +
@@ -359,9 +324,9 @@ export function ControlBar({
                   >
                     <div className="medium-comments-heading">
                       <div className="medium-comments-logo">
-                        <SVG1 />
+                        <RecruiterPanelIcon />
                       </div>
-                      <div className="medium-comments-title">COMMENTS</div>
+                      <div className="medium-comments-title">{recruiterPanel.title}</div>
                       <div
                         className="medium-comments-close-btn"
                         onClick={() => setCommentOpen && setCommentOpen(false)}
@@ -370,51 +335,10 @@ export function ControlBar({
                       </div>
                     </div>
                     <div className="medium-comments-body">
-                      <div className="medium-comments-content">
-                        {projects[currentProject]?.comments?.map(
-                          (comment, index) => {
-                            const commentDate = new Date(comment.date);
-                            const currentDate = new Date();
-                            const differenceInTime =
-                              currentDate.getTime() - commentDate.getTime();
-                            const differenceInDays = Math.floor(
-                              differenceInTime / (1000 * 3600 * 24)
-                            );
-
-                            return (
-                              <div
-                                key={"cmt-" + currentProject + "-" + index}
-                                className="comment"
-                              >
-                                <div className="comment-body">
-                                  <div className="comment-text">
-                                    <div className="comment-user">
-                                      @{comment.user}_
-                                    </div>
-                                    <div className="comment-body-text">
-                                      {comment.text}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="comment-time">
-                                  {differenceInDays} days ago
-                                </div>
-                              </div>
-                            );
-                          }
-                        )}
+                      <div className="recruiter-compact-kicker">
+                        {recruiterPanel.subtitle}
                       </div>
-                      <div className="comments-input medium-comments-input">
-                        <input
-                          type="text"
-                          id="comment-input-id"
-                          placeholder="COMMENT ON THIS PROJECT..."
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter" && handleCommentSubmit)
-                              handleCommentSubmit(event);
-                          }}
-                        ></input>
-                      </div>
+                      <RecruiterPanel channel={currentChannel} compact />
                     </div>
                   </div>
                 </td>

@@ -24,7 +24,7 @@
   z-index: 1000;
 }
 .right-section-toggle.pos-visible-right {
-  right: 400px;
+  right: 430px;
 }
 .right-section-toggle.pos-hidden-right {
   right: 0px;
@@ -450,14 +450,31 @@ body {
   display: flex;
 }
 .heading-container {
-  background: linear-gradient(to bottom, #e0c7f4 1px, transparent 1px) 0 0,
-    linear-gradient(to right, #e0c7f4 1px, transparent 1px) 0 0,
-    linear-gradient(to bottom, #e0c7f4 1px, transparent 1px) 50% 0,
-    linear-gradient(to right, #e0c7f4 1px, transparent 1px) 0 50%;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--scene-ui-grid, #e0c7f4) 1px,
+      transparent 1px
+    ) 0 0,
+    linear-gradient(
+      to right,
+      var(--scene-ui-grid, #e0c7f4) 1px,
+      transparent 1px
+    ) 0 0,
+    linear-gradient(
+      to bottom,
+      var(--scene-ui-grid, #e0c7f4) 1px,
+      transparent 1px
+    ) 50% 0,
+    linear-gradient(
+      to right,
+      var(--scene-ui-grid, #e0c7f4) 1px,
+      transparent 1px
+    ) 0 50%;
 
   background-size: 5% 13%;
   background-repeat: repeat;
-  border: 1px solid #e0c7f4;
+  border: 1px solid var(--scene-ui-border, #e0c7f4);
 }
 .heading {
   text-align: center;
@@ -867,7 +884,6 @@ body {
 
   background-size: 5% 15%;
   background-repeat: repeat;
-  border: 1px solid #e0c7f4;
   display: flex;
 }
 .time-title {
@@ -906,7 +922,10 @@ body {
 .right-section {
   margin-left: auto;
   width: 410px;
+  height: 97svh;
   z-index: 3;
+  display: flex;
+  flex-direction: column;
 }
 .right-horizontal-row {
   width: 100%;
@@ -917,6 +936,12 @@ body {
 .comments {
   position: relative;
   height: 80%;
+  display: flex;
+  flex-direction: column;
+}
+.recruiter-section {
+  position: relative;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
@@ -936,6 +961,486 @@ body {
 .comments-input {
   margin-top: auto;
   text-align: center;
+}
+.recruiter-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 6px 16px;
+  color: var(--scene-ui-text, #0030ff);
+}
+.recruiter-heading-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+.recruiter-heading-copy {
+  display: grid;
+  gap: 3px;
+}
+.recruiter-heading-title {
+  font-family: "maison";
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+.recruiter-heading-subtitle {
+  font-family: "maison";
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--scene-ui-muted, #8d92f7);
+}
+.recruiter-body {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+}
+.recruiter-panel {
+  display: grid;
+  gap: 12px;
+  color: var(--scene-ui-text, #0030ff);
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 100%;
+  grid-template-rows: auto auto auto 1fr auto;
+  align-content: stretch;
+}
+.recruiter-panel-shell {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  border: 1px solid color-mix(in srgb, var(--scene-ui-border, #aca5f5) 82%, transparent);
+  border-radius: 0;
+  padding: 10px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--scene-ui-border, #aca5f5) 12%, transparent),
+      transparent
+    );
+  overflow: hidden;
+}
+.recruiter-panel-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--scene-ui-border, #aca5f5) 0%, transparent) 0,
+      color-mix(in srgb, var(--scene-ui-border, #aca5f5) 12%, transparent) 48%,
+      color-mix(in srgb, var(--scene-ui-border, #aca5f5) 0%, transparent) 100%
+    );
+  transform: translateY(-100%);
+  animation: recruiterShellScan 5.2s linear infinite;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.recruiter-panel-chrome {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+.recruiter-panel-leds {
+  display: flex;
+  gap: 4px;
+}
+.recruiter-panel-leds span {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--scene-ui-border, #aca5f5) 75%, white 25%);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--scene-ui-border, #aca5f5) 65%, transparent);
+  animation: recruiterLedPulse 2.2s ease-in-out infinite;
+}
+.recruiter-panel-leds span:nth-child(2) {
+  animation-delay: 0.35s;
+}
+.recruiter-panel-leds span:nth-child(3) {
+  animation-delay: 0.7s;
+}
+.recruiter-panel-readout,
+.recruiter-panel-code {
+  font-family: "maison";
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.recruiter-panel-readout {
+  color: var(--scene-ui-text, #0030ff);
+}
+.recruiter-panel-code {
+  color: var(--scene-ui-muted, #8d92f7);
+}
+.recruiter-panel-hero {
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.recruiter-panel-radar {
+  position: relative;
+  width: 128px;
+  height: 110px;
+  border: 1px solid color-mix(in srgb, var(--scene-ui-border, #aca5f5) 82%, transparent);
+  border-radius: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center, color-mix(in srgb, var(--scene-ui-border, #aca5f5) 9%, transparent), transparent 62%);
+}
+.recruiter-panel-radar-grid,
+.recruiter-panel-radar-sweep {
+  position: absolute;
+  inset: 0;
+}
+.recruiter-panel-radar-grid {
+  background:
+    linear-gradient(to right, color-mix(in srgb, var(--scene-ui-border, #aca5f5) 26%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--scene-ui-border, #aca5f5) 26%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.72;
+}
+.recruiter-panel-radar-sweep {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--scene-ui-border, #aca5f5) 0%, transparent) 280deg,
+    color-mix(in srgb, var(--scene-ui-border, #aca5f5) 65%, transparent) 330deg,
+    color-mix(in srgb, var(--scene-ui-border, #aca5f5) 0%, transparent) 360deg
+  );
+  transform-origin: 50% 50%;
+  animation: recruiterRadarSweep 4.8s linear infinite;
+  opacity: 0.55;
+}
+.recruiter-panel-radar-blip {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--scene-ui-border, #aca5f5) 82%, white 18%);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--scene-ui-border, #aca5f5) 78%, transparent);
+  animation: recruiterBlipPulse 2.8s ease-in-out infinite;
+}
+.recruiter-panel-radar-blip-a {
+  top: 22%;
+  left: 28%;
+}
+.recruiter-panel-radar-blip-b {
+  top: 62%;
+  left: 66%;
+  animation-delay: 0.7s;
+}
+.recruiter-panel-radar-blip-c {
+  top: 46%;
+  left: 42%;
+  animation-delay: 1.2s;
+}
+.recruiter-panel-summary-wrap {
+  display: grid;
+  gap: 10px;
+}
+.recruiter-panel-summary {
+  font-family: "maison";
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--scene-ui-text, #0030ff);
+  padding-right: 10px;
+}
+.recruiter-panel-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.recruiter-panel-status span {
+  border: 1px solid color-mix(in srgb, var(--scene-ui-border, #aca5f5) 72%, transparent);
+  border-radius: 0;
+  padding: 6px 9px;
+  font-family: "maison";
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--scene-ui-text, #0030ff);
+  background: color-mix(in srgb, var(--scene-ui-border, #aca5f5) 12%, transparent);
+}
+.recruiter-panel-grid {
+  display: grid;
+  gap: 8px;
+}
+.recruiter-panel-card {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--scene-ui-border, #aca5f5) 78%, transparent);
+  border-radius: 0;
+  padding: 10px 12px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--scene-ui-border, #aca5f5) 10%, transparent),
+      transparent
+    );
+  overflow: hidden;
+}
+.recruiter-panel-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0, color-mix(in srgb, var(--scene-ui-border, #aca5f5) 16%, transparent) 50%, transparent 100%);
+  transform: translateX(-115%);
+  animation: recruiterCardSweep 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+.recruiter-panel-card:nth-child(2)::after {
+  animation-delay: 0.7s;
+}
+.recruiter-panel-card:nth-child(3)::after {
+  animation-delay: 1.4s;
+}
+.recruiter-panel-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.recruiter-panel-label {
+  font-family: "maison";
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--scene-ui-muted, #8d92f7);
+  margin-bottom: 4px;
+}
+.recruiter-panel-level {
+  font-family: "maison";
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--scene-ui-muted, #8d92f7);
+}
+.recruiter-panel-signalbar {
+  height: 6px;
+  border: 1px solid color-mix(in srgb, var(--scene-ui-border, #aca5f5) 58%, transparent);
+  border-radius: 0;
+  overflow: hidden;
+  margin-bottom: 8px;
+  background: color-mix(in srgb, var(--scene-ui-border, #aca5f5) 10%, transparent);
+}
+.recruiter-panel-signalbar span {
+  display: block;
+  height: 100%;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--scene-ui-border, #aca5f5) 42%, transparent), var(--scene-ui-border, #aca5f5));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--scene-ui-border, #aca5f5) 55%, transparent);
+  animation: recruiterSignalPulse 2.1s ease-in-out infinite;
+}
+.recruiter-panel-value {
+  font-family: "maison";
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.recruiter-panel-notes {
+  display: grid;
+  gap: 8px;
+}
+.recruiter-panel-note {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+  border-left: 2px solid color-mix(in srgb, var(--scene-ui-border, #aca5f5) 78%, transparent);
+  padding-left: 10px;
+  font-family: "maison";
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--scene-ui-text, #0030ff);
+}
+.recruiter-panel-note-index {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--scene-ui-muted, #8d92f7);
+  margin-top: 2px;
+}
+.recruiter-panel-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: auto;
+  align-self: end;
+}
+.recruiter-panel-action {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 42px;
+  border: 1px solid color-mix(in srgb, var(--scene-ui-border, #aca5f5) 86%, transparent);
+  border-radius: 0;
+  font-family: "maison";
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--scene-ui-text, #0030ff);
+  background: color-mix(in srgb, var(--scene-ui-border, #aca5f5) 10%, transparent);
+  transition: box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+.recruiter-panel-action:hover {
+  border-color: var(--scene-ui-border, #0030ff);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--scene-ui-border, #aca5f5) 72%, transparent);
+  background: color-mix(in srgb, var(--scene-ui-border, #aca5f5) 18%, transparent);
+}
+.recruiter-panel-action-text {
+  position: relative;
+  z-index: 1;
+}
+.recruiter-panel-action-glow {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at center, color-mix(in srgb, var(--scene-ui-border, #aca5f5) 32%, transparent), transparent 52%);
+  opacity: 0;
+  transform: scale(0.75);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.recruiter-panel-action:hover .recruiter-panel-action-glow {
+  opacity: 1;
+  transform: scale(1);
+}
+.recruiter-panel-action::before,
+.recruiter-panel-action::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: color-mix(in srgb, var(--scene-ui-border, #aca5f5) 88%, transparent);
+  pointer-events: none;
+}
+.recruiter-panel-action::before {
+  top: 4px;
+  left: 4px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+.recruiter-panel-action::after {
+  right: 4px;
+  bottom: 4px;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+}
+.recruiter-panel-ch-0 .recruiter-panel-card {
+  background:
+    linear-gradient(135deg, rgba(255, 209, 233, 0.14), transparent);
+}
+.recruiter-panel-ch-1 .recruiter-panel-card {
+  background:
+    linear-gradient(135deg, rgba(246, 205, 143, 0.16), transparent);
+}
+.recruiter-panel-ch-2 .recruiter-panel-card {
+  background:
+    linear-gradient(135deg, rgba(205, 222, 255, 0.14), transparent);
+}
+.recruiter-panel-ch-3 .recruiter-panel-card {
+  background:
+    linear-gradient(135deg, rgba(118, 215, 255, 0.16), rgba(255, 84, 170, 0.06));
+}
+.recruiter-compact-kicker {
+  font-family: "maison";
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: var(--scene-ui-muted, #8d92f7);
+}
+.recruiter-panel-compact {
+  gap: 10px;
+}
+.recruiter-panel-compact .recruiter-panel-shell {
+  padding: 8px;
+}
+.recruiter-panel-compact .recruiter-panel-hero {
+  grid-template-columns: 92px 1fr;
+  gap: 10px;
+}
+.recruiter-panel-compact .recruiter-panel-radar {
+  width: 92px;
+  height: 88px;
+}
+.recruiter-panel-compact .recruiter-panel-summary {
+  font-size: 11px;
+}
+.recruiter-panel-compact .recruiter-panel-actions {
+  grid-template-columns: 1fr;
+}
+.recruiter-panel-compact .recruiter-panel-action {
+  min-height: 36px;
+}
+
+@keyframes recruiterRadarSweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes recruiterBlipPulse {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes recruiterShellScan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes recruiterCardSweep {
+  0%,
+  68%,
+  100% {
+    transform: translateX(-115%);
+  }
+  78% {
+    transform: translateX(115%);
+  }
+}
+
+@keyframes recruiterLedPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes recruiterSignalPulse {
+  0%,
+  100% {
+    filter: brightness(0.92);
+  }
+  50% {
+    filter: brightness(1.12);
+  }
 }
 #comment-input-id{
   width: 83%;
@@ -1696,6 +2201,11 @@ body {
 .scene-ui-active .scan-qr,
 .scene-ui-active .current-channel,
 .scene-ui-active .comment-title,
+.scene-ui-active .recruiter-heading-title,
+.scene-ui-active .recruiter-panel-summary,
+.scene-ui-active .recruiter-panel-value,
+.scene-ui-active .recruiter-panel-note,
+.scene-ui-active .recruiter-panel-action,
 .scene-ui-active .constellation-panel-mode {
   color: var(--scene-ui-text) !important;
 }
@@ -1774,6 +2284,9 @@ body {
 }
 
 .scene-ui-active .comment-time,
+.scene-ui-active .recruiter-heading-subtitle,
+.scene-ui-active .recruiter-panel-label,
+.scene-ui-active .recruiter-compact-kicker,
 .scene-ui-active .frequency,
 .scene-ui-active .constellation-panel-kicker,
 .scene-ui-active .constellation-panel-status {
@@ -1809,6 +2322,9 @@ body {
 .scene-ui-active .medium-comments-title,
 .scene-ui-active .medium-comments-close-btn,
 .scene-ui-active .medium-comments-body,
+.scene-ui-active .recruiter-panel-card,
+.scene-ui-active .recruiter-panel-status span,
+.scene-ui-active .recruiter-panel-action,
 .scene-ui-active .medium-menu-logo,
 .scene-ui-active .medium-menu-title,
 .scene-ui-active .medium-menu-close-btn,
@@ -2076,4 +2592,3 @@ body {
   width: 410px;
   z-index: 3;
 }
-

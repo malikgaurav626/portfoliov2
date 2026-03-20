@@ -87,7 +87,7 @@ const CHANNEL_CONTROLS = [
       scale: 1,
     },
     tvLayout: {
-      position: [0.12, 1.22, -0.12],
+      position: [0.12, 1.22, 0.2],
       rotation: [0, Math.PI * 0.95, 0],
     },
     tvVisuals: {
@@ -1676,11 +1676,12 @@ function CRTTV({
     screenRef.current.getWorldQuaternion(screenQuaternion);
     normal.applyQuaternion(screenQuaternion).normalize();
 
-    const yOffset = channel === 0 ? -0.12 : 0.05;
-    const lookAtOffset = channel === 0 ? -0.08 : 0;
+    const focusDistance = channel === 0 ? 0.72 : 0.92;
+    const yOffset = channel === 0 ? -0.04 : 0.05;
+    const lookAtOffset = channel === 0 ? -0.03 : 0;
     const cameraPosition = screenPosition
       .clone()
-      .add(normal.multiplyScalar(0.92))
+      .add(normal.multiplyScalar(focusDistance))
       .add(new THREE.Vector3(0, yOffset, 0));
 
     const lookAtPoint = [
