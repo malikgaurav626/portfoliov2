@@ -2,6 +2,8 @@ const RECRUITER_PANEL_CONFIG = [
   {
     title: "RECRUITER MODE",
     subtitle: "Sakura Intro Feed",
+    tabs: ["INTRO", "SIGNAL", "LINKS"],
+    prompt: "surface strongest hire signals for channel-01",
     summary:
       "Fast read for recruiters landing on the home channel. This scene is the softest entry point into the portfolio, with the strongest signals surfaced first.",
     status: ["Open to Web Dev Roles", "Based in India", "Reply in 24-48h"],
@@ -19,6 +21,8 @@ const RECRUITER_PANEL_CONFIG = [
   {
     title: "ARRAKIS DOSSIER",
     subtitle: "Skills Broadcast",
+    tabs: ["STACK", "READINESS", "FIELD"],
+    prompt: "inspect frontend systems and execution profile",
     summary:
       "A channel tuned for technical positioning. It frames core strengths, delivery style, and the kind of frontend work that feels strongest in interviews and portfolio reviews.",
     status: ["Frontend Systems", "Interactive UI", "3D-Ready"],
@@ -36,6 +40,8 @@ const RECRUITER_PANEL_CONFIG = [
   {
     title: "WINTER ARCHIVE",
     subtitle: "Project Casebook",
+    tabs: ["CASEBOOK", "BUILDS", "REVIEW"],
+    prompt: "load project casebook and implementation notes",
     summary:
       "A colder, project-led scan of work quality. This panel frames the kind of builds you can walk a hiring team through: interactive portfolio work, product surfaces, and polished web delivery.",
     status: ["Case Studies", "Product Web", "Frontend Craft"],
@@ -53,6 +59,8 @@ const RECRUITER_PANEL_CONFIG = [
   {
     title: "COMMS TERMINAL",
     subtitle: "Space Contact Console",
+    tabs: ["COMMS", "ROUTES", "OUTREACH"],
+    prompt: "prepare outreach route and contact summary",
     summary:
       "A direct route for outreach. This lane is optimized for hiring conversations, role fit, and fast contact rather than passive browsing.",
     status: ["Hiring Signal Live", "IST Timezone", "Email Preferred"],
@@ -122,6 +130,14 @@ export function RecruiterPanel({ channel = 0, compact = false }) {
       }`}
     >
       <div className="recruiter-panel-shell">
+        <div className="recruiter-panel-tabs">
+          {config.tabs?.map((tab) => (
+            <span key={`${config.title}-${tab}`} className="recruiter-panel-tab">
+              {tab}
+            </span>
+          ))}
+        </div>
+
         <div className="recruiter-panel-chrome">
           <div className="recruiter-panel-leds">
             <span />
@@ -167,15 +183,6 @@ export function RecruiterPanel({ channel = 0, compact = false }) {
         ))}
       </div>
 
-      <div className="recruiter-panel-notes">
-        {config.notes.map((note, index) => (
-          <div key={`${config.title}-${note}`} className="recruiter-panel-note">
-            <span className="recruiter-panel-note-index">0{index + 1}</span>
-            <span>{note}</span>
-          </div>
-        ))}
-      </div>
-
       <div className="recruiter-panel-actions">
         {RECRUITER_ACTIONS.map((action) => (
           <a
@@ -189,6 +196,14 @@ export function RecruiterPanel({ channel = 0, compact = false }) {
             <span className="recruiter-panel-action-glow"></span>
           </a>
         ))}
+      </div>
+
+      <div className="recruiter-panel-console">
+        <div className="recruiter-panel-console-head">
+          <span className="recruiter-panel-console-agent">agent</span>
+          <span className="recruiter-panel-console-model">terminal shell</span>
+        </div>
+        <div className="recruiter-panel-console-input">{config.prompt}</div>
       </div>
     </div>
   );

@@ -33,6 +33,7 @@ export function LargeBody({
     "CHANNEL 3 / ARCTIC",
     "CHANNEL 4 / SPACE",
   ];
+  const channelTerminalNames = ["Sakura", "Arrakis", "North", "Orbital"];
   const projectCount = Object.keys(projects).length;
   const channelCount = channels.length;
 
@@ -99,10 +100,28 @@ export function LargeBody({
     <>
       <div
         ref={rootRef}
-        className={`container ${
+        className={`container terminal-overhaul-experiment ${
           view3d ? `scene-ui-active scene-ch-${currentChannel} scene-time-${sceneTime}` : ""
         }`}
       >
+        {view3d && (
+          <div className="terminal-topbar">
+            <div className="terminal-topbar-location">
+              <span className="terminal-topbar-mark" />
+              <span>{channelTerminalNames[currentChannel] || "Sakura"}</span>
+            </div>
+            <div className="terminal-topbar-center">
+              <span className="terminal-topbar-dot" />
+              <span>Stable Sync</span>
+              <span className="terminal-topbar-separator">|</span>
+              <span>Channel {currentChannel + 1} Data Stream</span>
+              <span className="terminal-topbar-separator">|</span>
+              <span>{channels[currentChannel]}</span>
+            </div>
+            <div className="terminal-topbar-terminal">Terminal HUD</div>
+          </div>
+        )}
+
         <div
           className={`left-section ${
             leftSectionVisible ? "visible" : "hidden"
@@ -298,6 +317,7 @@ export function LargeBody({
             </div>
           </div>
         </div>
+
         <div
           className={`three_env_container ${
             view3d ? "three_env_visible" : "three_env_hidden"
