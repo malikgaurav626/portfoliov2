@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { addComment } from "../../firebase/addcomment";
 import QRCode from "qrcode";
-import { CommentList } from "../Comments/CommentList";
-import { CommentInput } from "../Comments/CommentInput";
-import { Footer } from "../Footer/Footer";
 import { ControlBar } from "../ControlBar/ControlBar";
 import { ThreeEnv } from "../ThreeEnv/ThreeEnv";
 import { ConstellationPanel } from "../Constellation/ConstellationPanel";
 import { SignalMonitor } from "../Signal/SignalMonitor";
+import {
+  RecruiterPanel,
+  RecruiterPanelIcon,
+  getRecruiterPanelConfig,
+} from "../RecruiterPanel/RecruiterPanel";
 
 export function LargeBody({
   projects,
@@ -49,20 +50,6 @@ export function LargeBody({
     setCurrentProject((currentProject + 1) % projectCount);
   }
 
-  function handleCommentSubmit(event) {
-    let comment = event.target.value;
-    let user = "anonymous";
-    let project_id = currentProject;
-
-    const match = comment.match(/^@.*?_/);
-    if (match) {
-      user = match[0].slice(1, -1);
-      comment = comment.replace(match[0], "").trim();
-    }
-
-    addComment(user, comment, project_id);
-  }
-
   function handleBackControl() {
     if (view3d) {
       setCurrentChannel((prev) => (prev - 1 + channelCount) % channelCount);
@@ -95,6 +82,7 @@ export function LargeBody({
   const leftModeLabel = "DARK";
   const rightModeLabel = "LIGHT";
   const sceneTime = "night";
+  const recruiterPanel = getRecruiterPanelConfig(currentChannel);
 
   useEffect(() => {
     let qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
@@ -294,21 +282,21 @@ export function LargeBody({
             rightSectionVisible ? "visible" : "hidden"
           }`}
         >
-          <div className="comments">
+          <div className="recruiter-section">
             <div className="right-horizontal-row"></div>
-            <div className="comments-heading">
-              {modeValue == 1 ? <SVG1 /> : <SVG2 />}
-              <div className="comment-title">COMMENTS</div>
+            <div className="recruiter-heading">
+              <div className="recruiter-heading-icon">
+                <RecruiterPanelIcon />
+              </div>
+              <div className="recruiter-heading-copy">
+                <div className="recruiter-heading-title">{recruiterPanel.title}</div>
+                <div className="recruiter-heading-subtitle">{recruiterPanel.subtitle}</div>
+              </div>
             </div>
-            <div className="comments-body">
-              <CommentList
-                comments={projects[currentProject]?.comments}
-                currentProject={currentProject}
-              />
+            <div className="recruiter-body">
+              <RecruiterPanel channel={currentChannel} />
             </div>
-            <CommentInput onSubmit={handleCommentSubmit} />
           </div>
-          <Footer />
         </div>
         <div
           className={`three_env_container ${
@@ -330,50 +318,6 @@ export function LargeBody({
           )}
         </div>
       </div>
-    </>
-  );
-}
-
-function SVG1() {
-  return (
-    <>
-      <svg
-        width="30"
-        height="18"
-        viewBox="0 0 30 18"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-      >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M13.627 14.341 13.33 14H7.5a6.5 6.5 0 1 1 0-13h15a6.5 6.5 0 1 1 0 13h-4.829l-.299.341-1.872 2.14-1.873-2.14ZM15.5 18l.664-.76L18.125 15H22.5a7.5 7.5 0 0 0 0-15h-15a7.5 7.5 0 1 0 0 15h5.375l1.96 2.24.665.76Zm-5-9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM14 7.5a1.5 1.5 0 1 0 3 0h-3ZM20.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-          fill="#F2D4F2"
-        ></path>
-      </svg>
-    </>
-  );
-}
-
-function SVG2() {
-  return (
-    <>
-      <svg
-        width="30"
-        height="18"
-        viewBox="0 0 30 18"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-      >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M13.627 14.341 13.33 14H7.5a6.5 6.5 0 1 1 0-13h15a6.5 6.5 0 1 1 0 13h-4.829l-.299.341-1.872 2.14-1.873-2.14ZM15.5 18l.664-.76L18.125 15H22.5a7.5 7.5 0 0 0 0-15h-15a7.5 7.5 0 1 0 0 15h5.375l1.96 2.24.665.76Zm-5-9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM14 7.5a1.5 1.5 0 1 0 3 0h-3ZM20.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-          fill="#0E3DFF"
-        ></path>
-      </svg>
     </>
   );
 }
@@ -455,4 +399,3 @@ function RightArrowSVG({ currentMode }) {
     </svg>
   );
 }
-

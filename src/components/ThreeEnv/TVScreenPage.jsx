@@ -65,23 +65,48 @@ function ChannelOnePage({ interactive }) {
     >
       <header className="tv-page-header">
         <div className="tv-live-pill">LIVE</div>
-        <div className="tv-time-label">Sakura Channel</div>
+        <div className="tv-time-label">Sakura Broadcast Node</div>
       </header>
 
       <section className="tv-hero tv-sakura-hero">
-        <div className="tv-kicker">Professional Overview</div>
-        <h2 className="tv-title">Gaurav</h2>
-        <p className="tv-sakura-role">Web Developer</p>
-        <p className="tv-tagline">
-          Software Engineer 1 at MAQ Software with experience across frontend
-          engineering, product-facing web development, and modern interactive UI work.
-        </p>
+        <div className="tv-sakura-window-bar">
+          <span />
+          <span />
+          <span />
+          <div className="tv-sakura-window-label">HOME_FEED.EXE</div>
+        </div>
+
+        <div className="tv-sakura-hero-grid">
+          <div className="tv-sakura-hero-copy">
+            <div className="tv-kicker">Channel 01 // Professional Overview</div>
+            <h2 className="tv-title tv-sakura-title">Gaurav</h2>
+            <p className="tv-sakura-role">Web Developer</p>
+            <p className="tv-tagline tv-sakura-tagline">
+              Software Engineer 1 at MAQ Software with experience across frontend
+              engineering, product-facing web development, and immersive web interfaces
+              that balance clarity with visual identity.
+            </p>
+          </div>
+
+          <aside className="tv-sakura-emblem-card">
+            <div className="tv-section-label">Signal Stamp</div>
+            <div className="tv-sakura-emblem">
+              <div className="tv-sakura-sun" />
+              <div className="tv-sakura-grid-lines" />
+              <div className="tv-sakura-emblem-copy">
+                <span>Tokyo feed</span>
+                <span>UI system</span>
+                <span>soft signal</span>
+              </div>
+            </div>
+          </aside>
+        </div>
       </section>
 
       <section className="tv-sakura-grid">
         <article className="tv-featured-card tv-sakura-profile-card">
           <div className="tv-section-label">Current Profile</div>
-          <div className="tv-featured-title">Engineer building thoughtful web experiences</div>
+          <div className="tv-featured-title">Frontend systems with a cleaner visual voice</div>
           <div className="tv-featured-copy">
             I am a web developer who is proficient in front-end frameworks and libraries.
             My passion lies in learning the latest technologies and moving closer to my
@@ -100,28 +125,97 @@ function ChannelOnePage({ interactive }) {
         </article>
       </section>
 
-      <section className="tv-quick-grid tv-sakura-pill-grid">
-        <a className="tv-chip tv-chip-link" href="https://github.com/malikgaurav626" target="_blank" rel="noreferrer">
-          GitHub
-        </a>
-        <a className="tv-chip tv-chip-link" href="https://www.linkedin.com/in/malikgaurav626/" target="_blank" rel="noreferrer">
-          LinkedIn
-        </a>
-        <a className="tv-chip tv-chip-link" href="mailto:malikgaurav626@gmail.com">
-          Email
-        </a>
-      </section>
+      <section className="tv-sakura-ornament-band">
+        <div className="tv-sakura-ornament-title">Artifacts</div>
+        <div className="tv-sakura-ornament-grid">
+          <div className="tv-sakura-ornament-card tv-sakura-ornament-card-wave">
+            <div className="tv-sakura-ornament-visual tv-sakura-wave-visual" />
+            <div className="tv-sakura-ornament-meta">
+              <div className="tv-sakura-ornament-label">Seigaiha</div>
+              <div className="tv-sakura-ornament-copy">calm waves / continuity</div>
+            </div>
+          </div>
 
-      <section className="tv-sakura-band">
-        <div className="tv-section-label">Broadcast Note</div>
-        <div className="tv-sakura-band-copy">
-          Professional foundation, theme-inspired presentation. Deeper skills,
-          project work, and contact details continue in the next channels.
+          <div className="tv-sakura-ornament-card tv-sakura-ornament-card-seal">
+            <div className="tv-sakura-ornament-visual tv-sakura-seal-visual">
+              <div className="tv-sakura-seal-mark">
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
+            </div>
+            <div className="tv-sakura-ornament-meta">
+              <div className="tv-sakura-ornament-label">Hanko</div>
+              <div className="tv-sakura-ornament-copy">seal-stamp / personal mark</div>
+            </div>
+          </div>
+
+          <div className="tv-sakura-ornament-card tv-sakura-ornament-card-hemp">
+            <div className="tv-sakura-ornament-visual tv-sakura-hemp-visual" />
+            <div className="tv-sakura-ornament-meta">
+              <div className="tv-sakura-ornament-label">Asanoha</div>
+              <div className="tv-sakura-ornament-copy">growth / geometric lattice</div>
+            </div>
+          </div>
         </div>
       </section>
 
+      <section className="tv-sakura-band">
+        <div className="tv-sakura-band-copy">
+          <div className="tv-section-label">Broadcast Note</div>
+          <div>
+            Professional foundation first. This home feed is designed as the soft-entry
+            signal before moving into deeper channels for skills, project work, and
+            contact routing.
+          </div>
+        </div>
+        <div className="tv-sakura-band-meter">
+          <span className="tv-sakura-band-meter-label">Signal</span>
+          <div className="tv-sakura-band-meter-track">
+            <div />
+          </div>
+          <span className="tv-sakura-band-meter-value">01 / HOME</span>
+        </div>
+      </section>
+
+      <section className="tv-featured-card tv-sakura-scroll-panel">
+        <div className="tv-section-label">Focus Areas</div>
+        <div className="tv-mini-list tv-sakura-mini-list">
+          <div>Frontend engineering with emphasis on maintainable UI systems.</div>
+          <div>Interactive web experiences that feel polished and memorable.</div>
+          <div>Product-minded execution across landing pages, interfaces, and showcases.</div>
+          <div>Continuous learning around modern tooling, 3D web, and performance.</div>
+        </div>
+      </section>
+
+      <section className="tv-quick-grid tv-sakura-link-grid">
+        <a
+          className="tv-chip tv-chip-link tv-sakura-link"
+          href="https://github.com/malikgaurav626"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span className="tv-sakura-link-kicker">Code</span>
+          <span>GitHub Archive</span>
+        </a>
+        <a
+          className="tv-chip tv-chip-link tv-sakura-link"
+          href="https://www.linkedin.com/in/malikgaurav626/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span className="tv-sakura-link-kicker">Profile</span>
+          <span>LinkedIn Signal</span>
+        </a>
+        <a className="tv-chip tv-chip-link tv-sakura-link" href="mailto:malikgaurav626@gmail.com">
+          <span className="tv-sakura-link-kicker">Direct</span>
+          <span>Email Route</span>
+        </a>
+      </section>
+
       <footer className="tv-page-footer">
-        <span>Now Broadcasting: Portfolio Home Feed</span>
+        <span>Now Broadcasting: Sakura Home Feed</span>
       </footer>
     </TVPageRoot>
   );
