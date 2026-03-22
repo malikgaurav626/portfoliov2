@@ -167,14 +167,6 @@ export function RecruiterPanel({ channel = 0, compact = false }) {
         ))}
       </div>
 
-      <div className="recruiter-panel-notes">
-        {config.notes.map((note, index) => (
-          <div key={`${config.title}-${note}`} className="recruiter-panel-note">
-            <span className="recruiter-panel-note-index">0{index + 1}</span>
-            <span>{note}</span>
-          </div>
-        ))}
-      </div>
 
       <div className="recruiter-panel-actions">
         {RECRUITER_ACTIONS.map((action) => (

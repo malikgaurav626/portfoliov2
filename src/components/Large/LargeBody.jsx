@@ -23,7 +23,11 @@ export function LargeBody({
   const [rightSectionVisible, setRightSectionVisible] = useState(false);
   const [leftSectionVisible, setLeftSectionVisible] = useState(false);
   const [currentChannel, setCurrentChannel] = useState(0);
+  const [recruiterDisplayChannel, setRecruiterDisplayChannel] = useState(0);
+  const [recruiterTypingOut, setRecruiterTypingOut] = useState(false);
+  const [recruiterFadingOut, setRecruiterFadingOut] = useState(false);
   const [view3d, setView3d] = useState(true);
+  const [homeResetSignal, setHomeResetSignal] = useState(0);
   const [windEnabled, setWindEnabled] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const rootRef = useRef(null);
@@ -76,13 +80,45 @@ export function LargeBody({
     setisPlaying(!isPlaying);
   }
 
+  function handleHomeReset() {
+    setCurrentProject(0);
+    setCurrentChannel(0);
+    setView3d(true);
+    setHomeResetSignal((prev) => prev + 1);
+  }
+
   const modeValue = currentMode;
   const controlPlayState = view3d ? windEnabled : isPlaying;
   const modeTitle = "DISPLAY MODE";
   const leftModeLabel = "DARK";
   const rightModeLabel = "LIGHT";
   const sceneTime = "night";
-  const recruiterPanel = getRecruiterPanelConfig(currentChannel);
+  const recruiterPanel = getRecruiterPanelConfig(recruiterDisplayChannel);
+
+  useEffect(() => {
+    if (currentChannel === recruiterDisplayChannel) return undefined;
+
+    const typeOutDuration = 360;
+    const fadeOutDuration = 220;
+
+    setRecruiterTypingOut(true);
+    setRecruiterFadingOut(false);
+
+    const typeOutTimeout = window.setTimeout(() => {
+      setRecruiterTypingOut(false);
+      setRecruiterFadingOut(true);
+    }, typeOutDuration);
+
+    const swapTimeout = window.setTimeout(() => {
+      setRecruiterDisplayChannel(currentChannel);
+      setRecruiterFadingOut(false);
+    }, typeOutDuration + fadeOutDuration);
+
+    return () => {
+      window.clearTimeout(typeOutTimeout);
+      window.clearTimeout(swapTimeout);
+    };
+  }, [currentChannel, recruiterDisplayChannel]);
 
   useEffect(() => {
     let qrColor = currentMode === 1 ? "#dec0f7" : "#0030ff";
@@ -127,9 +163,7 @@ export function LargeBody({
           <div className="project-details">
             <div
               className="home-btn"
-              onClick={() => {
-                setCurrentProject(0);
-              }}
+              onClick={handleHomeReset}
             >
               <span id="home-title-id">HOME</span>{" "}
               <PowerIcon />
@@ -282,19 +316,22 @@ export function LargeBody({
             rightSectionVisible ? "visible" : "hidden"
           }`}
         >
-          <div className="recruiter-section">
+          <div className={`recruiter-section ${recruiterTypingOut ? "recruiter-section-typing-out" : ""}`}>
             <div className="right-horizontal-row"></div>
             <div className="recruiter-heading">
               <div className="recruiter-heading-icon">
                 <RecruiterPanelIcon />
               </div>
-              <div className="recruiter-heading-copy">
+              <div className="recruiter-heading-copy" key={`recruiter-head-${recruiterDisplayChannel}`}>
                 <div className="recruiter-heading-title">{recruiterPanel.title}</div>
                 <div className="recruiter-heading-subtitle">{recruiterPanel.subtitle}</div>
               </div>
             </div>
-            <div className="recruiter-body">
-              <RecruiterPanel channel={currentChannel} />
+            <div className={`recruiter-body ${recruiterFadingOut ? "recruiter-body-fading" : ""}`}>
+              <RecruiterPanel
+                key={`recruiter-panel-${recruiterDisplayChannel}`}
+                channel={recruiterDisplayChannel}
+              />
             </div>
           </div>
         </div>
@@ -309,6 +346,7 @@ export function LargeBody({
               currentMode={currentMode}
               windEnabled={windEnabled}
               ambientMuted={isMuted}
+              resetFocusSignal={homeResetSignal}
               onTvFocusChange={(isFocused) => {
                 if (!view3d) return;
                 setLeftSectionVisible(!isFocused);
