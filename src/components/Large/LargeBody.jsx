@@ -30,6 +30,7 @@ export function LargeBody({
   currentMode,
   setCurrentMode,
   loadingComplete,
+  onInitialSceneReady,
 }) {
   const [rightSectionVisible, setRightSectionVisible] = useState(false);
   const [leftSectionVisible, setLeftSectionVisible] = useState(false);
@@ -385,6 +386,7 @@ export function LargeBody({
             <Suspense fallback={null}>
               <ThreeEnv
                 channel={currentChannel}
+                onSceneReady={onInitialSceneReady}
                 currentMode={currentMode}
                 windEnabled={windEnabled}
                 ambientMuted={isMuted}
@@ -412,6 +414,11 @@ LargeBody.propTypes = {
   currentMode: PropTypes.number.isRequired,
   setCurrentMode: PropTypes.func.isRequired,
   loadingComplete: PropTypes.bool.isRequired,
+  onInitialSceneReady: PropTypes.func,
+};
+
+LargeBody.defaultProps = {
+  onInitialSceneReady: null,
 };
 
 function generateQrCode(url, color) {

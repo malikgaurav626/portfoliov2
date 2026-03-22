@@ -38,6 +38,13 @@ const CHANNELS = [
   "CHANNEL 4 / SPACE",
 ];
 
+const MOBILE_BREAKPOINT_PX = 768;
+
+function isMobileViewport() {
+  if (typeof window === "undefined") return false;
+  return window.innerWidth <= MOBILE_BREAKPOINT_PX;
+}
+
 const ThreeEnv = lazy(() =>
   import("../ThreeEnv/ThreeEnv").then((module) => ({ default: module.ThreeEnv }))
 );
@@ -52,6 +59,7 @@ export function MediumBody({
   setisPlaying,
   view3d,
   setView3d,
+  onInitialSceneReady,
 }) {
   const [topSectionVisible, setTopSectionVisible] = useState(true);
   const [bottomSectionVisible, setBottomSectionVisible] = useState(true);
@@ -62,7 +70,7 @@ export function MediumBody({
   const [isMuted, setIsMuted] = useState(true);
   const [shareOpen, setShareOpen] = useState(false);
   const [currentShareSocial, setCurrentShareSocial] = useState(0);
-  const [windEnabled, setWindEnabled] = useState(true);
+  const [windEnabled, setWindEnabled] = useState(() => !isMobileViewport());
   const rootRef = useRef(null);
   const lastQrColorRef = useRef("");
   const visualMode = currentMode;
@@ -167,6 +175,7 @@ export function MediumBody({
           <Suspense fallback={null}>
             <ThreeEnv
               channel={currentChannel}
+              onSceneReady={onInitialSceneReady}
               currentMode={currentMode}
               windEnabled={windEnabled}
               ambientMuted={isMuted}
@@ -291,6 +300,11 @@ MediumBody.propTypes = {
   setisPlaying: PropTypes.func.isRequired,
   view3d: PropTypes.bool.isRequired,
   setView3d: PropTypes.func.isRequired,
+  onInitialSceneReady: PropTypes.func,
+};
+
+MediumBody.defaultProps = {
+  onInitialSceneReady: null,
 };
 
 function SVG1() {

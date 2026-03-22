@@ -29,10 +29,6 @@ export default defineConfig({
             return 'postfx-vendor'
           }
 
-          if (id.includes('firebase')) {
-            return 'firebase-vendor'
-          }
-
           return 'vendor'
         },
       },

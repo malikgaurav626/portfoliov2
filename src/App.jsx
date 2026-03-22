@@ -1,8 +1,6 @@
 // import "./App.css";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { db } from "./firebase/firebase";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
 
 // Import extracted components
 import { MediumBody } from "./components/Medium/MediumBody";
@@ -11,23 +9,7 @@ import Loading from "./components/Loading/Loading";
 
 function App() {
   const [projects, setProjects] = useState([]);
-  // useEffect(() => {
-  //   const fetchProjects = async () => {
-  //     const projectsCollection = collection(db, "projects");
-  //     const projectSnapshot = await getDocs(projectsCollection);
-  //     const projectList = projectSnapshot.docs.map((doc) => doc.data());
-  //     // sort projectList items with id
-  //     const sortedProjectList = projectList.sort((a, b) => a.id - b.id);
-  //     setProjects(sortedProjectList);
-  //   };
 
-  //   const unsubscribe = onSnapshot(collection(db, "projects"), () => {
-  //     fetchProjects();
-  //   });
-
-  //   // Clean up subscription on unmount
-  //   return () => unsubscribe();
-  // }, []);
   useEffect(() => {
     console.log(projects);
   }, [projects]);
@@ -43,6 +25,7 @@ export default App;
 function Body({ projects }) {
   const [loading, setLoading] = useState(true);
   const [loadingComplete, setLoadingComplete] = useState(false);
+  const [firstSceneReady, setFirstSceneReady] = useState(false);
   const [currentProject, setCurrentProject] = useState(0);
   const [isPlaying, setisPlaying] = useState(false);
   const [currentMode, setCurrentMode] = useState(0);
@@ -50,14 +33,12 @@ function Body({ projects }) {
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 998);
   const [useCrtVideo, setUseCrtVideo] = useState(true);
 
-  // Simulate loading completion after 2 seconds (replace with actual loading logic)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-      setLoadingComplete(true);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  const handleFirstSceneReady = () => {
+    if (firstSceneReady) return;
+    setFirstSceneReady(true);
+    setLoading(false);
+    setLoadingComplete(true);
+  };
 
   useEffect(() => {
     let timeoutId;
@@ -107,13 +88,13 @@ function Body({ projects }) {
     // }
 
     const dynamicStyle = document.querySelector("#dynamic-stylesheet");
-    if (currentMode) dynamicStyle.href = "./src/AppDark.css";
-    else dynamicStyle.href = "./src/App.css";
-  }, [currentMode]);
+    if (!(dynamicStyle instanceof HTMLLinkElement)) return;
 
-  if (loading) {
-    return <Loading />;
-  }
+    const nextHref = currentMode ? "./src/Appdark.css" : "./src/App.css";
+    if (dynamicStyle.getAttribute("href") !== nextHref) {
+      dynamicStyle.setAttribute("href", nextHref);
+    }
+  }, [currentMode]);
 
   return (
     <>
@@ -128,6 +109,7 @@ function Body({ projects }) {
             currentMode={currentMode}
             setCurrentMode={setCurrentMode}
             loadingComplete={loadingComplete}
+            onInitialSceneReady={handleFirstSceneReady}
           />
         ) : (
           <MediumBody
@@ -140,9 +122,11 @@ function Body({ projects }) {
             setisPlaying={setisPlaying}
             view3d={view3d}
             setView3d={setView3d}
+            onInitialSceneReady={handleFirstSceneReady}
           />
         )}
       </div>
+      {loading ? <Loading /> : null}
       <div className="crt-overlay" aria-hidden="true">
         {useCrtVideo && (
           <video

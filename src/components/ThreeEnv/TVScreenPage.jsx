@@ -584,7 +584,7 @@ function ChannelThreePage({ interactive }) {
       category: "Productivity App",
       summary:
         "A Vite-based notes app with vintage aesthetics and modern interaction behavior.",
-      stack: ["React", "Vite", "Bootstrap", "Firebase"],
+      stack: ["React", "Vite", "Bootstrap"],
       role: "UX styling, state handling, app-level implementation",
       impact: "Shows clean execution for lightweight but polished product UX.",
       liveUrl: "https://neonotes-local.netlify.app/",

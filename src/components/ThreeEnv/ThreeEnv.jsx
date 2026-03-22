@@ -38,6 +38,13 @@ const DESERT_ROAD_PATH = "/desert_road.glb";
 const SPACE_PLANET_PATH = "/space_exploration_wlp_series_8.glb";
 const SOVIET_TV_PATH = "/soviet_retro_tv.glb";
 
+const CHANNEL_MODEL_PATHS = {
+  0: [SAKURA_BRIDGE_PATH],
+  1: [DESERT_ROAD_PATH],
+  2: [WINTER_SCENE_PATH],
+  3: [SPACE_PLANET_PATH],
+};
+
 const DEFAULT_TV_VISUALS = {
   model: {
     position: [0, -0.44, -0.08],
@@ -2758,6 +2765,7 @@ function MultiEnvironmentScene({
   setFocusedScreen,
 }) {
   const environmentRefs = useRef([]);
+  const [hydratedChannels, setHydratedChannels] = useState(() => new Set([channel]));
   const isNight = isNightSceneMode({ currentMode, useEnvironmentModes });
   const activeChannel = focusedScreen?.channel ?? channel;
   const activeAnchorZ = getChannelAnchor(activeChannel);
@@ -2773,6 +2781,15 @@ function MultiEnvironmentScene({
   const onScreenFocus = useCallback((focusData) => {
     setFocusedScreen(focusData);
   }, [setFocusedScreen]);
+
+  useEffect(() => {
+    setHydratedChannels((prev) => {
+      if (prev.has(channel)) return prev;
+      const next = new Set(prev);
+      next.add(channel);
+      return next;
+    });
+  }, [channel]);
 
   return (
     <>
@@ -2793,6 +2810,7 @@ function MultiEnvironmentScene({
 
       {ENVIRONMENT_MODES.map((env, index) => {
         const isActive = activeChannel === index;
+        const shouldRenderEnvironment = isActive || hydratedChannels.has(index);
         const palette = palettes[index];
         const isTvFocused = focusedScreen?.key === `tv-${index}`;
         const tvConfig = tvConfigs[index];
@@ -2808,47 +2826,49 @@ function MultiEnvironmentScene({
               }
             }}
           >
-            {index === 0 ? (
-              <SakuraEnvironment
-                index={index}
-                palette={palette}
-                onScreenFocus={onScreenFocus}
-                isTvFocused={isTvFocused}
-                isActive={isActive}
-                isNight={isNight}
-                tvConfig={tvConfig}
-              />
-            ) : index === 1 ? (
-              <DesertEnvironment
-                index={index}
-                palette={palette}
-                onScreenFocus={onScreenFocus}
-                isTvFocused={isTvFocused}
-                isActive={isActive}
-                isNight={isNight}
-                tvConfig={tvConfig}
-              />
-            ) : index === 2 ? (
-              <ArcticEnvironment
-                index={index}
-                palette={palette}
-                onScreenFocus={onScreenFocus}
-                isTvFocused={isTvFocused}
-                isActive={isActive}
-                isNight={isNight}
-                tvConfig={tvConfig}
-              />
-            ) : (
-              <SpaceEnvironment
-                index={index}
-                palette={palette}
-                onScreenFocus={onScreenFocus}
-                isTvFocused={isTvFocused}
-                isActive={isActive}
-                isNight={isNight}
-                tvConfig={tvConfig}
-              />
-            )}
+            {shouldRenderEnvironment ? (
+              index === 0 ? (
+                <SakuraEnvironment
+                  index={index}
+                  palette={palette}
+                  onScreenFocus={onScreenFocus}
+                  isTvFocused={isTvFocused}
+                  isActive={isActive}
+                  isNight={isNight}
+                  tvConfig={tvConfig}
+                />
+              ) : index === 1 ? (
+                <DesertEnvironment
+                  index={index}
+                  palette={palette}
+                  onScreenFocus={onScreenFocus}
+                  isTvFocused={isTvFocused}
+                  isActive={isActive}
+                  isNight={isNight}
+                  tvConfig={tvConfig}
+                />
+              ) : index === 2 ? (
+                <ArcticEnvironment
+                  index={index}
+                  palette={palette}
+                  onScreenFocus={onScreenFocus}
+                  isTvFocused={isTvFocused}
+                  isActive={isActive}
+                  isNight={isNight}
+                  tvConfig={tvConfig}
+                />
+              ) : (
+                <SpaceEnvironment
+                  index={index}
+                  palette={palette}
+                  onScreenFocus={onScreenFocus}
+                  isTvFocused={isTvFocused}
+                  isActive={isActive}
+                  isNight={isNight}
+                  tvConfig={tvConfig}
+                />
+              )
+            ) : null}
           </group>
         );
       })}
@@ -2874,6 +2894,7 @@ export const ThreeEnv = memo(function ThreeEnv({
   resetFocusSignal = 0,
 }) {
   const stageRef = useRef(null);
+  const preloadedAssetsRef = useRef(new Set());
   const touchStateRef = useRef({
     startX: 0,
     startY: 0,
@@ -2888,6 +2909,12 @@ export const ThreeEnv = memo(function ThreeEnv({
     setFocusedScreen(null);
   }, []);
 
+  const preloadModel = useCallback((path) => {
+    if (!path || preloadedAssetsRef.current.has(path)) return;
+    preloadedAssetsRef.current.add(path);
+    useGLTF.preload(path);
+  }, []);
+
   useEffect(() => {
     setFocusedScreen(null);
   }, [channel]);
@@ -2895,6 +2922,37 @@ export const ThreeEnv = memo(function ThreeEnv({
   useEffect(() => {
     setFocusedScreen(null);
   }, [resetFocusSignal]);
+
+  useEffect(() => {
+    const timers = [];
+
+    // Ensure the active channel and TV shell are ready first.
+    preloadModel(SOVIET_TV_PATH);
+    (CHANNEL_MODEL_PATHS[clampedChannel] || []).forEach((path) => preloadModel(path));
+
+    // Stagger background preloads for the remaining channels.
+    const otherChannels = Object.keys(CHANNEL_MODEL_PATHS)
+      .map(Number)
+      .filter((idx) => idx !== clampedChannel);
+
+    let slot = 0;
+    for (let i = 0; i < otherChannels.length; i++) {
+      const channelIndex = otherChannels[i];
+      const paths = CHANNEL_MODEL_PATHS[channelIndex] || [];
+      for (let j = 0; j < paths.length; j++) {
+        const path = paths[j];
+        const delay = 600 + slot * 500;
+        timers.push(window.setTimeout(() => preloadModel(path), delay));
+        slot += 1;
+      }
+    }
+
+    return () => {
+      for (let i = 0; i < timers.length; i++) {
+        window.clearTimeout(timers[i]);
+      }
+    };
+  }, [clampedChannel, preloadModel]);
 
   useEffect(() => {
     if (!onTvFocusChange) return;
@@ -3249,8 +3307,3 @@ ThreeEnv.defaultProps = {
   resetFocusSignal: 0,
 };
 
-useGLTF.preload(SAKURA_BRIDGE_PATH);
-useGLTF.preload(DESERT_ROAD_PATH);
-useGLTF.preload(WINTER_SCENE_PATH);
-useGLTF.preload(SPACE_PLANET_PATH);
-useGLTF.preload(SOVIET_TV_PATH);

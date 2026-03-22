@@ -230,10 +230,6 @@ export function ControlBar({
                   >
                     <div
                       className="view-3d-btn-container"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        setView3d && setView3d(!view3d);
-                      }}
                     >
                       {view3d ? <View3dEnv /> : <Hide3dEnv />}
                     </div>
@@ -434,10 +430,6 @@ export function ControlBar({
                   >
                     <div
                       className="view-3d-btn-container"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        setView3d && setView3d(!view3d);
-                      }}
                     >
                       {view3d ? <View3dEnv /> : <Hide3dEnv />}
                     </div>
