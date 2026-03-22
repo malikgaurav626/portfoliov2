@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export function CommentList({ comments, currentProject }) {
   return (
     <div className="comments-content">
@@ -24,3 +26,19 @@ export function CommentList({ comments, currentProject }) {
     </div>
   );
 }
+
+CommentList.propTypes = {
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      user: PropTypes.string,
+      text: PropTypes.string,
+      date: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date)]),
+    })
+  ),
+  currentProject: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
+
+CommentList.defaultProps = {
+  comments: [],
+  currentProject: 0,
+};

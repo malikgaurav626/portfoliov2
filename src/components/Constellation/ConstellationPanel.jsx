@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import PropTypes from "prop-types";
 import "./ConstellationPanel.css";
 
 const CONSTELLATION_THEMES = [
@@ -111,4 +112,9 @@ export function ConstellationPanel({ channel = 0, compact = false }) {
     </div>
   );
 }
+
+ConstellationPanel.propTypes = {
+  channel: PropTypes.number,
+  compact: PropTypes.bool,
+};
 

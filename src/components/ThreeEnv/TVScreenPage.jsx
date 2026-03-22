@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
 
 export const TV_SCREEN_HTML_WIDTH = 620;
 export const TV_SCREEN_HTML_HEIGHT = 440;
@@ -90,6 +91,17 @@ function TVPageRoot({ children, className, interactive }) {
   );
 }
 
+TVPageRoot.propTypes = {
+  children: PropTypes.node,
+  className: PropTypes.string.isRequired,
+  interactive: PropTypes.bool,
+};
+
+TVPageRoot.defaultProps = {
+  children: null,
+  interactive: false,
+};
+
 function ChannelOnePage({ interactive }) {
   return (
     <TVPageRoot
@@ -164,7 +176,7 @@ function ChannelOnePage({ interactive }) {
             <span>Transfer</span>
             <span>Protocol</span>
             <span>Secure</span>
-            <span>//</span>
+            <span>{"//"}</span>
             <span>World</span>
             <span>Wide</span>
             <span>Web</span>
@@ -197,7 +209,7 @@ function ChannelOnePage({ interactive }) {
             </div>
             <a
                 className="tv-sakura-cta"
-                href="https://drive.google.com/file/d/17PKn71erSG5W1sHVrqZyrBwFCGkQN0az/view?usp=sharing"
+                href="https://drive.google.com/drive/folders/1KkQAa_w_K-IntzNQQekjrLALSPXaXRFc?usp=sharing"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -257,6 +269,14 @@ function ChannelOnePage({ interactive }) {
     </TVPageRoot>
   );
 }
+
+ChannelOnePage.propTypes = {
+  interactive: PropTypes.bool,
+};
+
+ChannelOnePage.defaultProps = {
+  interactive: false,
+};
 
 function ChannelTwoPage({ interactive }) {
   const skillGroups = [
@@ -438,6 +458,14 @@ function ChannelTwoPage({ interactive }) {
     </TVPageRoot>
   );
 }
+
+ChannelTwoPage.propTypes = {
+  interactive: PropTypes.bool,
+};
+
+ChannelTwoPage.defaultProps = {
+  interactive: false,
+};
 
 function ChannelThreePage({ interactive }) {
   const cases = [
@@ -779,6 +807,14 @@ function ChannelThreePage({ interactive }) {
   );
 }
 
+ChannelThreePage.propTypes = {
+  interactive: PropTypes.bool,
+};
+
+ChannelThreePage.defaultProps = {
+  interactive: false,
+};
+
 function ChannelFourPage({ interactive }) {
   const socialLinks = [
     {
@@ -907,9 +943,22 @@ function ChannelFourPage({ interactive }) {
   );
 }
 
+ChannelFourPage.propTypes = {
+  interactive: PropTypes.bool,
+};
+
+ChannelFourPage.defaultProps = {
+  interactive: false,
+};
+
 export function TVScreenPage({ channel = 0, interactive = false }) {
   if (channel === 1) return <ChannelTwoPage interactive={interactive} />;
   if (channel === 2) return <ChannelThreePage interactive={interactive} />;
   if (channel === 3) return <ChannelFourPage interactive={interactive} />;
   return <ChannelOnePage interactive={interactive} />;
 }
+
+TVScreenPage.propTypes = {
+  channel: PropTypes.number,
+  interactive: PropTypes.bool,
+};

@@ -1,5 +1,6 @@
 // import "./App.css";
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { db } from "./firebase/firebase";
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 
@@ -164,3 +165,7 @@ function Body({ projects }) {
     </>
   );
 }
+
+Body.propTypes = {
+  projects: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+};

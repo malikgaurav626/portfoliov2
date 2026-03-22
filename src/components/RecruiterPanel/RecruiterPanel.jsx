@@ -1,4 +1,5 @@
 import { memo } from "react";
+import PropTypes from "prop-types";
 
 const RECRUITER_PANEL_CONFIG = [
   {
@@ -188,3 +189,8 @@ export const RecruiterPanel = memo(function RecruiterPanel({ channel = 0, compac
     </div>
   );
 });
+
+RecruiterPanel.propTypes = {
+  channel: PropTypes.number,
+  compact: PropTypes.bool,
+};

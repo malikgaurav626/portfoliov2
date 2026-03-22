@@ -12,6 +12,36 @@
   inset: 0;
 }
 
+.three-env-focus-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  z-index: 8;
+  pointer-events: none;
+  padding: 5px 10px;
+  border: 1px solid color-mix(in srgb, var(--scene-ui-border, #dec0f7) 75%, transparent);
+  background: color-mix(in srgb, var(--scene-ui-bg-panel, #111522) 82%, transparent);
+  color: var(--scene-ui-text, #dec0f7);
+  font-family: "maison", "VT323", monospace;
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.88;
+}
+
+@media (max-width: 998px) {
+  .three-env-focus-hint {
+    bottom: 44px;
+    font-size: 9px;
+    max-width: calc(100% - 18px);
+    white-space: normal;
+    text-align: center;
+  }
+}
+
 .three-env-postfx-layer {
   position: absolute;
   inset: 0;

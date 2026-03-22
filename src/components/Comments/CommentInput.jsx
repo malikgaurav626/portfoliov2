@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export function CommentInput({ onSubmit }) {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -16,3 +18,7 @@ export function CommentInput({ onSubmit }) {
     </div>
   );
 }
+
+CommentInput.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

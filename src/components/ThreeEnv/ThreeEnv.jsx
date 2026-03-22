@@ -1,6 +1,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, useGLTF } from "@react-three/drei";
 import { memo, useEffect, useMemo, useRef, useState, useCallback } from "react";
+import PropTypes from "prop-types";
 import * as THREE from "three";
 import { TV_SCREEN_HTML_HEIGHT, TV_SCREEN_HTML_WIDTH, TVScreenPage } from "./TVScreenPage";
 import "./ThreeEnv.css";
@@ -1656,7 +1657,12 @@ function CRTTV({
     screenRef.current.getWorldQuaternion(screenQuaternion);
     normal.applyQuaternion(screenQuaternion).normalize();
 
-    const focusDistance = channel === 0 ? 0.72 : 0.92;
+    const isPhoneViewport = window.matchMedia("(max-width: 700px)").matches;
+    const baseFocusDistance = channel === 0 ? 0.72 : 0.92;
+    const mobileFocusDistances = [0.98, 1.30, 1.30, 1.18];
+    const focusDistance = isPhoneViewport
+      ? mobileFocusDistances[channel] ?? baseFocusDistance + 0.26
+      : baseFocusDistance;
     const yOffset = channel === 0 ? -0.04 : 0.05;
     const lookAtOffset = channel === 0 ? -0.03 : 0;
     const cameraPosition = screenPosition
@@ -2810,8 +2816,20 @@ export const ThreeEnv = memo(function ThreeEnv({
   ambientMuted = false,
   resetFocusSignal = 0,
 }) {
+  const stageRef = useRef(null);
+  const touchStateRef = useRef({
+    startX: 0,
+    startY: 0,
+    startScrollTop: 0,
+    startedAt: 0,
+    pageEl: null,
+  });
   const [focusedScreen, setFocusedScreen] = useState(null);
   const clampedChannel = clampChannel(channel);
+
+  const closeFocusedScreen = useCallback(() => {
+    setFocusedScreen(null);
+  }, []);
 
   useEffect(() => {
     setFocusedScreen(null);
@@ -2838,6 +2856,77 @@ export const ThreeEnv = memo(function ThreeEnv({
     isNight,
     muted: ambientMuted,
   });
+
+  useEffect(() => {
+    if (!focusedScreen) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeFocusedScreen();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [focusedScreen, closeFocusedScreen]);
+
+  useEffect(() => {
+    if (!focusedScreen || !stageRef.current) return undefined;
+
+    const stageElement = stageRef.current;
+
+    const handleTouchStart = (event) => {
+      if (!event.touches || event.touches.length !== 1) return;
+
+      const touch = event.touches[0];
+      const pageEl = event.target?.closest?.(".tv-page") || null;
+
+      touchStateRef.current = {
+        startX: touch.clientX,
+        startY: touch.clientY,
+        startScrollTop: pageEl ? pageEl.scrollTop : 0,
+        startedAt: Date.now(),
+        pageEl,
+      };
+    };
+
+    const handleTouchEnd = (event) => {
+      if (!event.changedTouches || event.changedTouches.length !== 1) return;
+
+      const touch = event.changedTouches[0];
+      const state = touchStateRef.current;
+      if (!state.startedAt) return;
+
+      const dx = touch.clientX - state.startX;
+      const dy = touch.clientY - state.startY;
+      const absX = Math.abs(dx);
+      const absY = Math.abs(dy);
+      const elapsed = Date.now() - state.startedAt;
+      const currentScrollTop = state.pageEl ? state.pageEl.scrollTop : 0;
+
+      const startedNearLeft = state.startX <= 36;
+      const swipeRightBack = startedNearLeft && dx > 88 && absY < 70;
+      const swipeDownBack =
+        state.startScrollTop <= 2 &&
+        currentScrollTop <= 2 &&
+        dy > 96 &&
+        absX < 90;
+
+      if (elapsed < 700 && (swipeRightBack || swipeDownBack)) {
+        closeFocusedScreen();
+      }
+    };
+
+    stageElement.addEventListener("touchstart", handleTouchStart, { passive: true });
+    stageElement.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    return () => {
+      stageElement.removeEventListener("touchstart", handleTouchStart);
+      stageElement.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [focusedScreen, closeFocusedScreen]);
+
   const handlePointerMissed = useCallback((event) => {
     const target = event?.target || event?.nativeEvent?.target;
 
@@ -2845,11 +2934,11 @@ export const ThreeEnv = memo(function ThreeEnv({
       return;
     }
 
-    setFocusedScreen(null);
-  }, []);
+    closeFocusedScreen();
+  }, [closeFocusedScreen]);
 
   return (
-    <div className="three-env-stage">
+    <div ref={stageRef} className="three-env-stage">
       <Canvas
         id="canvas-id"
         className="three-env-canvas"
@@ -2884,6 +2973,12 @@ export const ThreeEnv = memo(function ThreeEnv({
         enabled={windEnabled}
       />
 
+      {focusedScreen ? (
+        <div className="three-env-focus-hint" aria-live="polite">
+          Tap or click outside the TV screen to zoom out or go back
+        </div>
+      ) : null}
+
       <div className="three-env-postfx-layer" aria-hidden="true">
         <span className="three-env-postfx-glow" />
         <span className="three-env-postfx-scan" />
@@ -2892,6 +2987,203 @@ export const ThreeEnv = memo(function ThreeEnv({
     </div>
   );
 });
+
+WindOverlay.propTypes = {
+  channel: PropTypes.number.isRequired,
+  isNight: PropTypes.bool.isRequired,
+  enabled: PropTypes.bool.isRequired,
+};
+
+SceneFogEnvelope.propTypes = {
+  palette: PropTypes.object.isRequired,
+  isNight: PropTypes.bool.isRequired,
+};
+
+SakuraWind.propTypes = {
+  index: PropTypes.number.isRequired,
+  palette: PropTypes.object.isRequired,
+  isActive: PropTypes.bool.isRequired,
+};
+
+DesertWind.propTypes = {
+  index: PropTypes.number.isRequired,
+  palette: PropTypes.object.isRequired,
+  isActive: PropTypes.bool.isRequired,
+};
+
+ArcticWind.propTypes = {
+  index: PropTypes.number.isRequired,
+  palette: PropTypes.object.isRequired,
+  isActive: PropTypes.bool.isRequired,
+};
+
+CRTTV.propTypes = {
+  channel: PropTypes.number.isRequired,
+  onScreenFocus: PropTypes.func,
+  tvConfig: PropTypes.object.isRequired,
+  focused: PropTypes.bool,
+};
+
+CRTTV.defaultProps = {
+  onScreenFocus: null,
+  focused: false,
+};
+
+SakuraTreeModel.propTypes = {
+  isActive: PropTypes.bool.isRequired,
+};
+
+SakuraBridgeModel.propTypes = {
+  index: PropTypes.number.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  isNight: PropTypes.bool.isRequired,
+};
+
+SakuraEnvironment.propTypes = {
+  index: PropTypes.number.isRequired,
+  palette: PropTypes.object.isRequired,
+  onScreenFocus: PropTypes.func,
+  isTvFocused: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  isNight: PropTypes.bool.isRequired,
+  tvConfig: PropTypes.object.isRequired,
+};
+
+SakuraEnvironment.defaultProps = {
+  onScreenFocus: null,
+};
+
+DesertRoadModel.propTypes = {
+  index: PropTypes.number.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  isNight: PropTypes.bool.isRequired,
+};
+
+DesertEnvironment.propTypes = {
+  index: PropTypes.number.isRequired,
+  palette: PropTypes.object.isRequired,
+  onScreenFocus: PropTypes.func,
+  isTvFocused: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  isNight: PropTypes.bool.isRequired,
+  tvConfig: PropTypes.object.isRequired,
+};
+
+DesertEnvironment.defaultProps = {
+  onScreenFocus: null,
+};
+
+ArcticEnvironment.propTypes = {
+  index: PropTypes.number.isRequired,
+  palette: PropTypes.object.isRequired,
+  onScreenFocus: PropTypes.func,
+  isTvFocused: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  isNight: PropTypes.bool.isRequired,
+  tvConfig: PropTypes.object.isRequired,
+};
+
+ArcticEnvironment.defaultProps = {
+  onScreenFocus: null,
+};
+
+SpacePlanetModel.propTypes = {
+  index: PropTypes.number.isRequired,
+  isActive: PropTypes.bool.isRequired,
+};
+
+SpaceStarField.propTypes = {
+  isActive: PropTypes.bool.isRequired,
+};
+
+SpaceEnvironment.propTypes = {
+  index: PropTypes.number.isRequired,
+  palette: PropTypes.object.isRequired,
+  onScreenFocus: PropTypes.func,
+  isTvFocused: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  isNight: PropTypes.bool.isRequired,
+  tvConfig: PropTypes.object.isRequired,
+};
+
+SpaceEnvironment.defaultProps = {
+  onScreenFocus: null,
+};
+
+CameraRail.propTypes = {
+  channel: PropTypes.number.isRequired,
+  onSceneReady: PropTypes.func,
+  focusTarget: PropTypes.object,
+};
+
+CameraRail.defaultProps = {
+  onSceneReady: null,
+  focusTarget: null,
+};
+
+DistanceCulling.propTypes = {
+  environmentRefs: PropTypes.shape({
+    current: PropTypes.array,
+  }).isRequired,
+};
+
+RendererTuning.propTypes = {
+  isNight: PropTypes.bool.isRequired,
+};
+
+FogDarkening.propTypes = {
+  isFocused: PropTypes.bool.isRequired,
+  activeChannel: PropTypes.number.isRequired,
+  theme: PropTypes.object.isRequired,
+};
+
+CinematicLighting.propTypes = {
+  isNight: PropTypes.bool.isRequired,
+  theme: PropTypes.object.isRequired,
+  anchorZ: PropTypes.number.isRequired,
+  isFocused: PropTypes.bool.isRequired,
+};
+
+CelestialBodies.propTypes = {
+  isNight: PropTypes.bool.isRequired,
+};
+
+MultiEnvironmentScene.propTypes = {
+  channel: PropTypes.number.isRequired,
+  onSceneReady: PropTypes.func,
+  theme: PropTypes.object.isRequired,
+  currentMode: PropTypes.number.isRequired,
+  useEnvironmentModes: PropTypes.bool.isRequired,
+  focusedScreen: PropTypes.object,
+  setFocusedScreen: PropTypes.func.isRequired,
+};
+
+MultiEnvironmentScene.defaultProps = {
+  onSceneReady: null,
+  focusedScreen: null,
+};
+
+ThreeEnv.propTypes = {
+  channel: PropTypes.number,
+  onSceneReady: PropTypes.func,
+  onTvFocusChange: PropTypes.func,
+  currentMode: PropTypes.number,
+  useEnvironmentModes: PropTypes.bool,
+  windEnabled: PropTypes.bool,
+  ambientMuted: PropTypes.bool,
+  resetFocusSignal: PropTypes.number,
+};
+
+ThreeEnv.defaultProps = {
+  channel: 0,
+  onSceneReady: null,
+  onTvFocusChange: null,
+  currentMode: 0,
+  useEnvironmentModes: true,
+  windEnabled: true,
+  ambientMuted: false,
+  resetFocusSignal: 0,
+};
 
 useGLTF.preload(SAKURA_BRIDGE_PATH);
 useGLTF.preload(DESERT_ROAD_PATH);

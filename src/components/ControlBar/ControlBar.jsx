@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   PlaySVG,
   PauseSVG,
@@ -705,3 +706,42 @@ export function ControlBar({
     </div>
   );
 }
+
+ControlBar.propTypes = {
+  isPlaying: PropTypes.bool.isRequired,
+  setisPlaying: PropTypes.func,
+  onPlayPause: PropTypes.func,
+  onShare: PropTypes.func,
+  onInfo: PropTypes.func,
+  onBack: PropTypes.func,
+  onNext: PropTypes.func,
+  onMute: PropTypes.func,
+  isMuted: PropTypes.bool,
+  currentMode: PropTypes.number,
+  setCurrentMode: PropTypes.func,
+  modeValue: PropTypes.number,
+  onModeChange: PropTypes.func,
+  modeTitle: PropTypes.string,
+  modeLeftLabel: PropTypes.string,
+  modeRightLabel: PropTypes.string,
+  showSceneConstellation: PropTypes.bool,
+  variant: PropTypes.oneOf(["medium", "large"]),
+  projects: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  currentProject: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  commentOpen: PropTypes.bool,
+  setCommentOpen: PropTypes.func,
+  menuOpen: PropTypes.bool,
+  setMenuOpen: PropTypes.func,
+  shareOpen: PropTypes.bool,
+  setShareOpen: PropTypes.func,
+  dropdownOpen: PropTypes.bool,
+  setDropdownOpen: PropTypes.func,
+  currentChannel: PropTypes.number,
+  setCurrentChannel: PropTypes.func,
+  currentShareSocial: PropTypes.number,
+  setCurrentShareSocial: PropTypes.func,
+  channels: PropTypes.arrayOf(PropTypes.string),
+  view3d: PropTypes.bool,
+  setView3d: PropTypes.func,
+  handleDialClick: PropTypes.func,
+};

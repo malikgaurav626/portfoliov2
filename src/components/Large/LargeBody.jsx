@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
 import QRCode from "qrcode";
 import { ControlBar } from "../ControlBar/ControlBar";
 import { ThreeEnv } from "../ThreeEnv/ThreeEnv";
@@ -397,6 +398,17 @@ export function LargeBody({
   );
 }
 
+LargeBody.propTypes = {
+  projects: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+  currentProject: PropTypes.number.isRequired,
+  setCurrentProject: PropTypes.func.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
+  setisPlaying: PropTypes.func.isRequired,
+  currentMode: PropTypes.number.isRequired,
+  setCurrentMode: PropTypes.func.isRequired,
+  loadingComplete: PropTypes.bool.isRequired,
+};
+
 function generateQrCode(url, color) {
   QRCode.toDataURL(url, { color: { dark: color, light: "#0000" } })
     .then((url) => {
@@ -455,6 +467,10 @@ function LeftArrowSVG({ currentMode }) {
   );
 }
 
+LeftArrowSVG.propTypes = {
+  currentMode: PropTypes.number.isRequired,
+};
+
 function RightArrowSVG({ currentMode }) {
   return (
     <svg
@@ -474,3 +490,7 @@ function RightArrowSVG({ currentMode }) {
     </svg>
   );
 }
+
+RightArrowSVG.propTypes = {
+  currentMode: PropTypes.number.isRequired,
+};

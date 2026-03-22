@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import PropTypes from "prop-types";
 import "./SignalMonitor.css";
 
 const SIGNAL_VARIANTS = [
@@ -199,4 +200,10 @@ export function SignalMonitor({
     </div>
   );
 }
+
+SignalMonitor.propTypes = {
+  channel: PropTypes.number,
+  onSignalClick: PropTypes.func,
+  compact: PropTypes.bool,
+};
 

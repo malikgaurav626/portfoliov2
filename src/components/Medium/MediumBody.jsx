@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import {
   TwitterShareBody,
   InstagramShareBody,
@@ -49,6 +50,8 @@ export function MediumBody({
   view3d,
   setView3d,
 }) {
+  const [topSectionVisible, setTopSectionVisible] = useState(true);
+  const [bottomSectionVisible, setBottomSectionVisible] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentChannel, setCurrentChannel] = useState(0);
   const [commentOpen, setCommentOpen] = useState(false);
@@ -144,12 +147,18 @@ export function MediumBody({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [channelCount]);
 
+  useEffect(() => {
+    if (view3d) return;
+    setTopSectionVisible(true);
+    setBottomSectionVisible(true);
+  }, [view3d]);
+
   return (
     <>
       <div
         className={`three_env_container ${
           view3d ? "three_env_visible" : "three_env_hidden"
-        }`}
+        } ${view3d ? `scene-ui-active scene-ch-${currentChannel} scene-time-${sceneTime}` : ""}`}
       >
         {view3d && (
           <ThreeEnv
@@ -157,6 +166,11 @@ export function MediumBody({
             currentMode={currentMode}
             windEnabled={windEnabled}
             ambientMuted={isMuted}
+            onTvFocusChange={(isFocused) => {
+              if (!view3d) return;
+              setTopSectionVisible(!isFocused);
+              setBottomSectionVisible(!isFocused);
+            }}
           />
         )}
       </div>
@@ -166,7 +180,11 @@ export function MediumBody({
           view3d ? `scene-ui-active scene-ch-${currentChannel} scene-time-${sceneTime}` : ""
         }`}
       >
-        <div className="medium-heading-container">
+        <div
+          className={`medium-heading-container ${
+            topSectionVisible ? "medium-panel-visible" : "medium-panel-hidden medium-panel-top-hidden"
+          }`}
+        >
           <div className="medium-heading-title-container">
             <div className="medium-heading-left-side">
               <div className="medium-heading-title rgb-split">GaURaV</div>
@@ -204,7 +222,11 @@ export function MediumBody({
           </div>
         </div>
         <div className="fading-stripes"></div>
-        <div className="medium-footer">
+        <div
+          className={`medium-footer ${
+            bottomSectionVisible ? "medium-panel-visible" : "medium-panel-hidden medium-panel-bottom-hidden"
+          }`}
+        >
           <div className="project-details">
             <div className="medium-project-title">
               {projects[currentProject]?.name}
@@ -253,6 +275,18 @@ export function MediumBody({
     </>
   );
 }
+
+MediumBody.propTypes = {
+  projects: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+  currentProject: PropTypes.number.isRequired,
+  setCurrentProject: PropTypes.func.isRequired,
+  currentMode: PropTypes.number.isRequired,
+  setCurrentMode: PropTypes.func.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
+  setisPlaying: PropTypes.func.isRequired,
+  view3d: PropTypes.bool.isRequired,
+  setView3d: PropTypes.func.isRequired,
+};
 
 function SVG1() {
   return (
