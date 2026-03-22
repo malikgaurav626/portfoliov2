@@ -1,14 +1,16 @@
+import { memo } from "react";
+
 const RECRUITER_PANEL_CONFIG = [
   {
     title: "RECRUITER MODE",
     subtitle: "Sakura Intro Feed",
     summary:
-      "Fast read for recruiters landing on the home channel. This scene is the softest entry point into the portfolio, with the strongest signals surfaced first.",
-    status: ["Open to Web Dev Roles", "Based in India", "Reply in 24-48h"],
+      "Gaurav - Software Engineer 1 at MAQ Software, ex-ASE at MAQ, ex-Web Developer Intern at Pixel Bridges, and IIIT Sonepat graduate focused on frontend and product engineering.",
+    status: ["New Delhi / Noida NCR", "B.Tech Computer Engineering", "Reply in 24-48h"],
     facts: [
-      { label: "Current", value: "Software Engineer 1 @ MAQ Software" },
-      { label: "Strength", value: "Frontend systems with polished UI execution" },
-      { label: "Best Fit", value: "Web developer and frontend-focused roles" },
+      { label: "Current", value: "Software Engineer 1 @ MAQ Software (Full-time Jul 2025 - Present)" },
+      { label: "Experience", value: "Associate Software Engineer @ MAQ (Jan 2025 - Jun 2025), Web Developer Intern @ Pixel Bridges (Feb 2024 - Jan 2025)" },
+      { label: "Location", value: "Noida, India | malikgaurav626@gmail.com" },
     ],
     notes: [
       "Professional introduction with a stronger portfolio-first presentation.",
@@ -20,12 +22,12 @@ const RECRUITER_PANEL_CONFIG = [
     title: "ARRAKIS DOSSIER",
     subtitle: "Skills Broadcast",
     summary:
-      "A channel tuned for technical positioning. It frames core strengths, delivery style, and the kind of frontend work that feels strongest in interviews and portfolio reviews.",
-    status: ["Frontend Systems", "Interactive UI", "3D-Ready"],
+      "A technical snapshot covering frontend depth, software engineering fundamentals, QA/security workflows, and production delivery patterns across internship, freelance, and full-time work.",
+    status: ["Frontend + Web3", "Security + QA", "AI / System Design"],
     facts: [
-      { label: "Core Stack", value: "React, JavaScript, Vite, CSS, HTML" },
-      { label: "Interactive Layer", value: "Three.js and React Three Fiber work" },
-      { label: "Delivery Style", value: "Visually sharp, practical, and iterative" },
+      { label: "Programming", value: "C, C++, C#, Python, Java, JavaScript, JSX, HTML5, CSS, React, Redux, Next.js" },
+      { label: "Security / Tooling", value: "Snyk, Fiddler, Datadog, web app pen-test resolution, REST APIs, end-to-end testing" },
+      { label: "Creative / Systems", value: "System design, Lucidchart, AI agents, OpenCV, Neural Networks, Adobe PS/Premiere/Audition" },
     ],
     notes: [
       "Best for recruiters screening for implementation depth and UI instincts.",
@@ -37,12 +39,12 @@ const RECRUITER_PANEL_CONFIG = [
     title: "WINTER ARCHIVE",
     subtitle: "Project Casebook",
     summary:
-      "A colder, project-led scan of work quality. This panel frames the kind of builds you can walk a hiring team through: interactive portfolio work, product surfaces, and polished web delivery.",
-    status: ["Case Studies", "Product Web", "Frontend Craft"],
+      "A project-focused scan across production websites, interactive 3D experiences, Web3 dashboards, and applied ML/game builds with measurable implementation depth.",
+    status: ["30+ Client Websites", "Web3 + 3D Products", "ML + Game Builds"],
     facts: [
-      { label: "Project Type", value: "Portfolios, landing pages, dashboards, microsites" },
-      { label: "Review Angle", value: "Role clarity, stack choices, execution quality" },
-      { label: "Hiring Signal", value: "Useful for portfolio and practical build evaluation" },
+      { label: "Live Projects", value: "Forex Dominant, Zyrithra, VortyX Finance, Vexaris, Geode, Cosmic Route" },
+      { label: "Delivery Record", value: "30+ websites delivered (Pixel Bridges + freelance)" },
+      { label: "Extended Portfolio", value: "Neko Noir, Exo Archives, Game Ether, NeoNotes, Flux Player, Travel Advisor, Maze Generator" },
     ],
     notes: [
       "The strongest projects are framed as case-study material, not gallery filler.",
@@ -54,12 +56,12 @@ const RECRUITER_PANEL_CONFIG = [
     title: "COMMS TERMINAL",
     subtitle: "Space Contact Console",
     summary:
-      "A direct route for outreach. This lane is optimized for hiring conversations, role fit, and fast contact rather than passive browsing.",
-    status: ["Hiring Signal Live", "IST Timezone", "Email Preferred"],
+      "A direct hiring channel for role-fit conversations, collaboration opportunities, and fast project/recruiter follow-up.",
+    status: ["Noida / Remote", "IST Timezone", "Email Preferred"],
     facts: [
       { label: "Role Target", value: "Frontend Engineer / Web Developer" },
-      { label: "Contact Route", value: "Email or LinkedIn for fastest response" },
-      { label: "Opportunity Fit", value: "Product web, interactive UI, frontend builds" },
+      { label: "Contact Route", value: "malikgaurav626@gmail.com" },
+      { label: "Profiles", value: "LinkedIn + GitHub + portfolio links available on request" },
     ],
     notes: [
       "Best final channel for recruiters ready to move from review to outreach.",
@@ -83,6 +85,8 @@ const RECRUITER_ACTIONS = [
     href: "https://github.com/malikgaurav626",
   },
 ];
+
+const SIGNAL_LEVELS = ["92%", "81%", "87%"];
 
 export function getRecruiterPanelConfig(channel = 0) {
   return RECRUITER_PANEL_CONFIG[channel] || RECRUITER_PANEL_CONFIG[0];
@@ -111,9 +115,8 @@ export function RecruiterPanelIcon() {
   );
 }
 
-export function RecruiterPanel({ channel = 0, compact = false }) {
+export const RecruiterPanel = memo(function RecruiterPanel({ channel = 0, compact = false }) {
   const config = getRecruiterPanelConfig(channel);
-  const signalLevels = ["92%", "81%", "87%"];
 
   return (
     <div
@@ -157,10 +160,10 @@ export function RecruiterPanel({ channel = 0, compact = false }) {
           <article key={`${config.title}-${fact.label}`} className="recruiter-panel-card">
             <div className="recruiter-panel-card-head">
               <div className="recruiter-panel-label">{fact.label}</div>
-              <div className="recruiter-panel-level">{signalLevels[index] || "80%"}</div>
+              <div className="recruiter-panel-level">{SIGNAL_LEVELS[index] || "80%"}</div>
             </div>
             <div className="recruiter-panel-signalbar">
-              <span style={{ width: signalLevels[index] || "80%" }} />
+              <span style={{ width: SIGNAL_LEVELS[index] || "80%" }} />
             </div>
             <div className="recruiter-panel-value">{fact.value}</div>
           </article>
@@ -184,4 +187,4 @@ export function RecruiterPanel({ channel = 0, compact = false }) {
       </div>
     </div>
   );
-}
+});

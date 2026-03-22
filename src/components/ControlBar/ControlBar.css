@@ -125,3 +125,8 @@
 .medium-row-top-middle-container.control-td-large{
     padding: 10px 10px;
 }
+
+.control-table-large .control-tr-large:last-child .control-td-large,
+.control-table-medium .medium-tr:last-child .medium-td {
+  width: 20%;
+}

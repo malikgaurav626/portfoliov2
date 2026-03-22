@@ -10,6 +10,13 @@ import {
   getRecruiterPanelConfig,
 } from "../RecruiterPanel/RecruiterPanel";
 
+const CHANNELS = [
+  "CHANNEL 1 / SAKURA",
+  "CHANNEL 2 / DESERT",
+  "CHANNEL 3 / ARCTIC",
+  "CHANNEL 4 / SPACE",
+];
+
 export function LargeBody({
   projects,
   currentProject,
@@ -31,14 +38,9 @@ export function LargeBody({
   const [windEnabled, setWindEnabled] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const rootRef = useRef(null);
-  const channels = [
-    "CHANNEL 1 / SAKURA",
-    "CHANNEL 2 / DESERT",
-    "CHANNEL 3 / ARCTIC",
-    "CHANNEL 4 / SPACE",
-  ];
+  const lastQrColorRef = useRef("");
   const projectCount = Object.keys(projects).length;
-  const channelCount = channels.length;
+  const channelCount = CHANNELS.length;
 
   // Animate sections in after loading is complete
   useEffect(() => {
@@ -48,8 +50,7 @@ export function LargeBody({
     }
   }, [loadingComplete]);
 
-  function handleDialClick(event) {
-    const projectCount = Object.keys(projects).length;
+  function handleDialClick() {
     if (projectCount === 0) return;
     setCurrentProject((currentProject + 1) % projectCount);
   }
@@ -132,8 +133,40 @@ export function LargeBody({
         .trim();
       if (cssQr) qrColor = cssQr;
     }
+
+    if (lastQrColorRef.current === qrColor) return;
+    lastQrColorRef.current = qrColor;
+
     generateQrCode("https://www.linkedin.com/in/malikgaurav626/", qrColor);
   }, [view3d, currentMode, currentChannel]);
+
+  useEffect(() => {
+    const shouldIgnoreKeydown = (eventTarget) => {
+      if (!(eventTarget instanceof HTMLElement)) return false;
+      if (eventTarget.isContentEditable) return true;
+
+      const tagName = eventTarget.tagName;
+      return tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT";
+    };
+
+    const handleKeyDown = (event) => {
+      if (shouldIgnoreKeydown(event.target)) return;
+
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        setCurrentChannel((prev) => (prev - 1 + channelCount) % channelCount);
+        return;
+      }
+
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault();
+        setCurrentChannel((prev) => (prev + 1) % channelCount);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [channelCount]);
 
   return (
     <>
@@ -240,7 +273,7 @@ export function LargeBody({
               isMuted={isMuted}
               currentMode={modeValue}
               variant="large"
-              channels={channels}
+              channels={CHANNELS}
               currentChannel={currentChannel}
               setCurrentChannel={setCurrentChannel}
               view3d={view3d}

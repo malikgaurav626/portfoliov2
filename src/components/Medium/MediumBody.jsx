@@ -31,6 +31,13 @@ import { ControlBar } from "../ControlBar/ControlBar";
 import { ThreeEnv } from "../ThreeEnv/ThreeEnv";
 import QRCode from "qrcode";
 
+const CHANNELS = [
+  "CHANNEL 1 / SAKURA",
+  "CHANNEL 2 / DESERT",
+  "CHANNEL 3 / ARCTIC",
+  "CHANNEL 4 / SPACE",
+];
+
 export function MediumBody({
   projects,
   currentProject,
@@ -51,19 +58,13 @@ export function MediumBody({
   const [currentShareSocial, setCurrentShareSocial] = useState(0);
   const [windEnabled, setWindEnabled] = useState(true);
   const rootRef = useRef(null);
+  const lastQrColorRef = useRef("");
   const visualMode = currentMode;
   const sceneTime = "night";
-  const channels = [
-    "CHANNEL 1 / SAKURA",
-    "CHANNEL 2 / DESERT",
-    "CHANNEL 3 / ARCTIC",
-    "CHANNEL 4 / SPACE",
-  ];
   const projectCount = Object.keys(projects).length;
-  const channelCount = channels.length;
+  const channelCount = CHANNELS.length;
 
-  function handleDialClick(event) {
-    const projectCount = Object.keys(projects).length;
+  function handleDialClick() {
     if (projectCount === 0) return;
     setCurrentProject((currentProject + 1) % projectCount);
   }
@@ -108,8 +109,40 @@ export function MediumBody({
         .trim();
       if (cssQr) qrColor = cssQr;
     }
+
+    if (lastQrColorRef.current === qrColor) return;
+    lastQrColorRef.current = qrColor;
+
     generateQrCode("https://www.linkedin.com/in/malikgaurav626/", qrColor);
   }, [view3d, currentMode, currentChannel]);
+
+  useEffect(() => {
+    const shouldIgnoreKeydown = (eventTarget) => {
+      if (!(eventTarget instanceof HTMLElement)) return false;
+      if (eventTarget.isContentEditable) return true;
+
+      const tagName = eventTarget.tagName;
+      return tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT";
+    };
+
+    const handleKeyDown = (event) => {
+      if (shouldIgnoreKeydown(event.target)) return;
+
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        setCurrentChannel((prev) => (prev - 1 + channelCount) % channelCount);
+        return;
+      }
+
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault();
+        setCurrentChannel((prev) => (prev + 1) % channelCount);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [channelCount]);
 
   return (
     <>
@@ -210,7 +243,7 @@ export function MediumBody({
             setCurrentChannel={setCurrentChannel}
             currentShareSocial={currentShareSocial}
             setCurrentShareSocial={setCurrentShareSocial}
-            channels={channels}
+            channels={CHANNELS}
             view3d={view3d}
             setView3d={setView3d}
             handleDialClick={handleDialClick}

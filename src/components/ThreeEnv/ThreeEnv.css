@@ -1096,6 +1096,11 @@
   letter-spacing: 0.07em;
 }
 
+.tv-space-cadet-phone-chip-disabled {
+  pointer-events: none;
+  user-select: none;
+}
+
 .tv-space-cadet-links-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

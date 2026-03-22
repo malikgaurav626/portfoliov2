@@ -143,8 +143,8 @@ export function LinkSVG() {
     <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
-      width="12.000000pt"
-      height="12.000000pt"
+      width="10.000000pt"
+      height="10.000000pt"
       viewBox="0 0 512.000000 512.000000"
       preserveAspectRatio="xMidYMid meet"
     >

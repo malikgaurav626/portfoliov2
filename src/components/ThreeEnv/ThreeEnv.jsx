@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, useGLTF } from "@react-three/drei";
-import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { memo, useEffect, useMemo, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
 import { TV_SCREEN_HTML_HEIGHT, TV_SCREEN_HTML_WIDTH, TVScreenPage } from "./TVScreenPage";
 import "./ThreeEnv.css";
@@ -1289,13 +1289,6 @@ function pickLaneByWeights(weights) {
   return weights.length - 1;
 }
 
-function getLaminarOffsets(x, t, phase, ampY, ampZ, speed) {
-  const px = x * 0.78 - t * speed + phase;
-  const dy = Math.sin(px * 1.17) * ampY + Math.sin(px * 0.4) * ampY * 0.35;
-  const dz = Math.cos(px * 0.93) * ampZ + Math.sin(px * 0.51) * ampZ * 0.28;
-  return { dy, dz };
-}
-
 function SceneFogEnvelope({ palette, isNight }) {
   const fogColor = useMemo(() => {
     const base = new THREE.Color(palette.fogTint || palette.ground || "#8aa0b5");
@@ -1375,16 +1368,11 @@ function SakuraWind({ index, palette, isActive }) {
       const idx = i * 3;
       const lane = laneIndices[i];
       positions[idx] += speeds[i] * delta * 1.25;
-      const flow = getLaminarOffsets(
-        positions[idx],
-        t,
-        phases[i],
-        ampY[i],
-        ampZ[i],
-        speeds[i]
-      );
-      const targetY = laneY[lane] + flow.dy;
-      const targetZ = laneZ[lane] + flow.dz;
+      const px = positions[idx] * 0.78 - t * speeds[i] + phases[i];
+      const dy = Math.sin(px * 1.17) * ampY[i] + Math.sin(px * 0.4) * ampY[i] * 0.35;
+      const dz = Math.cos(px * 0.93) * ampZ[i] + Math.sin(px * 0.51) * ampZ[i] * 0.28;
+      const targetY = laneY[lane] + dy;
+      const targetZ = laneZ[lane] + dz;
       positions[idx + 1] = THREE.MathUtils.lerp(positions[idx + 1], targetY, 0.18);
       positions[idx + 2] = THREE.MathUtils.lerp(positions[idx + 2], targetZ, 0.2);
 
@@ -1471,16 +1459,12 @@ function DesertWind({ index, palette, isActive }) {
       const idx = i * 3;
       const lane = laneIndices[i];
       positions[idx] += speeds[i] * delta * 1.7;
-      const flow = getLaminarOffsets(
-        positions[idx],
-        t,
-        phases[i],
-        ampY[i],
-        ampZ[i],
-        speeds[i] * 1.2
-      );
-      const targetY = laneY[lane] + flow.dy;
-      const targetZ = laneZ[lane] + flow.dz;
+      const flowSpeed = speeds[i] * 1.2;
+      const px = positions[idx] * 0.78 - t * flowSpeed + phases[i];
+      const dy = Math.sin(px * 1.17) * ampY[i] + Math.sin(px * 0.4) * ampY[i] * 0.35;
+      const dz = Math.cos(px * 0.93) * ampZ[i] + Math.sin(px * 0.51) * ampZ[i] * 0.28;
+      const targetY = laneY[lane] + dy;
+      const targetZ = laneZ[lane] + dz;
       positions[idx + 1] = THREE.MathUtils.lerp(positions[idx + 1], targetY, 0.2);
       positions[idx + 2] = THREE.MathUtils.lerp(positions[idx + 2], targetZ, 0.2);
 
@@ -1565,18 +1549,14 @@ function ArcticWind({ index, palette, isActive }) {
         data.z = laneZ[data.lane] + (Math.random() * 2 - 1) * 0.2;
       }
 
-      const flow = getLaminarOffsets(
-        data.x,
-        t,
-        data.phase,
-        0.18,
-        0.22,
-        data.speed * 0.8
-      );
+      const flowSpeed = data.speed * 0.8;
+      const px = data.x * 0.78 - t * flowSpeed + data.phase;
+      const dy = Math.sin(px * 1.17) * 0.18 + Math.sin(px * 0.4) * 0.18 * 0.35;
+      const dz = Math.cos(px * 0.93) * 0.22 + Math.sin(px * 0.51) * 0.22 * 0.28;
       mesh.position.set(
         data.x,
-        data.y + flow.dy,
-        data.z + flow.dz
+        data.y + dy,
+        data.z + dz
       );
       mesh.rotation.z = Math.sin(t * 1.1 + data.phase) * 0.2;
     }
@@ -2510,6 +2490,7 @@ function CameraRail({ channel, onSceneReady, focusTarget }) {
 function DistanceCulling({ environmentRefs }) {
   const { camera } = useThree();
   const samplePointRef = useRef(new THREE.Vector3());
+  const maxDistanceSq = SCENE_CONFIG.renderDistance * SCENE_CONFIG.renderDistance;
 
   useFrame(() => {
     for (let i = 0; i < environmentRefs.current.length; i++) {
@@ -2523,8 +2504,8 @@ function DistanceCulling({ environmentRefs }) {
         anchorZ + SCENE_CONFIG.camera.zOffset
       );
 
-      const distance = camera.position.distanceTo(samplePointRef.current);
-      env.visible = distance <= SCENE_CONFIG.renderDistance;
+      const distanceSq = camera.position.distanceToSquared(samplePointRef.current);
+      env.visible = distanceSq <= maxDistanceSq;
     }
   });
 
@@ -2717,10 +2698,18 @@ function MultiEnvironmentScene({
   const isNight = isNightSceneMode({ currentMode, useEnvironmentModes });
   const activeChannel = focusedScreen?.channel ?? channel;
   const activeAnchorZ = getChannelAnchor(activeChannel);
+  const tvConfigs = useMemo(
+    () => ENVIRONMENT_MODES.map((_, index) => getChannelTVConfig(index)),
+    []
+  );
+  const palettes = useMemo(
+    () => ENVIRONMENT_MODES.map((_, index) => getEnvironmentPalette(index, useEnvironmentModes)),
+    [useEnvironmentModes]
+  );
 
-  const onScreenFocus = (focusData) => {
+  const onScreenFocus = useCallback((focusData) => {
     setFocusedScreen(focusData);
-  };
+  }, [setFocusedScreen]);
 
   return (
     <>
@@ -2741,9 +2730,9 @@ function MultiEnvironmentScene({
 
       {ENVIRONMENT_MODES.map((env, index) => {
         const isActive = activeChannel === index;
-        const palette = getEnvironmentPalette(index, useEnvironmentModes);
+        const palette = palettes[index];
         const isTvFocused = focusedScreen?.key === `tv-${index}`;
-        const tvConfig = getChannelTVConfig(index);
+        const tvConfig = tvConfigs[index];
 
         return (
           <group
@@ -2811,7 +2800,7 @@ function MultiEnvironmentScene({
   );
 }
 
-export function ThreeEnv({
+export const ThreeEnv = memo(function ThreeEnv({
   channel = 0,
   onSceneReady,
   onTvFocusChange,
@@ -2902,7 +2891,7 @@ export function ThreeEnv({
       </div>
     </div>
   );
-}
+});
 
 useGLTF.preload(SAKURA_BRIDGE_PATH);
 useGLTF.preload(DESERT_ROAD_PATH);

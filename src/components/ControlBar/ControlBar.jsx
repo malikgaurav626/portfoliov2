@@ -4,7 +4,6 @@ import {
   PauseSVG,
   BackSVG,
   NextSVG,
-  InfoSVG,
   ShareSVG,
   ShareSVGPink,
   MuteSVG,
@@ -77,6 +76,8 @@ export function ControlBar({
 }) {
   // Local state for large variant dropdown
   const [largeDropdownOpen, setLargeDropdownOpen] = React.useState(false);
+  const [largeShareOpen, setLargeShareOpen] = React.useState(false);
+  const [largeShareSocial, setLargeShareSocial] = React.useState(0);
   const projectCount = projects ? Object.keys(projects).length : 0;
   const recruiterPanel = getRecruiterPanelConfig(currentChannel);
   const frequencyLabel =
@@ -216,7 +217,7 @@ export function ControlBar({
               <tr className={`control-tr control-tr-${variant}`}>
                 <td
                   className={`control-td control-td-${variant}`}
-                  colSpan="6"
+                  colSpan="5"
                   style={{
                     padding: "0px",
                     margin: "0px",
@@ -265,15 +266,89 @@ export function ControlBar({
               <tr className={`control-tr control-tr-${variant}`}>
                 <td
                   className={`control-td control-td-${variant}`}
-                  onClick={onShare}
+                  onClick={() => {
+                    setLargeShareOpen((prev) => !prev);
+                    onShare && onShare();
+                  }}
                 >
                   <ShareSVG currentMode={currentMode} />
-                </td>
-                <td
-                  className={`control-td control-td-${variant}`}
-                  onClick={onInfo}
-                >
-                  <InfoSVG />
+                  <div
+                    className={
+                      "medium-share-container " +
+                      (largeShareOpen ? "medium-share-active" : "")
+                    }
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    <div className="medium-share-heading">
+                      <div className="medium-share-logo">
+                        <ShareSVGPink />
+                      </div>
+                      <div className="medium-share-title">SHARE THIS PROJECT</div>
+                      <div
+                        className="medium-share-close-btn"
+                        onClick={() => setLargeShareOpen(false)}
+                      >
+                        <CloseCommentsSVG />
+                      </div>
+                    </div>
+                    <div className="medium-share-body">
+                      <div className="social-icons-container">
+                        <div
+                          className={
+                            "social-icon " + (largeShareSocial === 0 ? "social-icon-active" : "")
+                          }
+                          onClick={() => setLargeShareSocial(0)}
+                        >
+                          <TwitterSVG />
+                        </div>
+                        <div
+                          className={
+                            "social-icon " + (largeShareSocial === 1 ? "social-icon-active" : "")
+                          }
+                          onClick={() => setLargeShareSocial(1)}
+                        >
+                          <InstagramSVG />
+                        </div>
+                        <div
+                          className={
+                            "social-icon " + (largeShareSocial === 2 ? "social-icon-active" : "")
+                          }
+                          onClick={() => setLargeShareSocial(2)}
+                        >
+                          <LinkedInSVG />
+                        </div>
+                        <div
+                          className={
+                            "social-icon " + (largeShareSocial === 3 ? "social-icon-active" : "")
+                          }
+                          onClick={() => setLargeShareSocial(3)}
+                        >
+                          <FacebookSVG />
+                        </div>
+                        <div
+                          className={
+                            "social-icon " + (largeShareSocial === 4 ? "social-icon-active" : "")
+                          }
+                          onClick={() => setLargeShareSocial(4)}
+                        >
+                          <LinkSVG />
+                        </div>
+                      </div>
+                      <div className="current-social-container">
+                        {largeShareSocial === 0 ? (
+                          <TwitterShareBody />
+                        ) : largeShareSocial === 1 ? (
+                          <InstagramShareBody />
+                        ) : largeShareSocial === 2 ? (
+                          <LinkedInShareBody />
+                        ) : largeShareSocial === 3 ? (
+                          <FacebookShareBody />
+                        ) : (
+                          <LinkShareBody />
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </td>
                 <td
                   className={`control-td control-td-${variant}`}
@@ -283,17 +358,17 @@ export function ControlBar({
                 </td>
                 <td
                   className={`control-td control-td-${variant}`}
-                  onClick={onNext}
-                >
-                  <NextSVG />
-                </td>
-                <td
-                  className={`control-td control-td-${variant}`}
                   onClick={() =>
                     onPlayPause ? onPlayPause() : setisPlaying(!isPlaying)
                   }
                 >
                   {isPlaying ? <PauseSVG /> : <PlaySVG />}
+                </td>
+                <td
+                  className={`control-td control-td-${variant}`}
+                  onClick={onNext}
+                >
+                  <NextSVG />
                 </td>
                 <td
                   className={`control-td control-td-${variant}`}
@@ -344,7 +419,7 @@ export function ControlBar({
                 </td>
                 <td
                   className="medium-td"
-                  colSpan="4"
+                  colSpan="3"
                   style={{
                     padding: "0px",
                     margin: "0px",
@@ -605,14 +680,8 @@ export function ControlBar({
                     </div>
                   </div>
                 </td>
-                <td className="medium-td" onClick={onInfo}>
-                  <InfoSVG />
-                </td>
                 <td className="medium-td" onClick={onBack}>
                   <BackSVG />
-                </td>
-                <td className="medium-td" onClick={onNext}>
-                  <NextSVG />
                 </td>
                 <td
                   className="medium-td"
@@ -621,6 +690,9 @@ export function ControlBar({
                   }}
                 >
                   {isPlaying ? <PauseSVG /> : <PlaySVG />}
+                </td>
+                <td className="medium-td" onClick={onNext}>
+                  <NextSVG />
                 </td>
                 <td className="medium-td" onClick={onMute}>
                   {isMuted ? <UnmuteSVG /> : <MuteSVG />}

@@ -197,11 +197,11 @@ function ChannelOnePage({ interactive }) {
             </div>
             <a
                 className="tv-sakura-cta"
-                href="https://github.com/malikgaurav626"
+                href="https://drive.google.com/file/d/17PKn71erSG5W1sHVrqZyrBwFCGkQN0az/view?usp=sharing"
                 target="_blank"
                 rel="noreferrer"
               >
-                Projects 作品
+                Resume 作品
               </a>
 
           </div>
@@ -223,12 +223,12 @@ function ChannelOnePage({ interactive }) {
 
           <div className="tv-sakura-meta-card">
             <div className="tv-sakura-meta-row">
-              <span>Company 公司</span>
-              <span>malikgaurav626</span>
+              <span>Email 郵件</span>
+              <span>malikgaurav626@gmail.com</span>
             </div>
             <div className="tv-sakura-meta-row">
-              <span>Designer 設計師</span>
-              <span>Gaurav Malik</span>
+              <span>Location 地點</span>
+              <span>Noida, India</span>
             </div>
           </div>
 
@@ -246,8 +246,10 @@ function ChannelOnePage({ interactive }) {
           <div className="tv-sakura-note-card">
             <div className="tv-sakura-note-title">Description 所有</div>
             <p>
-              Software Engineer 1 at MAQ Software building frontend systems, interactive
-              UI, and product-facing web experiences with a sharper industrial visual language.
+              Gaurav - Software Engineer 1 at MAQ Software (full-time since Jul 2025),
+              ex-Associate Software Engineer at MAQ and ex-Web Developer Intern at Pixel Bridges,
+              with a B.Tech in Computer Engineering from IIIT Sonepat and a focus on frontend
+              systems, interactive web products, and practical engineering delivery.
             </p>
           </div>
         </footer>
@@ -260,56 +262,58 @@ function ChannelTwoPage({ interactive }) {
   const skillGroups = [
     {
       label: "Frontend Systems",
-      value: 91,
-      detail: "React, component architecture, responsive UI, maintainable layouts",
+      value: 94,
+      detail: "React.js, Redux/Redux.js, Next.js, JavaScript libraries, HTML5/CSS, responsive web design",
     },
     {
-      label: "3D / Motion",
-      value: 82,
-      detail: "Three.js, React Three Fiber, scene storytelling, interaction polish",
+      label: "Security & QA",
+      value: 87,
+      detail: "Snyk, Fiddler, Datadog, web app pen-test resolution, end-to-end testing, REST APIs",
     },
     {
-      label: "APIs / Data Flow",
-      value: 76,
-      detail: "REST integration, Firebase-backed flows, product-facing data wiring",
+      label: "Core Engineering",
+      value: 89,
+      detail: "C, C++, C#, Python, Java, algorithms, communication, analytical skills",
     },
     {
-      label: "Delivery Mindset",
-      value: 86,
-      detail: "Iteration speed, visual polish, implementation ownership, refinement",
+      label: "Architecture",
+      value: 90,
+      detail: "System design, Lucidchart, AI agents, project management, computer vision/neural networks",
     },
   ];
 
   const stackColumns = [
     {
       label: "Core Stack",
-      items: ["React", "JavaScript", "Vite", "HTML", "CSS"],
+      items: ["JavaScript", "React.js", "Next.js", "Redux", "HTML5", "CSS", "Bootstrap", "Vite"],
     },
     {
-      label: "Interactive Layer",
-      items: ["Three.js", "React Three Fiber", "Animation", "UI Motion"],
+      label: "Web3 / Product",
+      items: ["Web3", "WalletConnect", "WordPress", "Foreign Exchange (FX)", "Finance product UX"],
     },
     {
-      label: "Data & Services",
-      items: ["Firebase", "REST APIs", "Async Flows", "State Handling"],
+      label: "Security & Ops",
+      items: ["Snyk", "Fiddler", "Datadog", "Pen-test Resolution", "REST APIs", "Git"],
     },
     {
-      label: "Workflow",
-      items: ["Git", "Debugging", "Iteration", "UI Refinement"],
+      label: "Creative / AI",
+      items: ["Anime.js", "Lottie", "Adobe Photoshop", "Adobe Premiere Pro", "Adobe Audition", "Neural Networks", "OpenCV", "TensorFlow"],
     },
   ];
 
   const fieldNotes = [
-    "Build interfaces that feel considered, not just functional.",
-    "Translate design intent into reliable frontend systems.",
-    "Stay comfortable moving between UI polish and implementation detail.",
+    "Delivered 30+ client websites during internship and freelance work.",
+    "Worked across MAQ Software roles from ASE to Software Engineer 1.",
+    "Comfortable across implementation, architecture, communication, and product-facing delivery.",
   ];
 
   const learningSignals = [
-    "Performance-minded frontend architecture",
-    "Immersive scene pipelines",
-    "Shader-led visual storytelling",
-    "Scalable UI systems",
+    "Advanced system design case studies",
+    "AI agent implementation patterns",
+    "Web app security hardening",
+    "Performance-driven UI architecture",
+    "Computer vision + neural network experimentation",
+    "Web3 dashboard architecture",
   ];
 
   function renderLogoGlyphs(text, keyPrefix) {
@@ -438,125 +442,180 @@ function ChannelTwoPage({ interactive }) {
 function ChannelThreePage({ interactive }) {
   const cases = [
     {
-      name: "Portfolio V2",
-      category: "Flagship Build",
+      name: "Forex Dominant",
+      category: "Trading Platform",
       summary:
-        "An immersive portfolio built around realtime 3D environments, channel-based navigation, and a presentation style designed to feel memorable without losing engineering clarity.",
-      stack: ["React", "Vite", "Three.js", "React Three Fiber"],
-      role: "Concept, frontend architecture, scene integration, UI direction",
-      impact: "Strong proof of interactive frontend craft for portfolio-first screening.",
-      liveUrl: "https://example.com/portfolio-v2",
-      githubUrl: "https://github.com/example/portfolio-v2",
+        "Online trading services platform with optimized calculator logic for market-accuracy scenarios and production-ready frontend delivery.",
+      stack: ["JavaScript", "REST APIs", "WordPress", "Frontend"],
+      role: "Web development, calculation logic tuning, deployment support",
+      impact: "Improved calculator reliability and user trust in volatile market inputs.",
+      liveUrl: "https://forexdominant.com",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Product Landing Experience",
-      category: "Launch Surface",
+      name: "Zyrithra",
+      category: "Web3 Dashboard",
       summary:
-        "A product-forward landing page centered on narrative pacing, section transitions, and cleaner visual hierarchy for first-time visitors.",
-      stack: ["React", "JavaScript", "CSS", "Animation"],
-      role: "Frontend implementation, section design, interaction polish",
-      impact: "Shows how marketing pages can feel sharper without becoming noisy.",
-      liveUrl: "https://example.com/product-showcase",
-      githubUrl: "https://github.com/example/product-showcase",
+        "A Web3 platform with a live dashboard and polished frontend interactions designed for high-engagement product exploration.",
+      stack: ["HTML", "CSS", "JavaScript", "React", "Anime.js"],
+      role: "Frontend implementation, dashboard UX, animation integration",
+      impact: "Demonstrates dynamic dashboard engineering and UI motion quality.",
+      liveUrl: "https://zyrithra.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Data Interface Dashboard",
-      category: "Product System",
+      name: "Cosmic Route",
+      category: "3D Interactive Experience",
       summary:
-        "A dashboard-style interface focused on readable data presentation, reusable UI pieces, and practical responsive behavior across screen sizes.",
-      stack: ["React", "REST APIs", "State Management", "Charts"],
-      role: "UI development, API wiring, state flow, responsive behavior",
-      impact: "Balances product engineering needs with a more refined frontend eye.",
-      liveUrl: "https://example.com/frontend-dashboard",
-      githubUrl: "https://github.com/example/frontend-dashboard",
+        "A Three.js powered solar-system exploration featuring planet-scale 3D rendering with smooth navigation and scene interaction.",
+      stack: ["HTML", "CSS", "JavaScript", "React", "Redux", "Three.js", "R3F"],
+      role: "Scene implementation, frontend architecture, interaction tuning",
+      impact: "Strong signal for immersive frontend and realtime rendering capability.",
+      liveUrl: "https://cosmicroute.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Campaign Microsite",
-      category: "Brand Surface",
+      name: "GANs for Efficient Depth Map Estimation",
+      category: "ML Research",
       summary:
-        "A compact branded site with tighter messaging, stronger pacing, and a cleaner visual identity built for a focused campaign window.",
-      stack: ["HTML", "CSS", "JavaScript", "Motion"],
-      role: "Build, styling system, responsive layout, delivery refinement",
-      impact: "A useful signal for teams hiring across marketing and product web work.",
-      liveUrl: "https://example.com/campaign-microsite",
-      githubUrl: "https://github.com/example/campaign-microsite",
+        "Explored GAN architecture design, training, and evaluation for depth map estimation with practical experimentation workflows.",
+      stack: ["Neural Networks", "Python", "TensorFlow", "Pandas", "Math"],
+      role: "Model experimentation, training/evaluation pipeline, analysis",
+      impact: "Adds applied ML depth alongside frontend-focused engineering work.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Interactive Hiring Board",
-      category: "Recruiter Utility",
+      name: "Neko Noir",
+      category: "Game Project",
       summary:
-        "A recruiter-first board designed to surface role-fit signals quickly, combining short summaries with direct pathways into deeper portfolio artifacts.",
-      stack: ["React", "UI Systems", "Data Modeling", "Animation"],
-      role: "Information architecture, interaction design, frontend implementation",
-      impact: "Improves scan speed for hiring teams without flattening project context.",
-      liveUrl: "https://example.com/interactive-hiring-board",
-      githubUrl: "https://github.com/example/interactive-hiring-board",
+        "A card game built with persistent leaderboard support and single-player flow, created with multimedia tooling and frontend engineering practices.",
+      stack: ["React", "HTML", "CSS", "JavaScript", "Bootstrap", "Photoshop", "After Effects"],
+      role: "Gameplay UI, state handling, leaderboard data persistence, creative asset integration",
+      impact: "Shows productized game UX thinking with practical frontend implementation discipline.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Immersive Product Gallery",
-      category: "Experience Surface",
+      name: "VortyX Finance",
+      category: "Web3 Product",
       summary:
-        "A narrative product gallery with cinematic section pacing and lightweight 3D framing for premium launches and announcement moments.",
-      stack: ["React", "Three.js", "GSAP", "Performance"],
-      role: "Scene orchestration, responsive behavior, motion polish",
-      impact: "Demonstrates controlled visual ambition with production-minded implementation.",
-      liveUrl: "https://example.com/immersive-product-gallery",
-      githubUrl: "https://github.com/example/immersive-product-gallery",
+        "Web3 platform for managing assets with support for 400+ wallets and product-first dashboard UX.",
+      stack: ["React", "WalletConnect", "Web3", "Dashboard UI"],
+      role: "Frontend implementation, wallet experience, product workflow design",
+      impact: "Demonstrates practical Web3 UX delivery for finance workflows.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Realtime Ops Console",
-      category: "Dashboard System",
+      name: "Vexaris (beta)",
+      category: "Web3 Dashboard",
       summary:
-        "An operations console presenting health metrics, incidents, and workflow state transitions through a dense but readable modular interface.",
-      stack: ["React", "WebSockets", "REST APIs", "State Management"],
-      role: "UI architecture, realtime data flow, component strategy",
-      impact: "Balances high information density with practical user clarity.",
-      liveUrl: "https://example.com/realtime-ops-console",
-      githubUrl: "https://github.com/example/realtime-ops-console",
+        "A beta dashboard app for Vexaris with MetaMask support and realtime-style portfolio surfaces.",
+      stack: ["React", "Web3", "MetaMask"],
+      role: "Dashboard implementation, wallet-connected flow, UI execution",
+      impact: "Validated rapid delivery for blockchain-oriented product dashboards.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Campaign Control Deck",
-      category: "Marketing Tools",
+      name: "Geode (beta)",
+      category: "Staking Library UI",
       summary:
-        "A control interface for campaign teams to coordinate launches, asset states, and timeline checkpoints in a unified frontend surface.",
-      stack: ["React", "Forms", "Validation", "Design Tokens"],
-      role: "Workflow mapping, form architecture, visual QA",
-      impact: "Supports faster campaign iteration with clearer collaboration touchpoints.",
-      liveUrl: "https://example.com/campaign-control-deck",
-      githubUrl: "https://github.com/example/campaign-control-deck",
+        "Frontend surface for a blockchain staking library concept with product-focused structure and responsive behavior.",
+      stack: ["HTML", "CSS", "JavaScript", "React"],
+      role: "UI architecture, implementation, responsive polish",
+      impact: "Shows strong execution speed on early-stage product concepts.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Frontline Metrics Canvas",
-      category: "Data Storytelling",
+      name: "Exo Archives",
+      category: "Data Interface",
       summary:
-        "A visual metrics canvas focused on trend communication, temporal comparisons, and decision-support readouts for product owners.",
-      stack: ["React", "Charts", "Data Viz", "Accessibility"],
-      role: "Visualization strategy, interaction tuning, implementation",
-      impact: "Turns raw metrics into more actionable product narratives.",
-      liveUrl: "https://example.com/frontline-metrics-canvas",
-      githubUrl: "https://github.com/example/frontline-metrics-canvas",
+        "React app interface for NASA exoplanet archive data with themed variants and practical data browsing UX.",
+      stack: ["React", "Vite", "Bootstrap", "JavaScript"],
+      role: "Interface implementation, data presentation, theme system",
+      impact: "Demonstrates data-heavy frontend layout control and visual identity handling.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Signal QA Workbench",
-      category: "Quality Surface",
+      name: "Game Ether",
+      category: "Next.js Directory",
       summary:
-        "A QA-first workspace focused on interaction checks, visual regressions, and release confidence for frontend-heavy delivery teams.",
-      stack: ["React", "Testing", "Storybook", "CI"],
-      role: "Test planning, UI validation flow, component review process",
-      impact: "Reduces regressions while keeping iteration speed high.",
-      liveUrl: "https://example.com/signal-qa-workbench",
-      githubUrl: "https://github.com/example/signal-qa-workbench",
+        "Online game directory app built with Next.js/React using APIs for discovery, news, and content updates.",
+      stack: ["Next.js", "React", "Redux", "JavaScript", "Bootstrap", "Anime.js"],
+      role: "API integration, search/discovery UI, frontend architecture",
+      impact: "Strong example of multi-source API product frontend execution.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
     {
-      name: "Launch Narrative Engine",
-      category: "Brand Experience",
+      name: "NeoNotes",
+      category: "Productivity App",
       summary:
-        "A narrative engine for launch pages that sequences copy, media, and interaction states into a clear story arc.",
-      stack: ["React", "Motion", "Content Systems", "Performance"],
-      role: "Narrative structure, section choreography, implementation",
-      impact: "Helps product stories feel intentional and easier to follow.",
-      liveUrl: "https://example.com/launch-narrative-engine",
-      githubUrl: "https://github.com/example/launch-narrative-engine",
+        "A Vite-based notes app with vintage aesthetics and modern interaction behavior.",
+      stack: ["React", "Vite", "Bootstrap", "Firebase"],
+      role: "UX styling, state handling, app-level implementation",
+      impact: "Shows clean execution for lightweight but polished product UX.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
+    },
+    {
+      name: "Flux Player",
+      category: "Media App",
+      summary:
+        "A fast Spotify-API based React music player with practical playback UX.",
+      stack: ["React", "Spotify API", "Bootstrap", "JavaScript"],
+      role: "API flow wiring, playback UI, frontend implementation",
+      impact: "Demonstrates API-driven app construction and interaction reliability.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
+    },
+    {
+      name: "Travel Advisor",
+      category: "Maps + Travel",
+      summary:
+        "Travel advisor app built rapidly with travel APIs and Google Maps/Places integration.",
+      stack: ["React", "RapidAPI", "Google Maps API", "Places API", "Bootstrap"],
+      role: "API integration, maps UX, rapid product implementation",
+      impact: "Shows ability to ship functional, API-heavy experiences quickly.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
+    },
+    {
+      name: "Maze Generator",
+      category: "Algorithms",
+      summary:
+        "Static maze generator using Prim's algorithm in vanilla JavaScript.",
+      stack: ["JavaScript", "Algorithms", "HTML", "CSS"],
+      role: "Algorithm implementation and visualization",
+      impact: "Highlights fundamentals and problem-solving fluency.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
+    },
+    {
+      name: "cybeRRun",
+      category: "2D Game",
+      summary:
+        "A 2D side scroller game created using vanilla JavaScript, HTML, CSS, and Bootstrap.",
+      stack: ["JavaScript", "HTML", "CSS", "Bootstrap"],
+      role: "Gameplay scripting, UI rendering, interaction logic",
+      impact: "Adds game-loop and interaction engineering to the portfolio mix.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
+    },
+    {
+      name: "History Haryana",
+      category: "Content Website",
+      summary:
+        "A history website focused on Haryana, created with HTML, CSS, and JavaScript.",
+      stack: ["HTML", "CSS", "JavaScript"],
+      role: "Content structure, visual styling, web implementation",
+      impact: "Early project showing fundamentals and content-focused web delivery.",
+      liveUrl: "https://malikgaurav626.netlify.app",
+      githubUrl: "https://github.com/malikgaurav626",
     },
   ];
 
@@ -655,7 +714,7 @@ function ChannelThreePage({ interactive }) {
           </div>
           <div className="tv-arctic-config-block">
             <div className="tv-arctic-config-line tv-arctic-config-line-1">[CONFIG.TEAM] // 333 LAB</div>
-            <div className="tv-arctic-config-line tv-arctic-config-line-2">ARTIST // GAURAV MALIK</div>
+            <div className="tv-arctic-config-line tv-arctic-config-line-2">ARTIST // GAURAV</div>
             <div className="tv-arctic-config-line tv-arctic-config-line-3">PLANNER // FRONTEND SYSTEMS</div>
             <div className="tv-arctic-config-line tv-arctic-config-line-4">CURATOR // CHANNEL 03</div>
           </div>
@@ -791,14 +850,14 @@ function ChannelFourPage({ interactive }) {
               </div>
             </div>
 
-            <a
-              className="tv-space-cadet-phone-chip"
-              href="tel:+18000000000"
-              aria-label="Call channel"
+            <div
+              className="tv-space-cadet-phone-chip tv-space-cadet-phone-chip-disabled"
+              aria-label="Call channel visual artifact"
+              role="img"
             >
               <span>☎</span>
               <span>CALL</span>
-            </a>
+            </div>
           </section>
         </section>
 

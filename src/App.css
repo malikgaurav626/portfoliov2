@@ -1141,6 +1141,7 @@ body {
   opacity: 0.72;
 }
 .recruiter-panel-radar-sweep {
+  inset: -22%;
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
@@ -1990,11 +1991,11 @@ body {
   pointer-events: none;
 }
 .medium-share-active{
-  transform: translate(-0.6px,-105px);
+  transform: translate(-0.6px,-107px);
   transition: 0.3s all;
   user-select: auto;
   cursor: auto !important;
-  z-index: 1;
+  z-index: 50;
   opacity: 1;
   pointer-events: auto;
 }
@@ -2427,7 +2428,10 @@ body {
 .scene-ui-active .medium-share-title,
 .scene-ui-active .medium-share-close-btn,
 .scene-ui-active .social-icon,
-.scene-ui-active .social-icon-active {
+.scene-ui-active .social-icon-active,
+.scene-ui-active .medium-tweet,
+.scene-ui-active .medium-tweet-input,
+.scene-ui-active .medium-tweet-btn {
   color: var(--scene-ui-text) !important;
   border-color: var(--scene-ui-border) !important;
 }
@@ -2436,6 +2440,21 @@ body {
 .scene-ui-active .medium-share-container,
 .scene-ui-active .dropdown-menu {
   background-color: color-mix(in srgb, var(--scene-ui-border) 24%, #05070f) !important;
+}
+
+.scene-ui-active .medium-tweet,
+.scene-ui-active .medium-tweet-input {
+  background-color: color-mix(in srgb, var(--scene-ui-border) 16%, transparent) !important;
+}
+
+.scene-ui-active .medium-tweet-btn {
+  background-color: color-mix(in srgb, var(--scene-ui-border) 30%, #05070f) !important;
+  outline: 1px solid var(--scene-ui-border) !important;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--scene-ui-border) 45%, transparent) !important;
+}
+
+.scene-ui-active .medium-tweet-btn::before {
+  background-color: color-mix(in srgb, var(--scene-ui-border) 34%, #05070f) !important;
 }
 
 .scene-ui-active #comment-input-id {
