@@ -449,7 +449,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["JavaScript", "REST APIs", "WordPress", "Frontend"],
       role: "Web development, calculation logic tuning, deployment support",
       impact: "Improved calculator reliability and user trust in volatile market inputs.",
-      liveUrl: "https://forexdominant.com",
+      liveUrl: "https://www.forexdominant.com/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -460,7 +460,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["HTML", "CSS", "JavaScript", "React", "Anime.js"],
       role: "Frontend implementation, dashboard UX, animation integration",
       impact: "Demonstrates dynamic dashboard engineering and UI motion quality.",
-      liveUrl: "https://zyrithra.netlify.app",
+      liveUrl: "https://zyrithra.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -471,7 +471,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["HTML", "CSS", "JavaScript", "React", "Redux", "Three.js", "R3F"],
       role: "Scene implementation, frontend architecture, interaction tuning",
       impact: "Strong signal for immersive frontend and realtime rendering capability.",
-      liveUrl: "https://cosmicroute.netlify.app",
+      liveUrl: "https://cosmicroute.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -482,7 +482,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["Neural Networks", "Python", "TensorFlow", "Pandas", "Math"],
       role: "Model experimentation, training/evaluation pipeline, analysis",
       impact: "Adds applied ML depth alongside frontend-focused engineering work.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -493,7 +493,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["React", "HTML", "CSS", "JavaScript", "Bootstrap", "Photoshop", "After Effects"],
       role: "Gameplay UI, state handling, leaderboard data persistence, creative asset integration",
       impact: "Shows productized game UX thinking with practical frontend implementation discipline.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -504,7 +504,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["React", "WalletConnect", "Web3", "Dashboard UI"],
       role: "Frontend implementation, wallet experience, product workflow design",
       impact: "Demonstrates practical Web3 UX delivery for finance workflows.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://vortyxofficial.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -515,7 +515,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["React", "Web3", "MetaMask"],
       role: "Dashboard implementation, wallet-connected flow, UI execution",
       impact: "Validated rapid delivery for blockchain-oriented product dashboards.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://vexaris.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -526,7 +526,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["HTML", "CSS", "JavaScript", "React"],
       role: "UI architecture, implementation, responsive polish",
       impact: "Shows strong execution speed on early-stage product concepts.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://geodebyg.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -537,7 +537,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["React", "Vite", "Bootstrap", "JavaScript"],
       role: "Interface implementation, data presentation, theme system",
       impact: "Demonstrates data-heavy frontend layout control and visual identity handling.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://exoarchives.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -548,7 +548,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["Next.js", "React", "Redux", "JavaScript", "Bootstrap", "Anime.js"],
       role: "API integration, search/discovery UI, frontend architecture",
       impact: "Strong example of multi-source API product frontend execution.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://gameether.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -559,7 +559,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["React", "Vite", "Bootstrap", "Firebase"],
       role: "UX styling, state handling, app-level implementation",
       impact: "Shows clean execution for lightweight but polished product UX.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://neonotes-local.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -570,7 +570,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["React", "Spotify API", "Bootstrap", "JavaScript"],
       role: "API flow wiring, playback UI, frontend implementation",
       impact: "Demonstrates API-driven app construction and interaction reliability.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://fluxplayer.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -581,7 +581,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["React", "RapidAPI", "Google Maps API", "Places API", "Bootstrap"],
       role: "API integration, maps UX, rapid product implementation",
       impact: "Shows ability to ship functional, API-heavy experiences quickly.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://travelg101.netlify.app/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -592,7 +592,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["JavaScript", "Algorithms", "HTML", "CSS"],
       role: "Algorithm implementation and visualization",
       impact: "Highlights fundamentals and problem-solving fluency.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://malikgaurav626.github.io/mazeGenerator-PrimsAlgorithm/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -603,7 +603,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["JavaScript", "HTML", "CSS", "Bootstrap"],
       role: "Gameplay scripting, UI rendering, interaction logic",
       impact: "Adds game-loop and interaction engineering to the portfolio mix.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://malikgaurav626.github.io/cybeRRun/",
       githubUrl: "https://github.com/malikgaurav626",
     },
     {
@@ -614,7 +614,7 @@ function ChannelThreePage({ interactive }) {
       stack: ["HTML", "CSS", "JavaScript"],
       role: "Content structure, visual styling, web implementation",
       impact: "Early project showing fundamentals and content-focused web delivery.",
-      liveUrl: "https://malikgaurav626.netlify.app",
+      liveUrl: "https://malikgaurav626.github.io/Project-HistoryHaryana/",
       githubUrl: "https://github.com/malikgaurav626",
     },
   ];
@@ -755,10 +755,12 @@ function ChannelThreePage({ interactive }) {
                 <h4>{item.name}</h4>
                 <p>{item.summary}</p>
                 <div className="tv-arctic-mini-links">
-                  <a href={item.liveUrl} target="_blank" rel="noreferrer">
-                    Live
-                  </a>
-                  <a href={item.githubUrl} target="_blank" rel="noreferrer">
+                  {item.liveUrl ? (
+                    <a href={item.liveUrl} target="_blank" rel="noreferrer">
+                      Live
+                    </a>
+                  ) : null}
+                  <a href={item.githubUrl || "https://github.com/malikgaurav626"} target="_blank" rel="noreferrer">
                     Code
                   </a>
                 </div>

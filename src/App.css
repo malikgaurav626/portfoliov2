@@ -1816,7 +1816,7 @@ body {
   width: 400px;
   height: 350px;
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
   left: 0;
   background-color: #0030ff;
   transform: translateY(0px);
@@ -1879,11 +1879,12 @@ body {
   cursor: pointer;
 }
 .medium-comments-body{
-  height: 280px;
+  height: calc(100% - 44px);
   overflow: auto;
   text-align: left;
-  padding: 10px 15px;
+  padding: 10px 15px 22px;
   border: 1px solid #0030ff;
+  box-sizing: border-box;
 }
 .medium-comments-body::-webkit-scrollbar{
   width: 5px;
@@ -1894,9 +1895,42 @@ body {
 .medium-comments-body::-webkit-scrollbar-thumb{
   background: #dec0f7;
 }
+
+.medium-comments-body .recruiter-panel {
+  height: auto;
+  min-height: 0;
+  grid-template-rows: auto auto auto auto;
+}
+
+.medium-comments-body .recruiter-panel-compact {
+  gap: 12px;
+  padding-bottom: 10px;
+}
+
+.medium-comments-body .recruiter-panel-compact .recruiter-panel-shell {
+  gap: 12px;
+}
+
+.medium-comments-body .recruiter-panel-compact .recruiter-panel-grid {
+  gap: 10px;
+}
+
+.medium-comments-body .recruiter-panel-compact .recruiter-panel-card {
+  padding: 10px 10px 12px;
+}
+
+.medium-comments-body .recruiter-panel-compact .recruiter-panel-value {
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.medium-comments-body .recruiter-panel-compact .recruiter-panel-actions {
+  margin-top: 2px;
+  padding-bottom: 8px;
+}
 .medium-menu-container{
   position: absolute;
-  bottom: 0;
+  bottom: 3px;
   right: 0;
   transform: translateY(0px);
   z-index: -1;
@@ -1906,6 +1940,8 @@ body {
   height: 350px;
   background-color: #0030ff;
   color: #dec0f7;
+  border: 1px solid #dec0f7;
+  box-sizing: border-box;
   opacity: 0;
   cursor: auto;
   pointer-events: none;

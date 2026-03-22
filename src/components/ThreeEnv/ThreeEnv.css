@@ -1593,14 +1593,27 @@
   padding: 6px;
   display: grid;
   align-content: start;
-  gap: 3px;
+  gap: 2px;
   background:
     linear-gradient(160deg, rgba(16, 19, 7, 0.96), rgba(22, 27, 8, 0.94));
   border: 1px solid rgba(197, 230, 0, 0.54);
   opacity: 0;
   transform: translateY(5px);
   pointer-events: none;
+  overflow: auto;
   transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.tv-desert-card-detail::-webkit-scrollbar {
+  width: 3px;
+}
+
+.tv-desert-card-detail::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tv-desert-card-detail::-webkit-scrollbar-thumb {
+  background: rgba(214, 245, 62, 0.55);
 }
 
 .tv-desert-hover-card:hover .tv-desert-card-detail,
@@ -1611,8 +1624,8 @@
 
 .tv-desert-card-detail p {
   margin: 0;
-  font-size: 8.5px;
-  line-height: 1.18;
+  font-size: 8px;
+  line-height: 1.14;
   color: rgba(206, 242, 0, 0.9);
 }
 
