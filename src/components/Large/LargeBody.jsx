@@ -96,7 +96,11 @@ export function LargeBody({
   const recruiterPanel = getRecruiterPanelConfig(recruiterDisplayChannel);
 
   useEffect(() => {
-    if (currentChannel === recruiterDisplayChannel) return undefined;
+    if (currentChannel === recruiterDisplayChannel) {
+      setRecruiterTypingOut(false);
+      setRecruiterFadingOut(false);
+      return undefined;
+    }
 
     const typeOutDuration = 360;
     const fadeOutDuration = 220;
