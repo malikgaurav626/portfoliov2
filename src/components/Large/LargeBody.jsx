@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import QRCode from "qrcode";
 import { ControlBar } from "../ControlBar/ControlBar";
-import { ThreeEnv } from "../ThreeEnv/ThreeEnv";
 import { ConstellationPanel } from "../Constellation/ConstellationPanel";
 import { SignalMonitor } from "../Signal/SignalMonitor";
 import {
@@ -17,6 +16,10 @@ const CHANNELS = [
   "CHANNEL 3 / ARCTIC",
   "CHANNEL 4 / SPACE",
 ];
+
+const ThreeEnv = lazy(() =>
+  import("../ThreeEnv/ThreeEnv").then((module) => ({ default: module.ThreeEnv }))
+);
 
 export function LargeBody({
   projects,
@@ -379,18 +382,20 @@ export function LargeBody({
           }`}
         >
           {view3d && (
-            <ThreeEnv
-              channel={currentChannel}
-              currentMode={currentMode}
-              windEnabled={windEnabled}
-              ambientMuted={isMuted}
-              resetFocusSignal={homeResetSignal}
-              onTvFocusChange={(isFocused) => {
-                if (!view3d) return;
-                setLeftSectionVisible(!isFocused);
-                setRightSectionVisible(!isFocused);
-              }}
-            />
+            <Suspense fallback={null}>
+              <ThreeEnv
+                channel={currentChannel}
+                currentMode={currentMode}
+                windEnabled={windEnabled}
+                ambientMuted={isMuted}
+                resetFocusSignal={homeResetSignal}
+                onTvFocusChange={(isFocused) => {
+                  if (!view3d) return;
+                  setLeftSectionVisible(!isFocused);
+                  setRightSectionVisible(!isFocused);
+                }}
+              />
+            </Suspense>
           )}
         </div>
       </div>

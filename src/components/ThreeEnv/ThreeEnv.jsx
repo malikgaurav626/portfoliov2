@@ -1290,18 +1290,38 @@ function pickLaneByWeights(weights) {
   return weights.length - 1;
 }
 
-function SceneFogEnvelope({ palette, isNight }) {
+function SceneFogEnvelope({ palette, isNight, isFocused, channel }) {
+  const shellRef = useRef();
+  const ringRef = useRef();
   const fogColor = useMemo(() => {
     const base = new THREE.Color(palette.fogTint || palette.ground || "#8aa0b5");
     const accent = new THREE.Color(palette.accent || "#a9c3d8");
     return base.lerp(accent, isNight ? 0.18 : 0.12).getHexString();
   }, [palette.accent, palette.fogTint, palette.ground, isNight]);
 
+  useFrame((_, delta) => {
+    const t = 1 - Math.exp(-delta * 4.2);
+    const focusBoost = (channel === 0 || channel === 1) ? 2.05 : 1.4;
+    const shellBase = isNight ? 0.16 : 0.11;
+    const ringBase = isNight ? 0.09 : 0.06;
+
+    const shellTarget = shellBase * (isFocused ? focusBoost : 1);
+    const ringTarget = ringBase * (isFocused ? focusBoost : 1);
+
+    if (shellRef.current) {
+      shellRef.current.opacity += (shellTarget - shellRef.current.opacity) * t;
+    }
+    if (ringRef.current) {
+      ringRef.current.opacity += (ringTarget - ringRef.current.opacity) * t;
+    }
+  });
+
   return (
     <group>
       <mesh position={[0, 2.05, -1.15]}>
         <cylinderGeometry args={[10.6, 9.8, 5.2, 56, 1, true]} />
         <meshBasicMaterial
+          ref={shellRef}
           color={`#${fogColor}`}
           transparent
           opacity={isNight ? 0.16 : 0.11}
@@ -1312,6 +1332,7 @@ function SceneFogEnvelope({ palette, isNight }) {
       <mesh position={[0, 0.06, -0.95]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[8.8, 10.5, 56]} />
         <meshBasicMaterial
+          ref={ringRef}
           color={`#${fogColor}`}
           transparent
           opacity={isNight ? 0.09 : 0.06}
@@ -2039,10 +2060,23 @@ function SakuraEnvironment({
   tvConfig,
 }) {
   const z = getChannelAnchor(index);
+  const localLightRef = useRef();
+
+  useFrame((_, delta) => {
+    if (!localLightRef.current) return;
+    const t = 1 - Math.exp(-delta * 4.4);
+    const targetIntensity = isActive ? (isTvFocused ? 0.18 : 1.0) : 0;
+    localLightRef.current.intensity += (targetIntensity - localLightRef.current.intensity) * t;
+  });
 
   return (
     <group position={[0, 0, z]}>
-      <SceneFogEnvelope palette={palette} isNight={isNight} />
+      <SceneFogEnvelope
+        palette={palette}
+        isNight={isNight}
+        isFocused={isTvFocused}
+        channel={index}
+      />
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[8, 48]} />
         <meshStandardMaterial color={palette.ground} roughness={0.95} />
@@ -2060,6 +2094,7 @@ function SakuraEnvironment({
       />
 
       <pointLight
+        ref={localLightRef}
         position={[0.4, 4.8, -1.2]}
         intensity={isActive ? 1.0 : 0}
         distance={12}
@@ -2127,19 +2162,35 @@ function DesertEnvironment({
 }) {
   const controls = getChannelControls(index);
   const heatRippleRef = useRef();
+  const localLightRef = useRef();
   const z = getChannelAnchor(index);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
+    const tSmooth = 1 - Math.exp(-delta * 4.4);
+
+    if (localLightRef.current) {
+      const targetIntensity = isActive ? (isTvFocused ? 0.2 : 1.0) : 0;
+      localLightRef.current.intensity += (targetIntensity - localLightRef.current.intensity) * tSmooth;
+    }
+
     if (!isActive || !heatRippleRef.current) return;
     const t = state.clock.elapsedTime;
     const s = 0.95 + (Math.sin(t * 1.8) + 1) * 0.08;
+    const baseOpacity = 0.15 + (Math.sin(t * 2.1) + 1) * 0.08;
+    const targetOpacity = baseOpacity * (isTvFocused ? 1.9 : 1);
     heatRippleRef.current.scale.set(s, 1, s);
-    heatRippleRef.current.material.opacity = 0.15 + (Math.sin(t * 2.1) + 1) * 0.08;
+    heatRippleRef.current.material.opacity +=
+      (targetOpacity - heatRippleRef.current.material.opacity) * tSmooth;
   });
 
   return (
     <group position={[0, 0, z]}>
-      <SceneFogEnvelope palette={palette} isNight={isNight} />
+      <SceneFogEnvelope
+        palette={palette}
+        isNight={isNight}
+        isFocused={isTvFocused}
+        channel={index}
+      />
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[8, 40]} />
         <meshStandardMaterial color={palette.ground} roughness={1} />
@@ -2192,6 +2243,7 @@ function DesertEnvironment({
       </mesh>
 
       <pointLight
+        ref={localLightRef}
         position={[0.5, 3.8, -0.2]}
         intensity={isActive ? 1.0 : 0}
         distance={11}
@@ -2246,7 +2298,12 @@ function ArcticEnvironment({
 
   return (
     <group position={[0, 0, z]}>
-      <SceneFogEnvelope palette={palette} isNight={isNight} />
+      <SceneFogEnvelope
+        palette={palette}
+        isNight={isNight}
+        isFocused={isTvFocused}
+        channel={index}
+      />
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[8, 48]} />
         <meshStandardMaterial color={palette.ground} roughness={0.94} />
@@ -2997,6 +3054,13 @@ WindOverlay.propTypes = {
 SceneFogEnvelope.propTypes = {
   palette: PropTypes.object.isRequired,
   isNight: PropTypes.bool.isRequired,
+  isFocused: PropTypes.bool,
+  channel: PropTypes.number,
+};
+
+SceneFogEnvelope.defaultProps = {
+  isFocused: false,
+  channel: 0,
 };
 
 SakuraWind.propTypes = {

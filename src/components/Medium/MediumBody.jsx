@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import {
   TwitterShareBody,
@@ -29,7 +29,6 @@ import {
   CloseCommentsSVG,
 } from "../Social/ControlIcons";
 import { ControlBar } from "../ControlBar/ControlBar";
-import { ThreeEnv } from "../ThreeEnv/ThreeEnv";
 import QRCode from "qrcode";
 
 const CHANNELS = [
@@ -38,6 +37,10 @@ const CHANNELS = [
   "CHANNEL 3 / ARCTIC",
   "CHANNEL 4 / SPACE",
 ];
+
+const ThreeEnv = lazy(() =>
+  import("../ThreeEnv/ThreeEnv").then((module) => ({ default: module.ThreeEnv }))
+);
 
 export function MediumBody({
   projects,
@@ -161,17 +164,19 @@ export function MediumBody({
         } ${view3d ? `scene-ui-active scene-ch-${currentChannel} scene-time-${sceneTime}` : ""}`}
       >
         {view3d && (
-          <ThreeEnv
-            channel={currentChannel}
-            currentMode={currentMode}
-            windEnabled={windEnabled}
-            ambientMuted={isMuted}
-            onTvFocusChange={(isFocused) => {
-              if (!view3d) return;
-              setTopSectionVisible(!isFocused);
-              setBottomSectionVisible(!isFocused);
-            }}
-          />
+          <Suspense fallback={null}>
+            <ThreeEnv
+              channel={currentChannel}
+              currentMode={currentMode}
+              windEnabled={windEnabled}
+              ambientMuted={isMuted}
+              onTvFocusChange={(isFocused) => {
+                if (!view3d) return;
+                setTopSectionVisible(!isFocused);
+                setBottomSectionVisible(!isFocused);
+              }}
+            />
+          </Suspense>
         )}
       </div>
       <div
