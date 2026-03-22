@@ -2819,6 +2819,7 @@ export function ThreeEnv({
   useEnvironmentModes = true,
   windEnabled = true,
   ambientMuted = false,
+  resetFocusSignal = 0,
 }) {
   const [focusedScreen, setFocusedScreen] = useState(null);
   const clampedChannel = clampChannel(channel);
@@ -2826,6 +2827,10 @@ export function ThreeEnv({
   useEffect(() => {
     setFocusedScreen(null);
   }, [channel]);
+
+  useEffect(() => {
+    setFocusedScreen(null);
+  }, [resetFocusSignal]);
 
   useEffect(() => {
     if (!onTvFocusChange) return;
@@ -2844,6 +2849,15 @@ export function ThreeEnv({
     isNight,
     muted: ambientMuted,
   });
+  const handlePointerMissed = useCallback((event) => {
+    const target = event?.target || event?.nativeEvent?.target;
+
+    if (target?.closest?.(".tv-screen-html, [data-tv-control='true']")) {
+      return;
+    }
+
+    setFocusedScreen(null);
+  }, []);
 
   return (
     <div className="three-env-stage">
@@ -2852,8 +2866,8 @@ export function ThreeEnv({
         className="three-env-canvas"
         shadows
         dpr={[1, 1.25]}
-        gl={{ antialias: false, powerPreference: "high-performance" }}
-        onPointerMissed={() => setFocusedScreen(null)}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
+        onPointerMissed={handlePointerMissed}
         camera={{
           position: [0, SCENE_CONFIG.camera.height, SCENE_CONFIG.camera.zOffset],
           fov: SCENE_CONFIG.camera.fov,
@@ -2880,6 +2894,12 @@ export function ThreeEnv({
         isNight={isNight}
         enabled={windEnabled}
       />
+
+      <div className="three-env-postfx-layer" aria-hidden="true">
+        <span className="three-env-postfx-glow" />
+        <span className="three-env-postfx-scan" />
+        <span className="three-env-postfx-vignette" />
+      </div>
     </div>
   );
 }
