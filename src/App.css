@@ -1703,7 +1703,7 @@ body {
 .medium-body-container{
   display: flex;
   flex-direction: column;
-  height: 96vh;
+  height: 96svh;
   position: relative;
   z-index: 5;
   pointer-events: none;
@@ -2648,6 +2648,15 @@ body {
   }
 }
 @media (max-width: 500px) {
+  .medium-body-container{
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+    box-sizing: border-box;
+  }
+
+  .medium-footer{
+    margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+  }
+
   .medium-menu-container{
     width: 91.9vw;
   }
@@ -2697,8 +2706,16 @@ body {
     padding: 0;
   }
   body{
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .medium-body-container{
+    height: 100svh;
+  }
+
+  .three_env_container{
+    height: 100svh;
   }
   .top-btn{
     font-weight: 400;
